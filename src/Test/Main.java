@@ -14,7 +14,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		AdminView ms = new AdminView();
-		System.out.println("OKEASDS");
+		System.out.println("OKEASDSASDasA");
 		
 	}
 	
