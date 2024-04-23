@@ -15,6 +15,7 @@ public class Main {
 		
 		AdminView ms = new AdminView();
 		System.out.println("NGU");
+		System.out.println("AKSJHDKJSDHKJDHSAKJ");
 	}
 	
 	
