@@ -15,6 +15,7 @@ public class Main {
 		
 		AdminView ms = new AdminView();
 		System.out.println("OKEASDS");
+		System.out.println("TEMP");
 		
 	}
 	
