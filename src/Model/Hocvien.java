@@ -70,6 +70,12 @@ public class Hocvien {
 	public void setTinhTrang(String tinhTrang) {
 		this.tinhTrang = tinhTrang;
 	}
+
+	@Override
+	public String toString() {
+		return "Hocvien [maHV=" + maHV + ", name=" + name + ", namSinh=" + namSinh + ", gioiTinh=" + gioiTinh + ", sdt="
+				+ sdt + ", tinhTrang=" + tinhTrang + "]";
+	}
 	
 	
 }

@@ -741,19 +741,37 @@ public AdminView() {
 	choiceNhapMaGV.setBounds(109, 556, 151, 30);
 	panel_3.add(choiceNhapMaGV);
 	
+//	JScrollPane scrollPane_2 = new JScrollPane();
+//	scrollPane_2.setBounds(73, 296, 848, 343);
+//	PanelLopHoc.add(scrollPane_2);
+//	
+//	tableLH = new JTable();
+//	scrollPane_2.setViewportView(tableLH);
+//	tableLH.setModel(new DefaultTableModel(
+//		new Object[][] {
+//		},
+//		new String[] {
+//			"maLH", "tenLop", "siSo", "thoiGianHoc", "ngayBatDau", "ngayKetThuc", "maMH", "maGV"
+//		}
+//	));
+	
 	JScrollPane scrollPane_2 = new JScrollPane();
 	scrollPane_2.setBounds(73, 296, 848, 343);
 	PanelLopHoc.add(scrollPane_2);
-	
+
 	tableLH = new JTable();
 	scrollPane_2.setViewportView(tableLH);
 	tableLH.setModel(new DefaultTableModel(
-		new Object[][] {
-		},
-		new String[] {
-			"maLH", "tenLop", "siSo", "thoiGianHoc", "ngayBatDau", "ngayKetThuc", "maMH", "maGV"
-		}
-	));
+	    new Object[][] {},
+	    new String[] {
+	        "maLH", "tenLop", "siSo", "thoiGianHoc", "ngayBatDau", "ngayKetThuc", "maMH", "maGV"
+	    }
+	) {
+	    @Override
+	    public boolean isCellEditable(int row, int column) {
+	        return false; // Make all cells uneditable
+	    }
+	});
 	
 	JPanel PanelBienLai = new JPanel();
 	PanelBienLai.setLayout(null);
@@ -873,10 +891,12 @@ public AdminView() {
 	
 	MouseListener mlhv = new HocVienConTroller(this);
 	tableHV.addMouseListener(mlhv);
+	scrollPane_2.addMouseListener(mlhv);
+	
 	
 	setChoiceGV();
 	this.setVisible(true);
-	
+//	
 }
 	public void setChoiceGV() {
 		ArrayList<Giaovien> list = GiaovienDAO.getInstance().selectAll();

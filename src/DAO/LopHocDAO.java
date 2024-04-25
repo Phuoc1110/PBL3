@@ -1,10 +1,14 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import Database.JDBCUtil;
 import Model.Giaovien;
+import Model.Hocvien;
 import Model.Lophoc;
 
 public class LopHocDAO implements DAOInterface<Lophoc>{
@@ -114,7 +118,7 @@ public class LopHocDAO implements DAOInterface<Lophoc>{
 			
 			JDBCUtil.closeConnection(cnn);
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.getStackTrace();
 		}
 		return list;
 	}
@@ -130,8 +134,34 @@ public class LopHocDAO implements DAOInterface<Lophoc>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
+	
+	public ArrayList<Hocvien> tTin(String maLH) {
+		ArrayList<Hocvien> kq =  new ArrayList<Hocvien>();
+		String sql = "select hocvien.maHV, hocvien.name, hocvien.gioiTinh, hocvien.namSinh, hocvien.SDT, hocvien.tinhTrang\r\n"
+				+ "from hocvien\r\n"
+				+ "join dangki\r\n"
+				+ "	using(maHV)\r\n"
+				+ "where maLH = '" + maLH + "'";
+		Connection con = JDBCUtil.getConnection();
+		try {
+			Statement st = con.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			while (rs.next()) {
+				String maHV = rs.getString("maHV");
+				String name = rs.getString("name");
+				String namSinh = rs.getString("namSinh");
+				boolean gioiTinh = rs.getBoolean("gioiTinh");
+				String SDT = rs.getString("SDT");
+				String tinhTrang = rs.getString("tinhTrang");
+				
+				Hocvien hv = new Hocvien(maHV,name,namSinh,gioiTinh,SDT,tinhTrang);
+				kq.add(hv);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return kq;
+	}
 	
 
 }

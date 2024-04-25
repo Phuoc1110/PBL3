@@ -7,13 +7,14 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.RootPaneContainer;
 import javax.swing.table.DefaultTableModel;
 
-import DAO.GiaovienDAO;
 import DAO.LopHocDAO;
-import Model.Giaovien;
+import Model.Hocvien;
 import Model.Lophoc;
 import View.AdminView;
+import View.TTHV;
 
 public class LopHocConTroller implements ActionListener, MouseListener{
 	private AdminView adminview;
@@ -85,11 +86,25 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 		adminview.choiceNhapMaMH.select((String) model.getValueAt(i, 6));
 		adminview.choiceNhapMaGV.select((String) model.getValueAt(i, 7));
 		
+		if (e.getClickCount() == 2 && !e.isConsumed()) {
+			e.consume();							//tra sau
+			TTHV tthv = new TTHV();
+			tthv.setVisible(true);
+			//Them tt vao dialog
+			ArrayList<Hocvien> list = LopHocDAO.getInstance().tTin(adminview.txtNhapMaLH.getText());
+			DefaultTableModel model2 = (DefaultTableModel) tthv.table.getModel();
+			for(Hocvien hv : list) {	
+				String gender ;
+				if(hv.getGioiTinh() == true) gender = "Nam";
+				else gender = "Nu";
+				String[] row = {hv.getMaHV(), hv.getName(), hv.getNamSinh(), gender, hv.getSdt(), hv.getTinhTrang()};
+				model2.addRow(row);
+			}
+		}
+		
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
