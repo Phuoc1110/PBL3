@@ -1,13 +1,5 @@
 package Test;
 
-import java.sql.Connection;
-
-import com.mysql.cj.jdbc.JdbcConnection;
-
-import DAO.GiaovienDAO;
-import DAO.HocvienDAO;
-import Database.JDBCUtil;
-import Model.Hocvien;
 import View.AdminView;
 
 public class Main {

@@ -19,6 +19,8 @@ public class HocvienDAO implements DAOInterface<Hocvien>{
 	@Override
 	public int insert(Hocvien t) {
 		int kq = 0;
+		if (t.getMaHV().equals("")) 
+			return -1;
 		try {
 			Connection con = JDBCUtil.getConnection();
 			Statement st = con.createStatement();

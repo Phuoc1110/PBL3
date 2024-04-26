@@ -292,19 +292,38 @@ public AdminView() {
 	TieuDeGV.add(choiceSapXepGV);
 
 	
+//	JScrollPane scrollPane = new JScrollPane();
+//	scrollPane.setBounds(61, 320, 834, 300);
+//	PanelGiaoVien.add(scrollPane);
+//	
+//	tableGV = new JTable();
+//	scrollPane.setViewportView(tableGV);
+//	tableGV.setModel(new DefaultTableModel(
+//		new Object[][] {
+//		},
+//		new String[] {
+//			"MaGV", "name", "namSinh", "gioiTinh", "chuyenMon", "trinhDo", "SDT" 
+//		}
+//	));
+	
 	JScrollPane scrollPane = new JScrollPane();
 	scrollPane.setBounds(61, 320, 834, 300);
 	PanelGiaoVien.add(scrollPane);
-	
+
 	tableGV = new JTable();
 	scrollPane.setViewportView(tableGV);
-	tableGV.setModel(new DefaultTableModel(
-		new Object[][] {
-		},
-		new String[] {
-			"MaGV", "name", "namSinh", "gioiTinh", "chuyenMon", "trinhDo", "SDT" 
-		}
-	));
+	DefaultTableModel model = new DefaultTableModel(
+	    new Object[][] {},
+	    new String[] {"MaGV", "name", "namSinh", "gioiTinh", "chuyenMon", "trinhDo", "SDT"}
+	) {
+	    @Override
+	    public boolean isCellEditable(int row, int column) {
+	        return false;
+	    }
+	};
+
+	tableGV.setModel(model);
+
 	
 	JPanel panel = new JPanel();
 	panel.setBackground(SystemColor.activeCaption);
@@ -565,19 +584,36 @@ public AdminView() {
 	group1.add(rdbtFemaleHV);
 	group1.add(rdbtMaleHV);
 	
+//	JScrollPane scrollPane_1 = new JScrollPane();
+//	scrollPane_1.setBounds(38, 320, 870, 319);
+//	PanelHocVien.add(scrollPane_1);
+//	
+//	tableHV = new JTable();
+//	scrollPane_1.setViewportView(tableHV);
+//	tableHV.setModel(new DefaultTableModel(
+//		new Object[][] {
+//		},
+//		new String[] {
+//			"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang"
+//		}
+//	));
+	
 	JScrollPane scrollPane_1 = new JScrollPane();
 	scrollPane_1.setBounds(38, 320, 870, 319);
 	PanelHocVien.add(scrollPane_1);
-	
 	tableHV = new JTable();
 	scrollPane_1.setViewportView(tableHV);
-	tableHV.setModel(new DefaultTableModel(
-		new Object[][] {
-		},
-		new String[] {
-			"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang"
-		}
-	));
+	DefaultTableModel modelHV = new DefaultTableModel(
+	    new Object[][] {},
+	    new String[] {"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang"}
+	) {
+	    @Override
+	    public boolean isCellEditable(int row, int column) {
+	        return false;
+	    }
+	};
+	tableHV.setModel(modelHV);
+
 	
 	JPanel PanelLopHoc = new JPanel();
 	PanelLopHoc.setLayout(null);
