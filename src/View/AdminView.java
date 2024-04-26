@@ -27,7 +27,9 @@ import Controller.HocVienConTroller;
 import Controller.HocVienConTroller;
 import Controller.LopHocConTroller;
 import DAO.GiaovienDAO;
+import DAO.MonHocDAO;
 import Model.Giaovien;
+import Model.MonHoc;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -41,6 +43,7 @@ import java.awt.SystemColor;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
+import javax.swing.ImageIcon;
 
 public class AdminView extends JFrame {
 	
@@ -81,19 +84,19 @@ public class AdminView extends JFrame {
 	public JComboBox nhapTinhTrang;
 	
 	
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					AdminView frame = new AdminView();
-//					frame.setLocationRelativeTo(null);
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AdminView frame = new AdminView();
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	
 
 public AdminView() {
@@ -137,18 +140,6 @@ public AdminView() {
 	panel_1.setBounds(0, 173, 195, 56);
 	Menu.add(panel_1);
 	
-	btnGiaoVien = new JButton("Giáo viên");
-	btnGiaoVien.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			tabbedPane.setSelectedIndex(0);
-		}
-	});
-	btnGiaoVien.setForeground(Color.WHITE);
-	btnGiaoVien.setFont(new Font("Segoe UI", Font.BOLD, 15));
-	btnGiaoVien.setBackground(new Color(51, 0, 102));
-	btnGiaoVien.setBounds(0, 0, 194, 56);
-	panel_1.add(btnGiaoVien);
-	
 	JPanel panel_1_1 = new JPanel();
 	panel_1_1.setLayout(null);
 	panel_1_1.setBackground(new Color(36, 0, 72));
@@ -156,6 +147,7 @@ public AdminView() {
 	Menu.add(panel_1_1);
 	
 	btnHocVien = new JButton("Học viên");
+	btnHocVien.setIcon(null);
 	btnHocVien.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
@@ -209,6 +201,19 @@ public AdminView() {
 	panel_6_1_1.setBounds(0, 675, 197, 33);
 	Menu.add(panel_6_1_1);
 	
+	btnGiaoVien = new JButton("Giáo viên");
+	btnGiaoVien.setBounds(-24, 173, 219, 56);
+	Menu.add(btnGiaoVien);
+	btnGiaoVien.setIcon(new ImageIcon(AdminView.class.getResource("/icon/icons8-teacher-40.png")));
+	btnGiaoVien.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			tabbedPane.setSelectedIndex(0);
+		}
+	});
+	btnGiaoVien.setForeground(Color.WHITE);
+	btnGiaoVien.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	btnGiaoVien.setBackground(new Color(51, 0, 102));
+	
 	tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	tabbedPane.setBounds(192, 0, 1308, 730);
 	contentPane.add(tabbedPane);
@@ -218,7 +223,7 @@ public AdminView() {
 	PanelGiaoVien.setLayout(null);
 	
 	JPanel TieuDeGV = new JPanel();
-	TieuDeGV.setBounds(0, 61, 988, 172);
+	TieuDeGV.setBounds(0, 95, 988, 172);
 	TieuDeGV.setBackground(new Color(135, 123, 191));
 	PanelGiaoVien.add(TieuDeGV);
 	
@@ -288,7 +293,7 @@ public AdminView() {
 
 	
 	JScrollPane scrollPane = new JScrollPane();
-	scrollPane.setBounds(68, 268, 829, 357);
+	scrollPane.setBounds(61, 320, 834, 300);
 	PanelGiaoVien.add(scrollPane);
 	
 	tableGV = new JTable();
@@ -580,7 +585,7 @@ public AdminView() {
 	
 	JPanel TieuDeLH = new JPanel();
 	TieuDeLH.setBackground(new Color(135, 123, 191));
-	TieuDeLH.setBounds(0, 78, 998, 194);
+	TieuDeLH.setBounds(0, 93, 998, 194);
 	PanelLopHoc.add(TieuDeLH);
 	TieuDeLH.setLayout(null);
 	
@@ -742,7 +747,7 @@ public AdminView() {
 	panel_3.add(choiceNhapMaGV);
 	
 //	JScrollPane scrollPane_2 = new JScrollPane();
-//	scrollPane_2.setBounds(73, 296, 848, 343);
+//	scrollPane_2.setBounds(73, 315, 848, 343);
 //	PanelLopHoc.add(scrollPane_2);
 //	
 //	tableLH = new JTable();
@@ -891,12 +896,11 @@ public AdminView() {
 	
 	MouseListener mlhv = new HocVienConTroller(this);
 	tableHV.addMouseListener(mlhv);
-	scrollPane_2.addMouseListener(mlhv);
-	
 	
 	setChoiceGV();
+	setChoiceMH();
 	this.setVisible(true);
-//	
+	
 }
 	public void setChoiceGV() {
 		ArrayList<Giaovien> list = GiaovienDAO.getInstance().selectAll();
@@ -906,6 +910,9 @@ public AdminView() {
 	}
 	
 	public void setChoiceMH() {
-		
+		ArrayList<MonHoc> list = MonHocDAO.getInstance().selectAll();
+		for(MonHoc mh : list) {
+			choiceNhapMaMH.add(mh.getMaMH());
+		}
 	}
 }

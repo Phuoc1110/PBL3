@@ -3,8 +3,9 @@ package DAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+
+import com.mysql.cj.xdevapi.Statement;
 
 import Database.JDBCUtil;
 import Model.Giaovien;
@@ -118,9 +119,32 @@ public class LopHocDAO implements DAOInterface<Lophoc>{
 			
 			JDBCUtil.closeConnection(cnn);
 		} catch (Exception e) {
-			e.getStackTrace();
+			// TODO: handle exception
 		}
 		return list;
+	}
+	
+	public String getNameLH(String id) {
+		String s = "";
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "SELECT tenLop FROM lophoc where maLH = '" + id  + "'";
+			
+			System.out.println(sql);
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				s = rs.getString("tenLop");
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return s;
 	}
 
 	@Override
@@ -144,8 +168,8 @@ public class LopHocDAO implements DAOInterface<Lophoc>{
 				+ "where maLH = '" + maLH + "'";
 		Connection con = JDBCUtil.getConnection();
 		try {
-			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(sql);
+			java.sql.Statement st = con.createStatement();
+			java.sql.ResultSet rs = st.executeQuery(sql);
 			while (rs.next()) {
 				String maHV = rs.getString("maHV");
 				String name = rs.getString("name");
@@ -162,6 +186,8 @@ public class LopHocDAO implements DAOInterface<Lophoc>{
 		}
 		return kq;
 	}
+
+	
 	
 
 }

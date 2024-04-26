@@ -5,7 +5,14 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
+
+import DAO.HocvienDAO;
+import Model.Hocvien;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.GroupLayout;
@@ -15,33 +22,23 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.UIManager;
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField textField_1;
-	private JTextField textField;
+	public JPanel contentPane;
+	public JPasswordField txtPassword;
+	public JTextField txtUser;
+	public JButton btnDangNhapAdmin, btnDangNhapHocVien, btnDangNhapGiaoVien;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Login frame = new Login();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public Login() {
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,16 +59,17 @@ public class Login extends JFrame {
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("WELCOME!");
+		JLabel lblNewLabel = new JLabel("WELCOME PTAN!");
 		lblNewLabel.setForeground(new Color(255, 255, 255));
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblNewLabel.setBounds(117, 62, 129, 45);
+		lblNewLabel.setBounds(98, 73, 197, 45);
 		panel_2.add(lblNewLabel);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(48, 244, 237, 28);
-		panel_2.add(textField_1);
+		txtPassword = new JPasswordField();
+		txtPassword.setColumns(10);
+		txtPassword.setBounds(48, 244, 237, 28);
+		  
+		panel_2.add(txtPassword);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Password:");
 		lblNewLabel_1_1.setForeground(new Color(255, 255, 255));
@@ -79,27 +77,93 @@ public class Login extends JFrame {
 		lblNewLabel_1_1.setBounds(48, 219, 93, 13);
 		panel_2.add(lblNewLabel_1_1);
 		
-		JButton btnNewButton = new JButton("Login");
-		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setBackground(new Color(72, 0, 145));
-		btnNewButton.setFont(new Font("Times New Roman", Font.BOLD, 14));
-		btnNewButton.setBounds(127, 323, 93, 21);
-		panel_2.add(btnNewButton);
-		
-		JLabel lblNewLabel_1_1_1 = new JLabel("Email:");
+		JLabel lblNewLabel_1_1_1 = new JLabel("User");
 		lblNewLabel_1_1_1.setForeground(new Color(255, 255, 255));
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_1_1_1.setBounds(48, 145, 93, 13);
 		panel_2.add(lblNewLabel_1_1_1);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(48, 170, 237, 28);
-		panel_2.add(textField);
+		txtUser = new JTextField();
+		txtUser.setColumns(10);
+		txtUser.setBounds(48, 170, 237, 28);
+		panel_2.add(txtUser);
+		
+		JLabel lblNewLabel_4 = new JLabel("New label");
+		lblNewLabel_4.setIcon(new ImageIcon(Login.class.getResource("/icon/437558866_1095808641646488_4149109965979641646_n.png")));
+		lblNewLabel_4.setBounds(10, 404, 60, 45);
+		panel_2.add(lblNewLabel_4);
+		
+		JLabel lblNewLabel_5 = new JLabel("");
+		lblNewLabel_5.setIcon(new ImageIcon("E:\\download\\clover-alt (2).png"));
+		lblNewLabel_5.setBounds(271, 86, 33, 32);
+		panel_2.add(lblNewLabel_5);
+		
+		JLabel lblNewLabel_2 = new JLabel("");
+		lblNewLabel_2.setIcon(new ImageIcon(Login.class.getResource("/icon/check-mark (3).png")));
+		lblNewLabel_2.setBounds(116, 30, 93, 28);
+		panel_2.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_6 = new JLabel("LOGIN");
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblNewLabel_6.setForeground(Color.YELLOW);
+		lblNewLabel_6.setBounds(144, 290, 105, 28);
+		panel_2.add(lblNewLabel_6);
+		
+		btnDangNhapAdmin = new JButton("ADMIN");
+		btnDangNhapAdmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(txtUser.getText().equals("admin") && txtPassword.getText().equals("1")) {
+					new AdminView();
+					
+				}
+			}
+		});
+		btnDangNhapAdmin.setBounds(26, 330, 94, 32);
+		panel_2.add(btnDangNhapAdmin);
+		
+		btnDangNhapHocVien = new JButton("HOC VIEN");
+		btnDangNhapHocVien.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String tk = txtUser.getText();
+				ArrayList<Hocvien> list = HocvienDAO.getInstance().selectAll();
+				for(Hocvien hv : list) {
+					if(hv.getMaHV().equals(tk)) {
+						System.out.println(hv.getMaHV() + " " + tk );
+						String mk = txtPassword.getText();
+						if(mk.equals("1")) new HocVienView(tk);
+					}
+				}
+			}
+		});
+		btnDangNhapHocVien.setBounds(140, 330, 94, 32);
+		panel_2.add(btnDangNhapHocVien);
+		
+		btnDangNhapGiaoVien = new JButton("GIAO VIEN");
+		btnDangNhapGiaoVien.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnDangNhapGiaoVien.setBounds(253, 329, 94, 32);
+		panel_2.add(btnDangNhapGiaoVien);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(147, 0, 73));
+		panel_1.setBackground(new Color(224, 224, 224));
 		panel_1.setBounds(0, 0, 348, 459);
 		panel.add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("");
+		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("/icon/4cbe9a4960afcef197be.jpg")));
+		lblNewLabel_1.setBounds(40, 71, 269, 324);
+		panel_1.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_3 = new JLabel("");
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3.setIcon(new ImageIcon(Login.class.getResource("/icon/17a9b7464da0e3febab1.jpg")));
+		lblNewLabel_3.setBounds(0, 0, 43, 41);
+		panel_1.add(lblNewLabel_3);
+		
+		this.setVisible(true);
 	}
+	
 }

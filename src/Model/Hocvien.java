@@ -21,7 +21,15 @@ public class Hocvien {
 	private boolean gioiTinh;
 	private String sdt;
 	private String tinhTrang;
-	
+	private String matKhau;
+	public String getMatKhau() {
+		return matKhau;
+	}
+
+	public void setMatKhau(String matKhau) {
+		this.matKhau = matKhau;
+	}
+
 	//Getter setter
 	public String getMaHV() {
 		return maHV;
@@ -69,12 +77,6 @@ public class Hocvien {
 
 	public void setTinhTrang(String tinhTrang) {
 		this.tinhTrang = tinhTrang;
-	}
-
-	@Override
-	public String toString() {
-		return "Hocvien [maHV=" + maHV + ", name=" + name + ", namSinh=" + namSinh + ", gioiTinh=" + gioiTinh + ", sdt="
-				+ sdt + ", tinhTrang=" + tinhTrang + "]";
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import Database.JDBCUtil;
 import Model.DangKi;
+import Model.Hocvien;
 
 public class DangKiDAO {
 
@@ -46,9 +47,59 @@ public class DangKiDAO {
 		}
 		
 		return ketqua;
-
+	}
+	
+	public ArrayList<String> getAllLopTheoTungHV(String id){
+		ArrayList<String> list = new ArrayList<String>();
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "select maLH from dangki where maHV = '" + id + "'";
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				String maLH = rs.getString("maLH");
+				list.add(maLH);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
 	}
 
-
+	public ArrayList<String> getLopKhongDK(Hocvien t){
+		ArrayList<String> list = new ArrayList<String>();
+		String sql = "SELECT DISTINCT lophoc.maLH\r\n"
+				+ "FROM lophoc\r\n"
+				+ "WHERE lophoc.maLH NOT IN (\r\n"
+				+ "    SELECT lophoc.maLH\r\n"
+				+ "    FROM hocvien\r\n"
+				+ "    JOIN dangki ON hocvien.maHV = dangki.maHV\r\n"
+				+ "    JOIN lophoc ON dangki.maLH = lophoc.maLH\r\n"
+				+ "    WHERE dangki.maHV = '" + t.getMaHV() +  "'\r\n"
+				+ ");";
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				String maLH = rs.getString("maLH");
+				list.add(maLH);
+			}
+			
+			JDBCUtil.closeConnection(cnn);
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		
+		return list;
+		
+	}
 	
 }

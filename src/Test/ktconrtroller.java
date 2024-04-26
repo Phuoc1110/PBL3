@@ -7,9 +7,8 @@ import Model.Lophoc;
 
 public class ktconrtroller {
 	public static void main(String[] args) {
-		for (Lophoc lh : LopHocDAO.getInstance().selectAll()) {
-			System.out.println(lh.toString());
-		}
+		
+		String s = LopHocDAO.getInstance().getNameLH("101");
 				
 	
 	}

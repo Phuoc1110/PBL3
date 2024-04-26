@@ -7,10 +7,11 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
-import javax.swing.RootPaneContainer;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.GiaovienDAO;
 import DAO.LopHocDAO;
+import Model.Giaovien;
 import Model.Hocvien;
 import Model.Lophoc;
 import View.AdminView;
@@ -54,6 +55,7 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 				String[] row = {lh.getMaLH(), lh.getTenLH(), String.valueOf(lh.getSiSo()), lh.getThoigianHoc(), lh.getNgayBatDau(), lh.getNgayKetThuc(), lh.getMaMH(), lh.getMaGV()};
 				model.addRow(row);
 			}
+			
 			
 		}
 		
@@ -99,12 +101,13 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 				else gender = "Nu";
 				String[] row = {hv.getMaHV(), hv.getName(), hv.getNamSinh(), gender, hv.getSdt(), hv.getTinhTrang()};
 				model2.addRow(row);
-			}
-		}
-		
+			}	
+	}
 	}
 	@Override
 	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
