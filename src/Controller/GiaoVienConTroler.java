@@ -29,7 +29,9 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 	public Giaovien getDataViewGV() {
 		String maGV = adminview.txtNhapMaGV.getText();
 		String nameGV = adminview.txtNhapTenGV.getText();
-		String namSinh = adminview.txtNhapNamSinhGV.getText();
+		String namSinh = adminview.cbbNgayGV.getSelectedItem().toString() +
+				"/" + adminview.cbbThangGV.getSelectedItem().toString() +
+				"/" + adminview.txtNamGV.getText();
 		Boolean gioiTinh;
 		if(adminview.rdbtnMaleGV.isSelected()) {
 			gioiTinh = true;
@@ -108,7 +110,21 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 		DefaultTableModel model = (DefaultTableModel) adminview.tableGV.getModel();
 		adminview.txtNhapMaGV.setText((String) model.getValueAt(i, 0));
 		adminview.txtNhapTenGV.setText((String) model.getValueAt(i, 1));
-		adminview.txtNhapNamSinhGV.setText((String) model.getValueAt(i, 2));
+		String ngaythang = (String) model.getValueAt(i, 2);
+		String ngay = "", thang = "", nam = "";
+		for (int j = 0 ;j < 2 ; j++) {
+			ngay += ngaythang.charAt(j);
+		}
+		adminview.cbbNgayGV.setSelectedItem(ngay);
+		for (int j = 3 ; j < 5 ; j++) {
+			thang += ngaythang.charAt(j);
+		}
+		adminview.cbbThangGV.setSelectedItem(thang);
+		for (int j = 6 ; j < ngaythang.length(); j++) {
+			nam += ngaythang.charAt(j);
+		}
+		adminview.txtNamGV.setText(nam);
+//		adminview.txtNhapNamSinhGV.setText((String) model.getValueAt(i, 2));
 		if((String) model.getValueAt(i, 3) == "Nam") {
 			adminview.rdbtnMaleGV.setSelected(true);
 		}
@@ -120,6 +136,8 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 		adminview.txtNhapSDTGV.setText((String) model.getValueAt(i, 6));
 		
 	}
+	
+	
 
 	@Override
 	public void mousePressed(MouseEvent e) {

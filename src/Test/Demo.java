@@ -2,7 +2,7 @@ package Test;
 
 import View.Login;
 
-public class Demi {
+public class Demo {
 
 	public static void main(String[] args) {
 		Login lg = new Login();

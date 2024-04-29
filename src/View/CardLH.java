@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.SoftBevelBorder;
 
+import DAO.DangKiDAO;
 import DAO.LopHocDAO;
 import Model.Hocvien;
 
@@ -26,7 +27,9 @@ public class CardLH extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CardLH(String id) {
+	
+	
+	public CardLH(String idlh, String idhv) {
 		setBackground(new Color(240, 248, 255));
 		setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		this.setPreferredSize(new Dimension(182, 170));
@@ -41,7 +44,7 @@ public class CardLH extends JPanel {
 		btnXemTT = new JButton("Xem");
 		btnXemTT.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				TTLH ttlh = new TTLH(idlh);
 			}
 		});
 		btnXemTT.setBounds(10, 114, 73, 26);
@@ -49,16 +52,23 @@ public class CardLH extends JPanel {
 		
 		lable_Name = new JLabel();
 		lable_Name.setBounds(47, 83, 93, 19);
-		lable_Name.setText(LopHocDAO.getInstance().getNameLH(id));
+		lable_Name.setText(LopHocDAO.getInstance().getNameLH(idlh));
 		lable_Name.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lable_Name);
 		
 		JButton btnNewButton = new JButton("Xóa");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DangKiDAO.getInstance().delete(idhv, idlh);
+			}
+		});
 		btnNewButton.setBounds(99, 114, 73, 26);
 		add(btnNewButton);
 		
+		this.setVisible(true);
 	}
 	public static void main(String[] arg) {
-		
+		CardLH clh = new CardLH("100", "10001");
+		clh.setVisible(true);
 	}
 }

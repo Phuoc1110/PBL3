@@ -26,7 +26,9 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 		
 		String maHV = adminview.txtNhapMaHV.getText();
 		String name = adminview.txtNhapTenHV.getText();
-		String namSinh = adminview.txtNhapNamSinhHV.getText();
+		String namSinh = adminview.cbbNgaySinhHV.getSelectedItem().toString() +
+						"/" + adminview.cbbThangSinhHV.getSelectedItem().toString() +
+						"/" + adminview.txtNamHV.getText();
 		boolean gt = false;
 		if(adminview.rdbtMaleHV.isSelected())
 			gt = true;
@@ -83,15 +85,20 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 		}
 		//Them HV
 		else if (e.getSource() == adminview.btnThemHV) {
+			if(adminview.txtNhapMaHV.getText().equals("")) {
+				JOptionPane.showMessageDialog(adminview, "nhap maHV");
+			}
+			else {
 			HocvienDAO.getInstance().insert(getDataView());
 			DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
 			model.setRowCount(0);
 			adminview.btnHienThiHV.doClick();
+			}
 		}
 		else if (e.getSource() == adminview.btnResetHV) {
 			adminview.txtNhapMaHV.setText("");
 			adminview.txtNhapTenHV.setText("");
-			adminview.txtNhapNamSinhHV.setText("");
+			adminview.txtNamHV.setText("");
 			adminview.nhapTinhTrang.setSelectedItem("active");
 			adminview.txtNhapSDTHV.setText("");			
 		}
@@ -113,7 +120,22 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 		DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
 		adminview.txtNhapMaHV.setText((String) model.getValueAt(i, 0));
 		adminview.txtNhapTenHV.setText((String) model.getValueAt(i, 1));
-		adminview.txtNhapNamSinhHV.setText((String) model.getValueAt(i, 2));
+		
+		String ngaythang = (String) model.getValueAt(i, 2);
+		String ngay = "", thang = "", nam = "";
+		for (int j = 0 ;j < 2 ; j++) {
+			ngay += ngaythang.charAt(j);
+		}
+		adminview.cbbNgaySinhHV.setSelectedItem(ngay);
+		for (int j = 3 ; j < 5 ; j++) {
+			thang += ngaythang.charAt(j);
+		}
+		adminview.cbbThangSinhHV.setSelectedItem(thang);
+		for (int j = 6 ; j < ngaythang.length(); j++) {
+			nam += ngaythang.charAt(j);
+		}
+		adminview.txtNamHV.setText(nam);
+		
 		if (model.getValueAt(i, 3) == "Nam")
 			adminview.rdbtMaleHV.setSelected(true);
 		else

@@ -149,7 +149,30 @@ public class LopHocDAO implements DAOInterface<Lophoc>{
 
 	@Override
 	public Lophoc selectById(String id) {
-		// TODO Auto-generated method stub
+		Connection cnn = JDBCUtil.getConnection();
+		try {
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "select * from lophoc where maLH = '" + id + "'";
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				 String maLH = rs.getString("maLH");
+				 String tenlop = rs.getString("tenLop");
+				 int siSo = rs.getInt("siSo");
+				 String thoiGianHoc = rs.getString("thoiGianHoc");
+				 String ngayBatDau = rs.getString("ngayBatDau");
+				 String ngayKetThuc = rs.getString("ngayKetThuc");
+				 String maMH = rs.getString("maMH");
+				 String maGV = rs.getString("maGV");				 
+				 Lophoc lh = new Lophoc(maLH, tenlop, siSo, thoiGianHoc, ngayBatDau, ngayKetThuc, maMH, maGV);
+				 return lh;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 		return null;
 	}
 
@@ -187,7 +210,7 @@ public class LopHocDAO implements DAOInterface<Lophoc>{
 		return kq;
 	}
 
-	
+
 	
 
 }

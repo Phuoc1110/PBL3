@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import DAO.DangKiDAO;
 import DAO.HocvienDAO;
 import DAO.LopHocDAO;
 import Model.Hocvien;
@@ -43,6 +44,9 @@ public class HocVienView extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	public static void main(String[] arg) {
+		HocVienView hvv = new HocVienView("10001");
+	}
 
 
 	/**
@@ -283,7 +287,7 @@ public class HocVienView extends JFrame {
 		panel_2.setLayout(null);
 		
 		JPanel panel_7 = new JPanel();
-		panel_7.setBounds(0, 0, 1002, 101);
+		panel_7.setBounds(0, 0, 1002, 149);
 		panel_7.setBackground(new Color(255, 255, 255));
 		panel_2.add(panel_7);
 		panel_7.setLayout(null);
@@ -293,16 +297,20 @@ public class HocVienView extends JFrame {
 		lblNewLabel_2_1.setBounds(331, 36, 321, 27);
 		panel_7.add(lblNewLabel_2_1);
 		
+		JButton btnNewButton_1 = new JButton("New button");
+		btnNewButton_1.setBounds(747, 118, 85, 21);
+		panel_7.add(btnNewButton_1);
+		
 		JPanel panelDSLH = new JPanel();
 		panelDSLH.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
-		panelDSLH.setBounds(10, 119, 980, 515);
-		ArrayList<Lophoc> list = LopHocDAO.getInstance().selectAll();
+		panelDSLH.setBounds(0, 150, 990, 484);
+		ArrayList<String> list = DangKiDAO.getInstance().getAllLopTheoTungHV(id);
 		ArrayList<String> listname = new ArrayList<String>();
-		for(Lophoc lh : list) {
-			listname.add(lh.getMaLH());
+		for(String lh : list) {
+			listname.add(lh);
 		}
 		for (String classCode : listname) {
-            panelDSLH.add(new CardLH(classCode));
+            panelDSLH.add(new CardLH(classCode, id));
         }
 		panel_2.add(panelDSLH);
 		
@@ -313,13 +321,26 @@ public class HocVienView extends JFrame {
 		JPanel panel_7_1_1 = new JPanel();
 		panel_7_1_1.setLayout(null);
 		panel_7_1_1.setBackground(Color.WHITE);
-		panel_7_1_1.setBounds(0, 0, 673, 103);
+		panel_7_1_1.setBounds(0, 0, 1002, 103);
 		panel_8.add(panel_7_1_1);
 		
-		JLabel lblNewLabel_2_1_1_1 = new JLabel("Đăng Kí Môn Học");
+		JLabel lblNewLabel_2_1_1_1 = new JLabel("DANH SÁCH LỚP HỌC");
 		lblNewLabel_2_1_1_1.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		lblNewLabel_2_1_1_1.setBounds(245, 36, 198, 27);
+		lblNewLabel_2_1_1_1.setBounds(402, 37, 198, 27);
 		panel_7_1_1.add(lblNewLabel_2_1_1_1);
+		
+		JPanel panelDSCDK = new JPanel();
+		panelDSCDK.setBounds(10, 113, 992, 530);
+		
+		ArrayList<String> listcdk = DangKiDAO.getInstance().getLopKhongDK(id);
+		ArrayList<String> listnamecdk = new ArrayList<String>();
+		for(String lh : listcdk) {
+			listnamecdk.add(lh);
+		}
+		for (String classCode : listnamecdk) {
+            panelDSCDK.add(new CardDKLH(classCode, id));
+        }
+		panel_8.add(panelDSCDK);
 		
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("New tab", null, panel, null);

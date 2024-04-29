@@ -44,6 +44,8 @@ import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
+import javax.swing.DefaultComboBoxModel;
 
 public class AdminView extends JFrame {
 	
@@ -58,15 +60,17 @@ public class AdminView extends JFrame {
 	public TextField txtNameGV; 
 	public JTextField txtNhapMaGV;
 	public JTextField txtNhapTenGV;
-	public JTextField txtNhapNamSinhGV;
 	public JTextField txtNhapChuyenMonGV;
 	public JTextField txtNhapTrinhDoGV;
 	public JTextField txtNhapSDTGV;
 	public JTextField txtNhapMaHV;
 	public JTextField txtNhapTenHV;
-	public JTextField txtNhapNamSinhHV;
 	public JTextField txtNhapSDTHV;
-	public JComboBox cbbSapXepHV;
+	public JComboBox cbbSapXepHV, cbbNgayGV, cbbThangGV;
+	
+	public JComboBox cbbNgayBD, cbbThangBD, cbbNgayKT, cbbThangKT;
+	
+	public JComboBox cbbNgaySinhHV, cbbThangSinhHV;
 	
 	public JRadioButton rdbtnFemaleGV, rdbtnMaleGV, rdbtMaleHV, rdbtFemaleHV;
 	
@@ -75,28 +79,18 @@ public class AdminView extends JFrame {
 	public JTextField txtNhapTenLH;
 	public JTextField txtNhapSiSoLH;
 	public JTextField txtNhapThoiGianHocLH;
-	public JTextField txtNhapNgayBatDauLH;
-	public JTextField txtNhapNgayKetThucLH;
 	public JTable tableLH;
 	public Choice choiceNhapMaGV, choiceNhapMaMH, choiceSapXepGV;
 	
 	public JButton btnThemLH, btnSuaLH, btnXoaLH, btnHienThiLH, btnTimKiemLH;
 	public JComboBox nhapTinhTrang;
+	public JTextField txtNamGV;
+	public JTextField txtNamBDLH;
+	public JTextField txtNamKTLH;
+	public JTextField txtNamHV;
 	
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdminView frame = new AdminView();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 	
 
 public AdminView() {
@@ -140,6 +134,19 @@ public AdminView() {
 	panel_1.setBounds(0, 173, 195, 56);
 	Menu.add(panel_1);
 	
+	btnGiaoVien = new JButton("Giáo viên");
+	btnGiaoVien.setIcon(new ImageIcon(AdminView.class.getResource("/icon/icons8-teacher-24 (1).png")));
+	btnGiaoVien.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			tabbedPane.setSelectedIndex(0);
+		}
+	});
+	btnGiaoVien.setForeground(Color.WHITE);
+	btnGiaoVien.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	btnGiaoVien.setBackground(new Color(51, 0, 102));
+	btnGiaoVien.setBounds(0, 0, 194, 56);
+	panel_1.add(btnGiaoVien);
+	
 	JPanel panel_1_1 = new JPanel();
 	panel_1_1.setLayout(null);
 	panel_1_1.setBackground(new Color(36, 0, 72));
@@ -147,7 +154,7 @@ public AdminView() {
 	Menu.add(panel_1_1);
 	
 	btnHocVien = new JButton("Học viên");
-	btnHocVien.setIcon(null);
+	btnHocVien.setIcon(new ImageIcon(AdminView.class.getResource("/icon/user (11).png")));
 	btnHocVien.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			
@@ -167,6 +174,7 @@ public AdminView() {
 	Menu.add(panel_1_2);
 	
 	btnLopHoc = new JButton("Lớp học");
+	btnLopHoc.setIcon(new ImageIcon(AdminView.class.getResource("/icon/presentation.png")));
 	btnLopHoc.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			tabbedPane.setSelectedIndex(2);
@@ -185,6 +193,7 @@ public AdminView() {
 	Menu.add(panel_1_1_1);
 	
 	btnBienLai = new JButton("Biên lai");
+	btnBienLai.setIcon(new ImageIcon(AdminView.class.getResource("/icon/icons8-receipt-24.png")));
 	btnBienLai.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			tabbedPane.setSelectedIndex(3);
@@ -201,18 +210,13 @@ public AdminView() {
 	panel_6_1_1.setBounds(0, 675, 197, 33);
 	Menu.add(panel_6_1_1);
 	
-	btnGiaoVien = new JButton("Giáo viên");
-	btnGiaoVien.setBounds(-24, 173, 219, 56);
-	Menu.add(btnGiaoVien);
-	btnGiaoVien.setIcon(new ImageIcon(AdminView.class.getResource("/icon/icons8-teacher-40.png")));
-	btnGiaoVien.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			tabbedPane.setSelectedIndex(0);
-		}
-	});
-	btnGiaoVien.setForeground(Color.WHITE);
-	btnGiaoVien.setFont(new Font("Segoe UI", Font.BOLD, 15));
-	btnGiaoVien.setBackground(new Color(51, 0, 102));
+	JButton btnThongKe = new JButton("Thống Kê");
+	btnThongKe.setIcon(new ImageIcon(AdminView.class.getResource("/icon/receipt.png")));
+	btnThongKe.setForeground(Color.WHITE);
+	btnThongKe.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	btnThongKe.setBackground(new Color(36, 0, 72));
+	btnThongKe.setBounds(0, 393, 196, 56);
+	Menu.add(btnThongKe);
 	
 	tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	tabbedPane.setBounds(192, 0, 1308, 730);
@@ -292,38 +296,19 @@ public AdminView() {
 	TieuDeGV.add(choiceSapXepGV);
 
 	
-//	JScrollPane scrollPane = new JScrollPane();
-//	scrollPane.setBounds(61, 320, 834, 300);
-//	PanelGiaoVien.add(scrollPane);
-//	
-//	tableGV = new JTable();
-//	scrollPane.setViewportView(tableGV);
-//	tableGV.setModel(new DefaultTableModel(
-//		new Object[][] {
-//		},
-//		new String[] {
-//			"MaGV", "name", "namSinh", "gioiTinh", "chuyenMon", "trinhDo", "SDT" 
-//		}
-//	));
-	
 	JScrollPane scrollPane = new JScrollPane();
 	scrollPane.setBounds(61, 320, 834, 300);
 	PanelGiaoVien.add(scrollPane);
-
+	
 	tableGV = new JTable();
 	scrollPane.setViewportView(tableGV);
-	DefaultTableModel model = new DefaultTableModel(
-	    new Object[][] {},
-	    new String[] {"MaGV", "name", "namSinh", "gioiTinh", "chuyenMon", "trinhDo", "SDT"}
-	) {
-	    @Override
-	    public boolean isCellEditable(int row, int column) {
-	        return false;
-	    }
-	};
-
-	tableGV.setModel(model);
-
+	tableGV.setModel(new DefaultTableModel(
+		new Object[][] {
+		},
+		new String[] {
+			"MaGV", "name", "namSinh", "gioiTinh", "chuyenMon", "trinhDo", "SDT" 
+		}
+	));
 	
 	JPanel panel = new JPanel();
 	panel.setBackground(SystemColor.activeCaption);
@@ -383,11 +368,6 @@ public AdminView() {
 	txtNhapTenGV.setBounds(109, 243, 151, 30);
 	panel.add(txtNhapTenGV);
 	
-	txtNhapNamSinhGV = new JTextField();
-	txtNhapNamSinhGV.setColumns(10);
-	txtNhapNamSinhGV.setBounds(109, 308, 151, 30);
-	panel.add(txtNhapNamSinhGV);
-	
 	txtNhapChuyenMonGV = new JTextField();
 	txtNhapChuyenMonGV.setColumns(10);
 	txtNhapChuyenMonGV.setBounds(109, 440, 151, 30);
@@ -424,6 +404,21 @@ public AdminView() {
 	ButtonGroup group = new ButtonGroup();
 	group.add(rdbtnMaleGV);
 	group.add(rdbtnFemaleGV);
+	
+	cbbNgayGV = new JComboBox();
+	cbbNgayGV.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+	cbbNgayGV.setBounds(113, 311, 48, 22);
+	panel.add(cbbNgayGV);
+	
+	cbbThangGV = new JComboBox();
+	cbbThangGV.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
+	cbbThangGV.setBounds(171, 311, 52, 22);
+	panel.add(cbbThangGV);
+	
+	txtNamGV = new JTextField();
+	txtNamGV.setBounds(233, 311, 59, 22);
+	panel.add(txtNamGV);
+	txtNamGV.setColumns(10);
 	
 	JPanel PanelHocVien = new JPanel();
 	tabbedPane.addTab("New tab", null, PanelHocVien, null);
@@ -548,11 +543,6 @@ public AdminView() {
 	txtNhapTenHV.setBounds(109, 243, 151, 30);
 	panel_2.add(txtNhapTenHV);
 	
-	txtNhapNamSinhHV = new JTextField();
-	txtNhapNamSinhHV.setColumns(10);
-	txtNhapNamSinhHV.setBounds(109, 308, 151, 30);
-	panel_2.add(txtNhapNamSinhHV);
-	
 	txtNhapSDTHV = new JTextField();
 	txtNhapSDTHV.setColumns(10);
 	txtNhapSDTHV.setBounds(109, 435, 151, 30);
@@ -584,36 +574,34 @@ public AdminView() {
 	group1.add(rdbtFemaleHV);
 	group1.add(rdbtMaleHV);
 	
-//	JScrollPane scrollPane_1 = new JScrollPane();
-//	scrollPane_1.setBounds(38, 320, 870, 319);
-//	PanelHocVien.add(scrollPane_1);
-//	
-//	tableHV = new JTable();
-//	scrollPane_1.setViewportView(tableHV);
-//	tableHV.setModel(new DefaultTableModel(
-//		new Object[][] {
-//		},
-//		new String[] {
-//			"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang"
-//		}
-//	));
+	cbbNgaySinhHV = new JComboBox();
+	cbbNgaySinhHV.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+	cbbNgaySinhHV.setBounds(112, 311, 53, 22);
+	panel_2.add(cbbNgaySinhHV);
+	
+	cbbThangSinhHV = new JComboBox();
+	cbbThangSinhHV.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
+	cbbThangSinhHV.setBounds(178, 311, 53, 22);
+	panel_2.add(cbbThangSinhHV);
+	
+	txtNamHV = new JTextField();
+	txtNamHV.setBounds(241, 308, 55, 25);
+	panel_2.add(txtNamHV);
+	txtNamHV.setColumns(10);
 	
 	JScrollPane scrollPane_1 = new JScrollPane();
 	scrollPane_1.setBounds(38, 320, 870, 319);
 	PanelHocVien.add(scrollPane_1);
+	
 	tableHV = new JTable();
 	scrollPane_1.setViewportView(tableHV);
-	DefaultTableModel modelHV = new DefaultTableModel(
-	    new Object[][] {},
-	    new String[] {"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang"}
-	) {
-	    @Override
-	    public boolean isCellEditable(int row, int column) {
-	        return false;
-	    }
-	};
-	tableHV.setModel(modelHV);
-
+	tableHV.setModel(new DefaultTableModel(
+		new Object[][] {
+		},
+		new String[] {
+			"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang"
+		}
+	));
 	
 	JPanel PanelLopHoc = new JPanel();
 	PanelLopHoc.setLayout(null);
@@ -752,16 +740,6 @@ public AdminView() {
 	txtNhapThoiGianHocLH.setBounds(109, 322, 151, 30);
 	panel_3.add(txtNhapThoiGianHocLH);
 	
-	txtNhapNgayBatDauLH = new JTextField();
-	txtNhapNgayBatDauLH.setColumns(10);
-	txtNhapNgayBatDauLH.setBounds(109, 381, 151, 30);
-	panel_3.add(txtNhapNgayBatDauLH);
-	
-	txtNhapNgayKetThucLH = new JTextField();
-	txtNhapNgayKetThucLH.setColumns(10);
-	txtNhapNgayKetThucLH.setBounds(109, 439, 151, 30);
-	panel_3.add(txtNhapNgayKetThucLH);
-	
 	JButton btnResetGV_1 = new JButton("Reset");
 	btnResetGV_1.setForeground(Color.WHITE);
 	btnResetGV_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -781,6 +759,36 @@ public AdminView() {
 	choiceNhapMaGV = new Choice();
 	choiceNhapMaGV.setBounds(109, 556, 151, 30);
 	panel_3.add(choiceNhapMaGV);
+	
+	cbbNgayBD = new JComboBox();
+	cbbNgayBD.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+	cbbNgayBD.setBounds(109, 385, 51, 22);
+	panel_3.add(cbbNgayBD);
+	
+	cbbThangBD = new JComboBox();
+	cbbThangBD.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
+	cbbThangBD.setBounds(173, 385, 51, 22);
+	panel_3.add(cbbThangBD);
+	
+	cbbThangKT = new JComboBox();
+	cbbThangKT.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
+	cbbThangKT.setBounds(173, 443, 51, 22);
+	panel_3.add(cbbThangKT);
+	
+	txtNamBDLH = new JTextField();
+	txtNamBDLH.setBounds(234, 384, 51, 25);
+	panel_3.add(txtNamBDLH);
+	txtNamBDLH.setColumns(10);
+	
+	txtNamKTLH = new JTextField();
+	txtNamKTLH.setColumns(10);
+	txtNamKTLH.setBounds(234, 440, 51, 25);
+	panel_3.add(txtNamKTLH);
+	
+	cbbNgayKT = new JComboBox();
+	cbbNgayKT.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
+	cbbNgayKT.setBounds(109, 443, 51, 22);
+	panel_3.add(cbbNgayKT);
 	
 //	JScrollPane scrollPane_2 = new JScrollPane();
 //	scrollPane_2.setBounds(73, 315, 848, 343);
@@ -893,6 +901,9 @@ public AdminView() {
 	lblNewLabel_4_1.setFont(new Font("Tahoma", Font.BOLD, 24));
 	lblNewLabel_4_1.setBounds(419, 43, 150, 100);
 	TieuDeBL.add(lblNewLabel_4_1);
+	
+	JPanel panel_4 = new JPanel();
+	tabbedPane.addTab("New tab", null, panel_4, null);
 	
 	
 	//SU lI SU KIEN

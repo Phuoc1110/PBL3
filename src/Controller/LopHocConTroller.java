@@ -36,8 +36,12 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 		String tenLH = adminview.txtNhapTenLH.getText();
 		int siSo =  Integer.parseInt(adminview.txtNhapSiSoLH.getText());
 		String thoiGianHoc = adminview.txtNhapThoiGianHocLH.getText();
-		String ngayBatDau = adminview.txtNhapNgayBatDauLH.getText();
-		String ngayKetThuc = adminview.txtNhapNgayKetThucLH.getText();
+		String ngayBatDau = adminview.cbbNgayBD.getSelectedItem().toString()
+				+ "/" + adminview.cbbThangBD.getSelectedItem().toString()
+				+ "/" + adminview.txtNamBDLH.getText();
+		String ngayKetThuc = adminview.cbbNgayKT.getSelectedItem().toString()
+				+ "/" + adminview.cbbThangKT.getSelectedItem().toString()
+				+ "/" + adminview.txtNamKTLH.getText().toString();
 		String maMH = adminview.choiceNhapMaMH.getSelectedItem();
 		String maGV = adminview.choiceNhapMaGV.getSelectedItem();
 		
@@ -74,6 +78,10 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 			}
 			
 		}
+		if(e.getSource() == adminview.btnXoaLH) {
+			LopHocDAO.getInstance().delete(getDataViewLH());
+			adminview.btnHienThiLH.doClick();
+		}
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -83,8 +91,38 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 		adminview.txtNhapTenLH.setText((String) model.getValueAt(i, 1));
 		adminview.txtNhapSiSoLH.setText((String) model.getValueAt(i, 2));
 		adminview.txtNhapThoiGianHocLH.setText((String) model.getValueAt(i, 3));
-		adminview.txtNhapNgayBatDauLH.setText((String) model.getValueAt(i, 4));
-		adminview.txtNhapNgayKetThucLH.setText((String) model.getValueAt(i, 5));
+		String ngayThangBD = (String) model.getValueAt(i, 4);
+		
+		String ngayBD = "", thangBD = "", namBD = "";
+		for (int j = 0 ;j < 2 ; j++) {
+			ngayBD += ngayThangBD.charAt(j);
+		}
+		adminview.cbbNgayBD.setSelectedItem(ngayBD);
+		for (int j = 3 ; j < 5 ; j++) {
+			thangBD += ngayThangBD.charAt(j);
+		}
+		adminview.cbbThangBD.setSelectedItem(thangBD);
+		for (int j = 6 ; j < ngayThangBD.length(); j++) {
+			namBD += ngayThangBD.charAt(j);
+		}
+		adminview.txtNamBDLH.setText(namBD);
+		
+		String ngayThangKT = ((String) model.getValueAt(i, 5));
+		
+		String ngayKT = "", thangKT = "", namKT = "";
+		for (int j = 0 ;j < 2 ; j++) {
+			ngayKT += ngayThangKT.charAt(j);
+		}
+		adminview.cbbNgayKT.setSelectedItem(ngayKT);
+		for (int j = 3 ; j < 5 ; j++) {
+			thangKT += ngayThangKT.charAt(j);
+		}
+		adminview.cbbThangKT.setSelectedItem(thangKT);
+		for (int j = 6 ; j < ngayThangKT.length(); j++) {
+			namKT += ngayThangKT.charAt(j);
+		}
+		adminview.txtNamKTLH.setText(namKT);
+		
 		adminview.choiceNhapMaMH.select((String) model.getValueAt(i, 6));
 		adminview.choiceNhapMaGV.select((String) model.getValueAt(i, 7));
 		

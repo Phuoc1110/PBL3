@@ -14,6 +14,11 @@ public class Lophoc {
 	private String maGV;
 	
 	
+	public Lophoc() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Lophoc(String maLH, String tenLH, int siSo, String thoigianHoc, String ngayBatDau, String ngayKetThuc,
 			String maMH, String maGV) {
 		super();

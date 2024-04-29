@@ -1,7 +1,5 @@
 package Model;
 
-import java.sql.Date;
-
 public class Giaovien {
 	private String maGV;
 	private String name;
