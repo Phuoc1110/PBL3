@@ -25,7 +25,7 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 			java.sql.Statement st = cnn.createStatement();
 			String sql = "INSERT INTO giaovien (maGV, name, namSinh, gioiTinh, chuyenMon, trinhDO, SDT)"
 					+ " values('" + t.getMaGV() +"' ,'" + t.getName() +"' ,'" + t.getNamSinh() + "' ," + t.getGioiTinh() + ", '" +
-					 t.getChuyenMon() + "' ,'" + t.getTrinhDo() + "' ," + t.getSDT() + ")";
+					 t.getChuyenMon() + "' ,'" + t.getTrinhDo() + "' ," + t.getSDT() + "', " + t.getMatKhau() +"')";
 			
 			ketqua = st.executeUpdate(sql);
 			
@@ -56,7 +56,9 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 					+ "gioiTinh = " + t.getGioiTinh() + " ,"
 					+ "chuyenMon = '" + t.getChuyenMon() + "' ,"
 					+ "trinhDo = '" + t.getTrinhDo() + "' ,"
-					+ "SDT = " + t.getSDT() + " where maGV = '" + t.getMaGV() + "'";
+					+ "SDT = " + t.getSDT() + ","
+					+ "matKhau = '" + t.getMatKhau() + "' "
+					+ " where maGV = '" + t.getMaGV() + "'";
 			
 			ketqua = st.executeUpdate(sql);
 			
@@ -108,8 +110,9 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 				 String chuyenMon = rs.getString("chuyenMon");
 				 String trinhDo = rs.getString("trinhDo");
 				 int SDT = rs.getInt("SDT");
+				 String matKhau = rs.getString("matKhau");
 				 
-				 Giaovien gv = new Giaovien(maGV, name, namSinh, gioiTinh, chuyenMon, trinhDo, SDT);
+				 Giaovien gv = new Giaovien(maGV, name, namSinh, gioiTinh, chuyenMon, trinhDo, SDT, matKhau);
 				 list.add(gv);
 			}
 			
@@ -140,8 +143,9 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 				 String chuyenMon = rs.getString("chuyenMon");
 				 String trinhDo = rs.getString("trinhDo");
 				 int SDT = rs.getInt("SDT");
+				 String matKhau = rs.getString("matKhau");
 				 
-				 gv = new Giaovien(maGV, nameSinh, name, gioiTinh, chuyenMon, trinhDo, SDT);
+				 gv = new Giaovien(maGV, nameSinh, name, gioiTinh, chuyenMon, trinhDo, SDT, matKhau);
 			}
 			
 			JDBCUtil.closeConnection(cnn);
@@ -170,8 +174,9 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 				 String chuyenMon = rs.getString("chuyenMon");
 				 String trinhDo = rs.getString("trinhDo");
 				 int SDT = rs.getInt("SDT");
+				 String matKhau = rs.getString("matKhau");
 				 
-				 Giaovien gv = new Giaovien(maGV, name, namSinh, gioiTinh, chuyenMon, trinhDo, SDT);
+				 Giaovien gv = new Giaovien(maGV, name, namSinh, gioiTinh, chuyenMon, trinhDo, SDT, matKhau);
 				 list.add(gv);
 			}
 			

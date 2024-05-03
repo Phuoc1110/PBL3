@@ -1,9 +1,7 @@
 package DAO;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import Database.JDBCUtil;
@@ -42,7 +40,7 @@ public class DangKiDAO {
 			
 			java.sql.Statement st = cnn.createStatement();
 			
-			String sql = "DELETE FROM giaovien where maHV = '" + idhv + "' and maLH = '" + idlh + "'";
+			String sql = "DELETE FROM dangki where maHV = '" + idhv + "' and maLH = '" + idlh + "'";
 			System.out.println(sql);
 			
 			ketqua = st.executeUpdate(sql);
@@ -108,15 +106,15 @@ public class DangKiDAO {
 		return list;
 		
 	}
-
+	
 	public int soHV(String maLH) {
 		String querry = "SELECT COUNT(*) FROM dangki\r\n"
 				+ "WHERE maLH = '" + maLH + "';";
 		Connection con = JDBCUtil.getConnection();
-		Statement stmt;
+		java.sql.Statement stmt;
 		try {
 			stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(querry);
+			java.sql.ResultSet rs = stmt.executeQuery(querry);
 			while (rs.next()) {
 				return rs.getInt(1);
 			}
@@ -125,5 +123,7 @@ public class DangKiDAO {
 		}
 		return 0;
 	}
+
+
 	
 }

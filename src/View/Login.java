@@ -129,8 +129,23 @@ public class Login extends JFrame {
 				for(Hocvien hv : list) {
 					if(hv.getMaHV().equals(tk)) {
 						System.out.println(hv.getMaHV() + " " + tk );
-						String mk = txtPassword.getText();
-						if(mk.equals("1")) new HocVienView(tk);
+						char[] mk = txtPassword.getPassword();
+						String matkhau ="";
+						for(char c : mk) {
+							if(c != ' ')
+							matkhau += c;
+						}
+						System.out.println(matkhau);
+						String hvmk = hv.getMatKhau();
+						String tam = "";
+						for(char c : hvmk.toCharArray()) {
+							if(c != ' ') {
+								tam += c;
+							}
+						}
+						if(matkhau.equals(tam)) {
+							new HocVienView(tk);
+						}
 					}
 				}
 			}

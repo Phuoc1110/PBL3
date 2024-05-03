@@ -4,10 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+//import com.google.protobuf.TextFormat.ParseException;
 
 import DAO.GiaovienDAO;
 import DAO.LopHocDAO;
@@ -36,12 +39,9 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 		String tenLH = adminview.txtNhapTenLH.getText();
 		int siSo =  Integer.parseInt(adminview.txtNhapSiSoLH.getText());
 		String thoiGianHoc = adminview.txtNhapThoiGianHocLH.getText();
-		String ngayBatDau = adminview.cbbNgayBD.getSelectedItem().toString()
-				+ "/" + adminview.cbbThangBD.getSelectedItem().toString()
-				+ "/" + adminview.txtNamBDLH.getText();
-		String ngayKetThuc = adminview.cbbNgayKT.getSelectedItem().toString()
-				+ "/" + adminview.cbbThangKT.getSelectedItem().toString()
-				+ "/" + adminview.txtNamKTLH.getText().toString();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String ngayBatDau = dateFormat.format(adminview.dateNBD.getDate());
+		String ngayKetThuc = dateFormat.format(adminview.dateNKT.getDate());
 		String maMH = adminview.choiceNhapMaMH.getSelectedItem();
 		String maGV = adminview.choiceNhapMaGV.getSelectedItem();
 		
@@ -82,6 +82,14 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 			LopHocDAO.getInstance().delete(getDataViewLH());
 			adminview.btnHienThiLH.doClick();
 		}
+		if(e.getSource() == adminview.btnResetLH) {
+			adminview.txtNhapMaLH.setText("");
+			adminview.txtNhapTenLH.setText("");
+			adminview.txtNhapSiSoLH.setText("");
+			adminview.txtNhapThoiGianHocLH.setText("");
+			adminview.dateNBD.setDate(null);
+			adminview.dateNKT.setDate(null);
+		}
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -91,37 +99,25 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 		adminview.txtNhapTenLH.setText((String) model.getValueAt(i, 1));
 		adminview.txtNhapSiSoLH.setText((String) model.getValueAt(i, 2));
 		adminview.txtNhapThoiGianHocLH.setText((String) model.getValueAt(i, 3));
-		String ngayThangBD = (String) model.getValueAt(i, 4);
+	
 		
-		String ngayBD = "", thangBD = "", namBD = "";
-		for (int j = 0 ;j < 2 ; j++) {
-			ngayBD += ngayThangBD.charAt(j);
-		}
-		adminview.cbbNgayBD.setSelectedItem(ngayBD);
-		for (int j = 3 ; j < 5 ; j++) {
-			thangBD += ngayThangBD.charAt(j);
-		}
-		adminview.cbbThangBD.setSelectedItem(thangBD);
-		for (int j = 6 ; j < ngayThangBD.length(); j++) {
-			namBD += ngayThangBD.charAt(j);
-		}
-		adminview.txtNamBDLH.setText(namBD);
+		String ngaythangBD = (String) model.getValueAt(i, 4);
+		String ngaythangKT = (String) model.getValueAt(i, 5);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		java.util.Date dateBD, dateKT;
+			try {
+				dateBD = dateFormat.parse(ngaythangBD);
+				adminview.dateNBD.setDate(dateBD);
+				dateKT = dateFormat.parse(ngaythangKT);
+				adminview.dateNKT.setDate(dateKT);
+			} catch (java.text.ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		
-		String ngayThangKT = ((String) model.getValueAt(i, 5));
 		
-		String ngayKT = "", thangKT = "", namKT = "";
-		for (int j = 0 ;j < 2 ; j++) {
-			ngayKT += ngayThangKT.charAt(j);
-		}
-		adminview.cbbNgayKT.setSelectedItem(ngayKT);
-		for (int j = 3 ; j < 5 ; j++) {
-			thangKT += ngayThangKT.charAt(j);
-		}
-		adminview.cbbThangKT.setSelectedItem(thangKT);
-		for (int j = 6 ; j < ngayThangKT.length(); j++) {
-			namKT += ngayThangKT.charAt(j);
-		}
-		adminview.txtNamKTLH.setText(namKT);
+		
+		
 		
 		adminview.choiceNhapMaMH.select((String) model.getValueAt(i, 6));
 		adminview.choiceNhapMaGV.select((String) model.getValueAt(i, 7));

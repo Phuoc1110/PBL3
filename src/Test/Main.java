@@ -1,13 +1,20 @@
 package Test;
 
+import java.sql.Connection;
+
+import com.mysql.cj.jdbc.JdbcConnection;
+
+import DAO.GiaovienDAO;
+import DAO.HocvienDAO;
+import Database.JDBCUtil;
+import Model.Hocvien;
 import View.AdminView;
 
 public class Main {
 	public static void main(String[] args) {
+		
 		AdminView ms = new AdminView();
-//		Date d = Date.valueOf("2024-1-1");
-//		BienLai t = new BienLai("103", "10003", "103", 140000, d , "ck");
-//		BienLaiDAO.getInstance().insert(t);
+		System.out.println("asfas");
 	}
 	
 	

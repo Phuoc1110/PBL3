@@ -24,7 +24,7 @@ public class HocvienDAO implements DAOInterface<Hocvien>{
 			Statement st = con.createStatement();
 			String sql = "INSERT INTO hocvien " + 
 					"VALUES ('" + t.getMaHV() + "', '" + t.getName() + "', '" + t.getNamSinh() + 
-					"', " + t.getGioiTinh() + ", '" + t.getSdt() + "', '" + t.getTinhTrang() + "');"; 				
+					"', " + t.getGioiTinh() + ", '" + t.getSdt() + "', '" + t.getTinhTrang() + "', '" + t.getMatKhau() + "')" ; 				
 			kq = st.executeUpdate(sql);
 //			System.out.println("Ban da thuc thi: " + sql);
 //			System.out.println("Co " + kq + " dong da thay doi");
@@ -47,7 +47,8 @@ public class HocvienDAO implements DAOInterface<Hocvien>{
 					" namSinh = '" + t.getNamSinh() + "'," +
 					" gioiTinh = " + t.getGioiTinh() + "," +
 					" SDT = '" + t.getSdt() + "'," +
-					" tinhTrang = '" + t.getTinhTrang() + "' " +
+					" tinhTrang = '" + t.getTinhTrang() + "' ," +
+					" matKhau = '" + t.getMatKhau() + "' " +
 					"WHERE maHV = '" + t.getMaHV() + "'";  				
 			kq = st.executeUpdate(sql);
 //			System.out.println("Ban da thuc thi: " + sql);
@@ -90,8 +91,9 @@ public class HocvienDAO implements DAOInterface<Hocvien>{
 				boolean gioiTinh = rs.getBoolean("gioiTinh");
 				String SDT = rs.getString("SDT");
 				String tinhTrang = rs.getString("tinhTrang");
+				String matKhau = rs.getString("matKhau");
 				
-				Hocvien hv = new Hocvien(maHV,name,namSinh,gioiTinh,SDT,tinhTrang);
+				Hocvien hv = new Hocvien(maHV,name,namSinh,gioiTinh,SDT,tinhTrang, matKhau);
 				kq.add(hv);
 			}
 //			System.out.println("Ban da thuc thi: " + sql);
@@ -118,8 +120,9 @@ public class HocvienDAO implements DAOInterface<Hocvien>{
 				boolean gioiTinh = rs.getBoolean("gioiTinh");
 				String SDT = rs.getString("SDT");
 				String tinhTrang = rs.getString("tinhTrang");
+				String matKhau = rs.getString("matKhau");
 				
-				kq = new Hocvien(maHV,name,namSinh,gioiTinh,SDT,tinhTrang);
+				kq = new Hocvien(maHV,name,namSinh,gioiTinh,SDT,tinhTrang, matKhau);
 			}
 			JDBCUtil.closeConnection(con);
 		} catch (SQLException e) {
@@ -145,8 +148,9 @@ public class HocvienDAO implements DAOInterface<Hocvien>{
 				boolean gioiTinh = rs.getBoolean("gioiTinh");
 				String SDT = rs.getString("SDT");
 				String tinhTrang = rs.getString("tinhTrang");
+				String matkhau = rs.getString("matKhau");
 				
-				Hocvien hv = new Hocvien(maHV,name,namSinh,gioiTinh,SDT,tinhTrang);
+				Hocvien hv = new Hocvien(maHV,name,namSinh,gioiTinh,SDT,tinhTrang, matkhau);
 				kq.add(hv);
 				JDBCUtil.closeConnection(con);
 			}
@@ -156,4 +160,7 @@ public class HocvienDAO implements DAOInterface<Hocvien>{
 		return kq;
 	}
 	
+	public void getLopDK() {
+		
+	}
 }

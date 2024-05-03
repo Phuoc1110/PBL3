@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,9 +32,11 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 	public Giaovien getDataViewGV() {
 		String maGV = adminview.txtNhapMaGV.getText();
 		String nameGV = adminview.txtNhapTenGV.getText();
-		String namSinh = adminview.cbbNgayGV.getSelectedItem().toString() +
-				"/" + adminview.cbbThangGV.getSelectedItem().toString() +
-				"/" + adminview.txtNamGV.getText();
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String namSinh = dateFormat.format(adminview.dateGV.getDate());
+		
+	
 		Boolean gioiTinh;
 		if(adminview.rdbtnMaleGV.isSelected()) {
 			gioiTinh = true;
@@ -41,7 +46,8 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 		String chuyenMon = adminview.txtNhapChuyenMonGV.getText();
 		String trinhDo = adminview.txtNhapTrinhDoGV.getText();
 		int SDT = Integer.parseInt(adminview.txtNhapSDTGV.getText()) ;
-		Giaovien gv = new Giaovien(maGV, nameGV, namSinh, gioiTinh, chuyenMon, trinhDo, SDT);
+		String matKhau = adminview.txtMatKhauGV.getText();
+		Giaovien gv = new Giaovien(maGV, nameGV, namSinh, gioiTinh, chuyenMon, trinhDo, SDT, matKhau);
 		
 		return gv;
 	}
@@ -66,7 +72,7 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 				String gender ;
 				if(gv.getGioiTinh() == true) gender = "Nam";
 				else gender = "Nu";
-				String[] row = {gv.getMaGV(), gv.getName(), gv.getNamSinh(), gender, gv.getChuyenMon(), gv.getTrinhDo(), String.valueOf(gv.getSDT())};
+				String[] row = {gv.getMaGV(), gv.getName(), gv.getNamSinh(), gender, gv.getChuyenMon(), gv.getTrinhDo(), String.valueOf(gv.getSDT()), gv.getMatKhau()};
 				model.addRow(row);
 			}
 		}
@@ -98,9 +104,18 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 				String gender ;
 				if(gv.getGioiTinh() == true) gender = "Nam";
 				else gender = "Nu";
-				String[] row = {gv.getMaGV(), gv.getName(), gv.getNamSinh(), gender, gv.getChuyenMon(), gv.getTrinhDo(), String.valueOf(gv.getSDT())};
+				String[] row = {gv.getMaGV(), gv.getName(), gv.getNamSinh(), gender, gv.getChuyenMon(), gv.getTrinhDo(), String.valueOf(gv.getSDT()), gv.getMatKhau()};
 				model.addRow(row);	
 		}
+		}
+		if(e.getSource() == adminview.btnResetGV) {
+			adminview.txtNhapMaGV.setText("");
+			adminview.txtNhapTenGV.setText("");
+			adminview.dateGV.setDate(null);
+			adminview.txtNhapTrinhDoGV.setText("");
+			adminview.txtNhapChuyenMonGV.setText("");
+			adminview.txtNhapSDTGV.setText("");
+			adminview.txtMatKhauGV.setText("");
 		}
 	}
 
@@ -111,20 +126,17 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 		adminview.txtNhapMaGV.setText((String) model.getValueAt(i, 0));
 		adminview.txtNhapTenGV.setText((String) model.getValueAt(i, 1));
 		String ngaythang = (String) model.getValueAt(i, 2);
-		String ngay = "", thang = "", nam = "";
-		for (int j = 0 ;j < 2 ; j++) {
-			ngay += ngaythang.charAt(j);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		
+		java.util.Date date;
+		try {
+			date = dateFormat.parse(ngaythang);
+			adminview.dateGV.setDate(date);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		adminview.cbbNgayGV.setSelectedItem(ngay);
-		for (int j = 3 ; j < 5 ; j++) {
-			thang += ngaythang.charAt(j);
-		}
-		adminview.cbbThangGV.setSelectedItem(thang);
-		for (int j = 6 ; j < ngaythang.length(); j++) {
-			nam += ngaythang.charAt(j);
-		}
-		adminview.txtNamGV.setText(nam);
-//		adminview.txtNhapNamSinhGV.setText((String) model.getValueAt(i, 2));
+
 		if((String) model.getValueAt(i, 3) == "Nam") {
 			adminview.rdbtnMaleGV.setSelected(true);
 		}
@@ -134,6 +146,7 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 		adminview.txtNhapChuyenMonGV.setText((String) model.getValueAt(i, 4));
 		adminview.txtNhapTrinhDoGV.setText((String) model.getValueAt(i, 5));
 		adminview.txtNhapSDTGV.setText((String) model.getValueAt(i, 6));
+		adminview.txtMatKhauGV.setText((String) model.getValueAt(i, 7));
 		
 	}
 	

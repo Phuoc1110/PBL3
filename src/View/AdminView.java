@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import Controller.BienLaiController;
 import Controller.GiaoVienConTroler;
 import Controller.HocVienConTroller;
 import Controller.HocVienConTroller;
@@ -46,6 +47,8 @@ import javax.swing.JComboBox;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.DefaultComboBoxModel;
+import com.toedter.calendar.JDateChooser;
+import javax.swing.JScrollBar;
 
 public class AdminView extends JFrame {
 	
@@ -55,7 +58,7 @@ public class AdminView extends JFrame {
 	public JTabbedPane tabbedPane;
 	public JTable tableGV,tableHV;
 	public JLabel lblNewLabel,lblNewLabel_1;
-	public JButton btnGiaoVien,btnHocVien, btnLopHoc, btnBienLai, btnThemGV, btnSuaGV, btnXoaGV, btnHienThiGV, btnTimKiemGV, btnResetGV;
+	public JButton btnGiaoVien,btnHocVien, btnLopHoc, btnBienLai, btnThemGV, btnSuaGV, btnXoaGV, btnHienThiGV, btnTimKiemGV, btnResetGV, btnResetLH;
 	public JButton btnThemHV, btnSuaHV, btnXoaHV, btnHienThiHV, btnTimKiemHV ;
 	public TextField txtNameGV; 
 	public JTextField txtNhapMaGV;
@@ -66,11 +69,7 @@ public class AdminView extends JFrame {
 	public JTextField txtNhapMaHV;
 	public JTextField txtNhapTenHV;
 	public JTextField txtNhapSDTHV;
-	public JComboBox cbbSapXepHV, cbbNgayGV, cbbThangGV;
-	
-	public JComboBox cbbNgayBD, cbbThangBD, cbbNgayKT, cbbThangKT;
-	
-	public JComboBox cbbNgaySinhHV, cbbThangSinhHV;
+	public JComboBox cbbSapXepHV;
 	
 	public JRadioButton rdbtnFemaleGV, rdbtnMaleGV, rdbtMaleHV, rdbtFemaleHV;
 	
@@ -84,13 +83,16 @@ public class AdminView extends JFrame {
 	
 	public JButton btnThemLH, btnSuaLH, btnXoaLH, btnHienThiLH, btnTimKiemLH;
 	public JComboBox nhapTinhTrang;
-	public JTextField txtNamGV;
-	public JTextField txtNamBDLH;
-	public JTextField txtNamKTLH;
-	public JTextField txtNamHV;
+	public JTextField txtHocPhiBL;
 	
-	
-
+	public JDateChooser dateGV, dateHV, dateNBD, dateNKT, dateLocNgayBD, dateLocNgayKT;
+	public JTable tableBL;
+	public JButton btnInBienLai, btnTimKiemBL;
+	public JComboBox cbbNhapMaLHBL, cbbNhapHTTT;
+	public JTextField txtNhapMaHVBL;
+	public JTextField txtMatKhauGV;
+	public JTextField txtMatKhauHV;
+	public JTextField txtTimKiemHVBL;
 	
 
 public AdminView() {
@@ -306,7 +308,7 @@ public AdminView() {
 		new Object[][] {
 		},
 		new String[] {
-			"MaGV", "name", "namSinh", "gioiTinh", "chuyenMon", "trinhDo", "SDT" 
+			"MaGV", "name", "namSinh", "gioiTinh", "chuyenMon", "trinhDo", "SDT", "MatKhau"
 		}
 	));
 	
@@ -319,7 +321,7 @@ public AdminView() {
 	
 	JLabel lblNewLabel_6 = new JLabel("MaGV");
 	lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 14));
-	lblNewLabel_6.setBounds(23, 174, 64, 30);
+	lblNewLabel_6.setBounds(23, 134, 64, 30);
 	panel.add(lblNewLabel_6);
 	
 	JLabel lblNewLabel_6_1 = new JLabel("Name");
@@ -359,7 +361,7 @@ public AdminView() {
 	panel.add(lblNewLabel_6_1_3_2);
 	
 	txtNhapMaGV = new JTextField();
-	txtNhapMaGV.setBounds(109, 174, 151, 30);
+	txtNhapMaGV.setBounds(109, 137, 151, 30);
 	panel.add(txtNhapMaGV);
 	txtNhapMaGV.setColumns(10);
 	
@@ -405,20 +407,20 @@ public AdminView() {
 	group.add(rdbtnMaleGV);
 	group.add(rdbtnFemaleGV);
 	
-	cbbNgayGV = new JComboBox();
-	cbbNgayGV.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-	cbbNgayGV.setBounds(113, 311, 48, 22);
-	panel.add(cbbNgayGV);
+	dateGV = new JDateChooser();
+	dateGV.setDateFormatString("dd/MM/yyyy");
+	dateGV.setBounds(106, 308, 154, 30);
+	panel.add(dateGV);
 	
-	cbbThangGV = new JComboBox();
-	cbbThangGV.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
-	cbbThangGV.setBounds(171, 311, 52, 22);
-	panel.add(cbbThangGV);
+	JLabel MatKhau = new JLabel("MatKhau");
+	MatKhau.setFont(new Font("Tahoma", Font.BOLD, 14));
+	MatKhau.setBounds(23, 188, 79, 30);
+	panel.add(MatKhau);
 	
-	txtNamGV = new JTextField();
-	txtNamGV.setBounds(233, 311, 59, 22);
-	panel.add(txtNamGV);
-	txtNamGV.setColumns(10);
+	txtMatKhauGV = new JTextField();
+	txtMatKhauGV.setColumns(10);
+	txtMatKhauGV.setBounds(109, 188, 151, 30);
+	panel.add(txtMatKhauGV);
 	
 	JPanel PanelHocVien = new JPanel();
 	tabbedPane.addTab("New tab", null, PanelHocVien, null);
@@ -574,20 +576,20 @@ public AdminView() {
 	group1.add(rdbtFemaleHV);
 	group1.add(rdbtMaleHV);
 	
-	cbbNgaySinhHV = new JComboBox();
-	cbbNgaySinhHV.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-	cbbNgaySinhHV.setBounds(112, 311, 53, 22);
-	panel_2.add(cbbNgaySinhHV);
+	dateHV = new JDateChooser();
+	dateHV.setDateFormatString("dd/MM/yyyy");
+	dateHV.setBounds(112, 308, 148, 30);
+	panel_2.add(dateHV);
 	
-	cbbThangSinhHV = new JComboBox();
-	cbbThangSinhHV.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
-	cbbThangSinhHV.setBounds(178, 311, 53, 22);
-	panel_2.add(cbbThangSinhHV);
+	JLabel lblNewLabel_6_1_4_1 = new JLabel("MatKhau");
+	lblNewLabel_6_1_4_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+	lblNewLabel_6_1_4_1.setBounds(15, 570, 64, 22);
+	panel_2.add(lblNewLabel_6_1_4_1);
 	
-	txtNamHV = new JTextField();
-	txtNamHV.setBounds(241, 308, 55, 25);
-	panel_2.add(txtNamHV);
-	txtNamHV.setColumns(10);
+	txtMatKhauHV = new JTextField();
+	txtMatKhauHV.setColumns(10);
+	txtMatKhauHV.setBounds(109, 570, 151, 30);
+	panel_2.add(txtMatKhauHV);
 	
 	JScrollPane scrollPane_1 = new JScrollPane();
 	scrollPane_1.setBounds(38, 320, 870, 319);
@@ -599,7 +601,7 @@ public AdminView() {
 		new Object[][] {
 		},
 		new String[] {
-			"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang"
+			"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang", "matKhau"
 		}
 	));
 	
@@ -740,12 +742,12 @@ public AdminView() {
 	txtNhapThoiGianHocLH.setBounds(109, 322, 151, 30);
 	panel_3.add(txtNhapThoiGianHocLH);
 	
-	JButton btnResetGV_1 = new JButton("Reset");
-	btnResetGV_1.setForeground(Color.WHITE);
-	btnResetGV_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-	btnResetGV_1.setBackground(new Color(36, 0, 72));
-	btnResetGV_1.setBounds(109, 630, 82, 40);
-	panel_3.add(btnResetGV_1);
+	btnResetLH = new JButton("Reset");
+	btnResetLH.setForeground(Color.WHITE);
+	btnResetLH.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+	btnResetLH.setBackground(new Color(36, 0, 72));
+	btnResetLH.setBounds(109, 630, 82, 40);
+	panel_3.add(btnResetLH);
 	
 	JLabel lblNewLabel_6_1_3_2_2_1 = new JLabel("MaGV");
 	lblNewLabel_6_1_3_2_2_1.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -760,35 +762,15 @@ public AdminView() {
 	choiceNhapMaGV.setBounds(109, 556, 151, 30);
 	panel_3.add(choiceNhapMaGV);
 	
-	cbbNgayBD = new JComboBox();
-	cbbNgayBD.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-	cbbNgayBD.setBounds(109, 385, 51, 22);
-	panel_3.add(cbbNgayBD);
+	dateNBD = new JDateChooser();
+	dateNBD.setDateFormatString("dd/MM/yyyy");
+	dateNBD.setBounds(109, 382, 151, 30);
+	panel_3.add(dateNBD);
 	
-	cbbThangBD = new JComboBox();
-	cbbThangBD.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
-	cbbThangBD.setBounds(173, 385, 51, 22);
-	panel_3.add(cbbThangBD);
-	
-	cbbThangKT = new JComboBox();
-	cbbThangKT.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"}));
-	cbbThangKT.setBounds(173, 443, 51, 22);
-	panel_3.add(cbbThangKT);
-	
-	txtNamBDLH = new JTextField();
-	txtNamBDLH.setBounds(234, 384, 51, 25);
-	panel_3.add(txtNamBDLH);
-	txtNamBDLH.setColumns(10);
-	
-	txtNamKTLH = new JTextField();
-	txtNamKTLH.setColumns(10);
-	txtNamKTLH.setBounds(234, 440, 51, 25);
-	panel_3.add(txtNamKTLH);
-	
-	cbbNgayKT = new JComboBox();
-	cbbNgayKT.setModel(new DefaultComboBoxModel(new String[] {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}));
-	cbbNgayKT.setBounds(109, 443, 51, 22);
-	panel_3.add(cbbNgayKT);
+	dateNKT = new JDateChooser();
+	dateNKT.setDateFormatString("dd/MM/yyyy");
+	dateNKT.setBounds(109, 440, 151, 30);
+	panel_3.add(dateNKT);
 	
 //	JScrollPane scrollPane_2 = new JScrollPane();
 //	scrollPane_2.setBounds(73, 315, 848, 343);
@@ -821,7 +803,6 @@ public AdminView() {
 	        return false; // Make all cells uneditable
 	    }
 	});
-	
 	JPanel PanelBienLai = new JPanel();
 	PanelBienLai.setLayout(null);
 	tabbedPane.addTab("New tab", null, PanelBienLai, null);
@@ -829,81 +810,117 @@ public AdminView() {
 	JPanel TieuDeBL = new JPanel();
 	TieuDeBL.setLayout(null);
 	TieuDeBL.setBackground(new Color(135, 123, 191));
-	TieuDeBL.setBounds(0, 120, 1069, 193);
+	TieuDeBL.setBounds(0, 25, 1293, 177);
 	PanelBienLai.add(TieuDeBL);
 	
-	JButton btnNewButton_2_1_2_1 = new JButton("Thêm mới");
-	btnNewButton_2_1_2_1.setForeground(Color.WHITE);
-	btnNewButton_2_1_2_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-	btnNewButton_2_1_2_1.setBackground(new Color(36, 0, 72));
-	btnNewButton_2_1_2_1.setBounds(10, 140, 117, 32);
-	TieuDeBL.add(btnNewButton_2_1_2_1);
+	dateLocNgayBD = new JDateChooser();
+	dateLocNgayBD.setDateFormatString("yyyy-MM-dd");
+	dateLocNgayBD.setBounds(461, 134, 179, 33);
+	TieuDeBL.add(dateLocNgayBD);
 	
-	JButton btnNewButton_2_6_1 = new JButton("Sửa");
-	btnNewButton_2_6_1.setForeground(Color.WHITE);
-	btnNewButton_2_6_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-	btnNewButton_2_6_1.setBackground(new Color(36, 0, 72));
-	btnNewButton_2_6_1.setBounds(137, 140, 71, 32);
-	TieuDeBL.add(btnNewButton_2_6_1);
-	
-	JButton btnNewButton_2_2_2_1 = new JButton("Xóa");
-	btnNewButton_2_2_2_1.setForeground(Color.WHITE);
-	btnNewButton_2_2_2_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-	btnNewButton_2_2_2_1.setBackground(new Color(36, 0, 72));
-	btnNewButton_2_2_2_1.setBounds(218, 140, 71, 32);
-	TieuDeBL.add(btnNewButton_2_2_2_1);
-	
-	Choice choice_3_1 = new Choice();
-	choice_3_1.setBounds(306, 154, 92, 18);
-	TieuDeBL.add(choice_3_1);
-	
-	JLabel lblNewLabel_5_4_1 = new JLabel("Sắp xếp:");
-	lblNewLabel_5_4_1.setForeground(new Color(36, 0, 72));
-	lblNewLabel_5_4_1.setFont(new Font("Segoe UI", Font.BOLD, 12));
-	lblNewLabel_5_4_1.setBounds(321, 128, 71, 20);
-	TieuDeBL.add(lblNewLabel_5_4_1);
-	
-	Choice choice_1_2_1 = new Choice();
-	choice_1_2_1.setBounds(408, 154, 159, 18);
-	TieuDeBL.add(choice_1_2_1);
-	
-	JLabel lblNewLabel_5_1_2_1 = new JLabel("Hiển thị theo danh sách lớp:");
-	lblNewLabel_5_1_2_1.setForeground(new Color(36, 0, 72));
-	lblNewLabel_5_1_2_1.setFont(new Font("Segoe UI", Font.BOLD, 12));
-	lblNewLabel_5_1_2_1.setBounds(409, 128, 196, 20);
-	TieuDeBL.add(lblNewLabel_5_1_2_1);
-	
-	JButton btnNewButton_2_3_2_1 = new JButton("Hiển thị");
-	btnNewButton_2_3_2_1.setForeground(Color.WHITE);
-	btnNewButton_2_3_2_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-	btnNewButton_2_3_2_1.setBackground(new Color(36, 0, 72));
-	btnNewButton_2_3_2_1.setBounds(582, 140, 92, 32);
-	TieuDeBL.add(btnNewButton_2_3_2_1);
-	
-	TextField textField_2_1 = new TextField();
-	textField_2_1.setBounds(755, 151, 179, 21);
-	TieuDeBL.add(textField_2_1);
-	
-	JLabel lblNewLabel_5_2_2_1 = new JLabel("Họ tên:");
-	lblNewLabel_5_2_2_1.setForeground(new Color(36, 0, 72));
-	lblNewLabel_5_2_2_1.setFont(new Font("Segoe UI", Font.BOLD, 12));
-	lblNewLabel_5_2_2_1.setBounds(755, 128, 71, 20);
-	TieuDeBL.add(lblNewLabel_5_2_2_1);
-	
-	JButton btnNewButton_2_4_2_1 = new JButton("Tìm kiếm");
-	btnNewButton_2_4_2_1.setForeground(Color.WHITE);
-	btnNewButton_2_4_2_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-	btnNewButton_2_4_2_1.setBackground(new Color(36, 0, 72));
-	btnNewButton_2_4_2_1.setBounds(949, 140, 92, 32);
-	TieuDeBL.add(btnNewButton_2_4_2_1);
+	dateLocNgayKT = new JDateChooser();
+	dateLocNgayKT.setDateFormatString("yyyy-MM-dd");
+	dateLocNgayKT.setBounds(724, 134, 179, 33);
+	TieuDeBL.add(dateLocNgayKT);
 	
 	JLabel lblNewLabel_4_1 = new JLabel("Biên lai");
-	lblNewLabel_4_1.setFont(new Font("Tahoma", Font.BOLD, 24));
-	lblNewLabel_4_1.setBounds(419, 43, 150, 100);
+	lblNewLabel_4_1.setBounds(490, 10, 150, 60);
 	TieuDeBL.add(lblNewLabel_4_1);
+	lblNewLabel_4_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 33));
 	
-	JPanel panel_4 = new JPanel();
-	tabbedPane.addTab("New tab", null, panel_4, null);
+	JLabel lblNewLabel_9 = new JLabel("TỪ");
+	lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 14));
+	lblNewLabel_9.setBounds(462, 100, 67, 24);
+	TieuDeBL.add(lblNewLabel_9);
+	
+	JLabel lblNewLabel_9_1 = new JLabel("ĐẾN");
+	lblNewLabel_9_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+	lblNewLabel_9_1.setBounds(721, 100, 67, 24);
+	TieuDeBL.add(lblNewLabel_9_1);
+	
+	JLabel lblNewLabel_10 = new JLabel("MaHV");
+	lblNewLabel_10.setFont(new Font("Tahoma", Font.BOLD, 14));
+	lblNewLabel_10.setBounds(75, 98, 80, 28);
+	TieuDeBL.add(lblNewLabel_10);
+	
+	btnTimKiemBL = new JButton("Hiển Thị");
+	btnTimKiemBL.setForeground(Color.WHITE);
+	btnTimKiemBL.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	btnTimKiemBL.setBackground(new Color(36, 0, 72));
+	btnTimKiemBL.setBounds(1002, 126, 196, 41);
+	TieuDeBL.add(btnTimKiemBL);
+	
+	txtTimKiemHVBL = new JTextField();
+	txtTimKiemHVBL.setColumns(10);
+	txtTimKiemHVBL.setBounds(70, 134, 179, 33);
+	TieuDeBL.add(txtTimKiemHVBL);
+	
+	JPanel panel_5 = new JPanel();
+	panel_5.setBackground(SystemColor.inactiveCaption);
+	panel_5.setBounds(10, 212, 415, 470);
+	PanelBienLai.add(panel_5);
+	panel_5.setLayout(null);
+	
+	JLabel lblNewLabel_8 = new JLabel("MaHV");
+	lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 15));
+	lblNewLabel_8.setBounds(21, 34, 99, 41);
+	panel_5.add(lblNewLabel_8);
+	
+	cbbNhapMaLHBL = new JComboBox();
+	cbbNhapMaLHBL.setEditable(true);
+	cbbNhapMaLHBL.setBounds(130, 110, 136, 23);
+	panel_5.add(cbbNhapMaLHBL);
+	
+	txtHocPhiBL = new JTextField();
+	txtHocPhiBL.setEditable(false);
+	txtHocPhiBL.setBounds(130, 174, 135, 22);
+	panel_5.add(txtHocPhiBL);
+	txtHocPhiBL.setColumns(10);
+	
+	JLabel lblNewLabel_8_1 = new JLabel("MaLH");
+	lblNewLabel_8_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+	lblNewLabel_8_1.setBounds(21, 99, 99, 41);
+	panel_5.add(lblNewLabel_8_1);
+	
+	JLabel lblNewLabel_8_1_1 = new JLabel("Học phí");
+	lblNewLabel_8_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+	lblNewLabel_8_1_1.setBounds(21, 166, 99, 41);
+	panel_5.add(lblNewLabel_8_1_1);
+	
+	btnInBienLai = new JButton("     ");
+	btnInBienLai.setForeground(Color.WHITE);
+	btnInBienLai.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	btnInBienLai.setBackground(new Color(36, 0, 72));
+	btnInBienLai.setBounds(100, 349, 196, 41);
+	panel_5.add(btnInBienLai);
+	
+	JLabel lblNewLabel_8_1_1_1 = new JLabel("Hình thức thanh toán");
+	lblNewLabel_8_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+	lblNewLabel_8_1_1_1.setBounds(117, 206, 179, 66);
+	panel_5.add(lblNewLabel_8_1_1_1);
+	
+	cbbNhapHTTT = new JComboBox();
+	cbbNhapHTTT.setBounds(130, 282, 136, 23);
+	panel_5.add(cbbNhapHTTT);
+	
+	txtNhapMaHVBL = new JTextField();
+	txtNhapMaHVBL.setBounds(131, 47, 135, 23);
+	panel_5.add(txtNhapMaHVBL);
+	txtNhapMaHVBL.setColumns(10);
+	
+	JScrollPane scrollPane_3 = new JScrollPane();
+	scrollPane_3.setBounds(435, 212, 858, 453);
+	PanelBienLai.add(scrollPane_3);
+	
+	tableBL = new JTable();
+	scrollPane_3.setViewportView(tableBL);
+	tableBL.setModel(new DefaultTableModel(
+		new Object[][] {
+		},
+		new String[] {
+			"MaHD", "maHV", "maLH", "hocphi", "ngayIn", "htThanhtoan"
+		}
+	));
 	
 	
 	//SU lI SU KIEN
@@ -914,7 +931,7 @@ public AdminView() {
 	btnSuaGV.addActionListener(acgv);
 	btnXoaGV.addActionListener(acgv);
 	btnTimKiemGV.addActionListener(acgv);
-	
+	btnResetGV.addActionListener(acgv);
 	
 	
 	MouseListener mlgv = new GiaoVienConTroler(this);
@@ -928,6 +945,9 @@ public AdminView() {
 	btnThemLH.addActionListener(aclh);
 	btnXoaLH.addActionListener(aclh);
 	btnTimKiemLH.addActionListener(aclh);
+	btnResetLH.addActionListener(aclh);
+	
+	
 	
 	MouseListener mllh = new LopHocConTroller(this);
 	tableLH.addMouseListener(mllh);
@@ -947,6 +967,14 @@ public AdminView() {
 	setChoiceGV();
 	setChoiceMH();
 	this.setVisible(true);
+	
+	
+	//BIEN LAI
+	ActionListener bl = new BienLaiController(this);
+	txtNhapMaHVBL.addActionListener(bl);
+	btnTimKiemBL.addActionListener(bl);
+	cbbNhapMaLHBL.addActionListener(bl);
+	
 	
 }
 	public void setChoiceGV() {

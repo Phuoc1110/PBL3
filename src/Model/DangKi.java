@@ -3,11 +3,12 @@ package Model;
 public class DangKi {
 	private String maHV;
 	private String maLH;
-	
-	public DangKi(String maHV, String maLH) {
+	private boolean thanhtoan;
+	public DangKi(String maHV, String maLH, boolean thanhtoan) {
 		super();
 		this.maHV = maHV;
 		this.maLH = maLH;
+		this.thanhtoan = thanhtoan;
 	}
 	public String getMaHV() {
 		return maHV;

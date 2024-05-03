@@ -184,7 +184,7 @@ public class LopHocDAO implements DAOInterface<Lophoc>{
 	
 	public ArrayList<Hocvien> tTin(String maLH) {
 		ArrayList<Hocvien> kq =  new ArrayList<Hocvien>();
-		String sql = "select hocvien.maHV, hocvien.name, hocvien.gioiTinh, hocvien.namSinh, hocvien.SDT, hocvien.tinhTrang\r\n"
+		String sql = "select hocvien.maHV, hocvien.name, hocvien.gioiTinh, hocvien.namSinh, hocvien.SDT, hocvien.tinhTrang, hocvien.matKhau\r\n"
 				+ "from hocvien\r\n"
 				+ "join dangki\r\n"
 				+ "	using(maHV)\r\n"
@@ -200,8 +200,9 @@ public class LopHocDAO implements DAOInterface<Lophoc>{
 				boolean gioiTinh = rs.getBoolean("gioiTinh");
 				String SDT = rs.getString("SDT");
 				String tinhTrang = rs.getString("tinhTrang");
+				String matkhau = rs.getString("matKhau");
 				
-				Hocvien hv = new Hocvien(maHV,name,namSinh,gioiTinh,SDT,tinhTrang);
+				Hocvien hv = new Hocvien(maHV,name,namSinh,gioiTinh,SDT,tinhTrang, matkhau);
 				kq.add(hv);
 			}
 		} catch (SQLException e) {

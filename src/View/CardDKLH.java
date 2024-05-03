@@ -55,7 +55,7 @@ public class CardDKLH extends JPanel {
 		JButton btnNewButton = new JButton("ĐK");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DangKi dk = new DangKi(idhv, idlh);
+				DangKi dk = new DangKi(idhv, idlh, false);
 				DangKiDAO.getInstance().insert(dk);
 			}
 		});

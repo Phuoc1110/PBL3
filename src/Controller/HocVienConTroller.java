@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -26,9 +28,8 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 		
 		String maHV = adminview.txtNhapMaHV.getText();
 		String name = adminview.txtNhapTenHV.getText();
-		String namSinh = adminview.cbbNgaySinhHV.getSelectedItem().toString() +
-						"/" + adminview.cbbThangSinhHV.getSelectedItem().toString() +
-						"/" + adminview.txtNamHV.getText();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String namSinh = dateFormat.format(adminview.dateHV.getDate());
 		boolean gt = false;
 		if(adminview.rdbtMaleHV.isSelected())
 			gt = true;
@@ -36,7 +37,8 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 			gt= false;
 		String sdt = adminview.txtNhapSDTHV.getText();
 		String tinhTrang = adminview.nhapTinhTrang.getSelectedItem().toString();
-		Hocvien hv = new Hocvien(maHV,name,namSinh,gt,sdt,tinhTrang);
+		String matkhau = adminview.txtMatKhauHV.getText();
+		Hocvien hv = new Hocvien(maHV,name,namSinh,gt,sdt,tinhTrang, matkhau);
 		return hv;
 	}
 	
@@ -63,7 +65,7 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 				String gender ;
 				if(hv.getGioiTinh() == true) gender = "Nam";
 				else gender = "Nu";
-				String[] row = {hv.getMaHV(), hv.getName(), hv.getNamSinh(), gender, hv.getSdt(), hv.getTinhTrang()};
+				String[] row = {hv.getMaHV(), hv.getName(), hv.getNamSinh(), gender, hv.getSdt(), hv.getTinhTrang(), hv.getMatKhau()};
 				model.addRow(row);
 			}
 		}
@@ -89,18 +91,19 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 				JOptionPane.showMessageDialog(adminview, "nhap maHV");
 			}
 			else {
-			HocvienDAO.getInstance().insert(getDataView());
-			DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
-			model.setRowCount(0);
-			adminview.btnHienThiHV.doClick();
+				HocvienDAO.getInstance().insert(getDataView());
+				DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
+				model.setRowCount(0);
+				adminview.btnHienThiHV.doClick();
 			}
 		}
 		else if (e.getSource() == adminview.btnResetHV) {
 			adminview.txtNhapMaHV.setText("");
 			adminview.txtNhapTenHV.setText("");
-			adminview.txtNamHV.setText("");
+			adminview.dateHV.setDate(null);
 			adminview.nhapTinhTrang.setSelectedItem("active");
-			adminview.txtNhapSDTHV.setText("");			
+			adminview.txtNhapSDTHV.setText("");		
+			adminview.txtMatKhauHV.setText("");
 		}
 		//Sua HV
 		else if (e.getSource() == adminview.btnSuaHV) {
@@ -122,19 +125,16 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 		adminview.txtNhapTenHV.setText((String) model.getValueAt(i, 1));
 		
 		String ngaythang = (String) model.getValueAt(i, 2);
-		String ngay = "", thang = "", nam = "";
-		for (int j = 0 ;j < 2 ; j++) {
-			ngay += ngaythang.charAt(j);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		
+		java.util.Date date;
+		try {
+			date = dateFormat.parse(ngaythang);
+			adminview.dateHV.setDate(date);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		adminview.cbbNgaySinhHV.setSelectedItem(ngay);
-		for (int j = 3 ; j < 5 ; j++) {
-			thang += ngaythang.charAt(j);
-		}
-		adminview.cbbThangSinhHV.setSelectedItem(thang);
-		for (int j = 6 ; j < ngaythang.length(); j++) {
-			nam += ngaythang.charAt(j);
-		}
-		adminview.txtNamHV.setText(nam);
 		
 		if (model.getValueAt(i, 3) == "Nam")
 			adminview.rdbtMaleHV.setSelected(true);
@@ -142,6 +142,7 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 			adminview.rdbtFemaleHV.setSelected(true);
 		adminview.txtNhapSDTHV.setText((String) model.getValueAt(i, 4));
 		adminview.nhapTinhTrang.setSelectedItem(model.getValueAt(i, 5));
+		adminview.txtMatKhauHV.setText((String)model.getValueAt(i, 6));
 	}
 
 	@Override

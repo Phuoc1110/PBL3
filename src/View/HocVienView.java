@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Controller.HocVienViewConTroller;
 import DAO.DangKiDAO;
 import DAO.HocvienDAO;
 import DAO.LopHocDAO;
@@ -21,6 +22,8 @@ import javax.swing.JSeparator;
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
@@ -28,6 +31,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
+import com.toedter.calendar.JDateChooser;
 
 public class HocVienView extends JFrame {
 	
@@ -38,9 +42,10 @@ public class HocVienView extends JFrame {
 	public JTextField txtSetMaHV;
 	public JTextField txtSetMKHV;
 	public JTextField txtSetSDTHV;
-	public JTextField txtSetNgaySinhHV;
 	public JLabel lblSetName;
 	public JRadioButton rdbtMaleHV, rdbtFemaleHV;
+	public JButton btnSuattHV, btnLuuHV;
+	public JDateChooser dateHVView;
 	/**
 	 * Launch the application.
 	 */
@@ -189,9 +194,9 @@ public class HocVienView extends JFrame {
 		lblNewLabel_2.setBounds(38, 21, 243, 50);
 		panel_4.add(lblNewLabel_2);
 		
-		JButton btnNewButton = new JButton("SỬA THÔNG TIN CÁ NHÂN");
-		btnNewButton.setBounds(634, 21, 223, 36);
-		panel_4.add(btnNewButton);
+		btnSuattHV = new JButton("SỬA THÔNG TIN CÁ NHÂN");
+		btnSuattHV.setBounds(634, 21, 223, 36);
+		panel_4.add(btnSuattHV);
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(new Color(135, 123, 191));
@@ -237,11 +242,6 @@ public class HocVienView extends JFrame {
 		txtSetSDTHV.setBounds(346, 275, 185, 42);
 		panel_6.add(txtSetSDTHV);
 		
-		txtSetNgaySinhHV = new JTextField();
-		txtSetNgaySinhHV.setColumns(10);
-		txtSetNgaySinhHV.setBounds(346, 159, 185, 43);
-		panel_6.add(txtSetNgaySinhHV);
-		
 		JLabel lblNewLabel_5_1 = new JLabel("Mật Khẩu");
 		lblNewLabel_5_1.setForeground(Color.GREEN);
 		lblNewLabel_5_1.setFont(new Font("Segoe UI", Font.BOLD, 18));
@@ -281,6 +281,15 @@ public class HocVienView extends JFrame {
 		ButtonGroup group = new ButtonGroup();
 		group.add(rdbtFemaleHV);
 		group.add(rdbtMaleHV);
+		
+		btnLuuHV = new JButton("LƯU");
+		btnLuuHV.setBounds(377, 353, 85, 21);
+		panel_6.add(btnLuuHV);
+		
+		dateHVView = new JDateChooser();
+		dateHVView.setDateFormatString("dd/MM/yyyy");
+		dateHVView.setBounds(346, 165, 185, 37);
+		panel_6.add(dateHVView);
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("New tab", null, panel_2, null);
@@ -357,22 +366,70 @@ public class HocVienView extends JFrame {
 		lblNewLabel_2_1_1.setBounds(279, 36, 198, 27);
 		panel_7_1.add(lblNewLabel_2_1_1);
 		setThongTinCoBan(id);
+		setNotEnable();
+		
+		ActionListener achv = new HocVienViewConTroller(this);
+		btnSuattHV.addActionListener(achv);
+		btnLuuHV.addActionListener(achv);
 		
 		this.setVisible(true);
+		
+		
 	}
 	public void setThongTinCoBan(String id) {
 		Hocvien hv = HocvienDAO.getInstance().selectById(id);
 		lblSetName.setText(hv.getName());
 		txtSetMaHV.setText(hv.getMaHV());
-		txtSetMKHV.setText("1");
+		txtSetMKHV.setText(hv.getMatKhau());
 		if(hv.getGioiTinh()) {
 			rdbtMaleHV.setSelected(true);
 		}
 		else {
 			rdbtFemaleHV.setSelected(false);
 		}
-		txtSetNgaySinhHV.setText(hv.getNamSinh());
 		txtSetSDTHV.setText(hv.getMaHV());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		java.util.Date date;
+		try {
+			date = dateFormat.parse(hv.getNamSinh());
+			dateHVView.setDate(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public Hocvien getThongTinHV() {
 		
+		String maHV = txtSetMaHV.getText();
+		String tenHV = lblSetName.getText();
+		String matkhau = txtSetMKHV.getText();
+		boolean gioitinh = false;
+		if(rdbtMaleHV.isSelected()) {
+			gioitinh = true;
+		}
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String namSinh = dateFormat.format(dateHVView.getDate());
+		String SDT = txtSetSDTHV.getText();
+		Hocvien hv = new Hocvien(maHV, tenHV, namSinh, gioitinh, SDT, "active", matkhau);
+		return hv;
+	}
+	public void setNotEnable() {
+		lblSetName.setEnabled(false);
+		txtSetMaHV.setEnabled(false);
+		txtSetMKHV.setEditable(false);
+		rdbtFemaleHV.setEnabled(false);
+		rdbtMaleHV.setEnabled(false);
+		txtSetSDTHV.setEditable(false);
+		dateHVView.setEnabled(false);
+	}
+	public void setEnable() {
+		lblSetName.setEnabled(true);
+		txtSetMaHV.setEnabled(true);
+		txtSetMKHV.setEditable(true);
+		rdbtFemaleHV.setEnabled(true);
+		rdbtMaleHV.setEnabled(true);
+		dateHVView.setEnabled(true);
+		txtSetSDTHV.setEditable(true);
 	}
 }
