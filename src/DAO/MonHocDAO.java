@@ -108,6 +108,40 @@ public class MonHocDAO implements DAOInterface<MonHoc>{
 		}
 		return kq;
 	}
+	
+	public String getIdTuTenMH(String tenMH) {
+		String maMH = "";
+		try {
+			Connection con = JDBCUtil.getConnection();
+			Statement st = con.createStatement();
+			String sql = "SELECT maMH FROM monhoc WHERE tenMon = '" + tenMH + "'";
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()) {
+				maMH = rs.getString("maMH");
+			}
+			JDBCUtil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maMH;
+	}
+	
+	public String getTenTuID(String id) {
+		String tenMH = "";
+		try {
+			Connection con = JDBCUtil.getConnection();
+			Statement st = con.createStatement();
+			String sql = "SELECT tenMon FROM monhoc WHERE maMH = '" + id + "'";
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()) {
+				tenMH = rs.getString("tenMon");
+			}
+			JDBCUtil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tenMH;
+	}
 
 	@Override
 	public ArrayList<MonHoc> selectByCondition(String condition) {

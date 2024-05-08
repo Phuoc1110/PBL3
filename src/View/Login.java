@@ -10,7 +10,9 @@ import javax.swing.border.EmptyBorder;
 
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
+import DAO.GiaovienDAO;
 import DAO.HocvienDAO;
+import Model.Giaovien;
 import Model.Hocvien;
 
 import java.awt.Color;
@@ -36,7 +38,7 @@ public class Login extends JFrame {
 	public JPanel contentPane;
 	public JPasswordField txtPassword;
 	public JTextField txtUser;
-	public JButton btnDangNhapAdmin, btnDangNhapHocVien, btnDangNhapGiaoVien;
+	public JButton btnDangNhapAdmin;
 
 	
 	public Login() {
@@ -120,46 +122,6 @@ public class Login extends JFrame {
 		});
 		btnDangNhapAdmin.setBounds(26, 330, 94, 32);
 		panel_2.add(btnDangNhapAdmin);
-		
-		btnDangNhapHocVien = new JButton("HOC VIEN");
-		btnDangNhapHocVien.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String tk = txtUser.getText();
-				ArrayList<Hocvien> list = HocvienDAO.getInstance().selectAll();
-				for(Hocvien hv : list) {
-					if(hv.getMaHV().equals(tk)) {
-						System.out.println(hv.getMaHV() + " " + tk );
-						char[] mk = txtPassword.getPassword();
-						String matkhau ="";
-						for(char c : mk) {
-							if(c != ' ')
-							matkhau += c;
-						}
-						System.out.println(matkhau);
-						String hvmk = hv.getMatKhau();
-						String tam = "";
-						for(char c : hvmk.toCharArray()) {
-							if(c != ' ') {
-								tam += c;
-							}
-						}
-						if(matkhau.equals(tam)) {
-							new HocVienView(tk);
-						}
-					}
-				}
-			}
-		});
-		btnDangNhapHocVien.setBounds(140, 330, 94, 32);
-		panel_2.add(btnDangNhapHocVien);
-		
-		btnDangNhapGiaoVien = new JButton("GIAO VIEN");
-		btnDangNhapGiaoVien.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnDangNhapGiaoVien.setBounds(253, 329, 94, 32);
-		panel_2.add(btnDangNhapGiaoVien);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(224, 224, 224));

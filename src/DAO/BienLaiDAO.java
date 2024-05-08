@@ -116,10 +116,35 @@ public class BienLaiDAO implements DAOInterface<BienLai> {
 		}
 		return list;
 	}
+	
+	public ArrayList<BienLai> setBienLaiforHV(String id){
+		ArrayList<BienLai> list = new ArrayList<BienLai>();
+		try {
+			Connection con = JDBCUtil.getConnection();
+			Statement st = con.createStatement();
+			String sql = "SELECT * FROM bienlai where maHV = '" + id + "'";
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()) {
+				String maHD = rs.getString("maHD");
+				String maHV = rs.getString("maHV");
+				String maLH = rs.getString("maLH");
+				int hocPhi = rs.getInt("hocphi");
+				Date ngayIn = rs.getDate("ngayIn");
+				String httt = rs.getString("htThanhToan");
+
+				BienLai bl = new BienLai(maHD, maHV, maLH, hocPhi, ngayIn, httt);
+				list.add(bl);
+			}
+			JDBCUtil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 	@Override
 	public BienLai selectById(String id) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

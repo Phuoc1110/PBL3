@@ -10,21 +10,15 @@ public class Giaovien {
 	private String chuyenMon;
 	private String trinhDo;
 	private int SDT;
-	private String matKhau;
+
 	
 	
 	
-	public String getMatKhau() {
-		return matKhau;
-	}
-	public void setMatKhau(String matKhau) {
-		this.matKhau = matKhau;
-	}
 	public Giaovien() {
 		super();
 	}
 	public Giaovien(String maGV, String name, String namSinh, boolean gioiTinh, String chuyenMon, String trinhDo,
-			int sDT, String matKhau) {
+			int sDT) {
 		super();
 		this.maGV = maGV;
 		this.name = name;
@@ -33,7 +27,6 @@ public class Giaovien {
 		this.chuyenMon = chuyenMon;
 		this.trinhDo = trinhDo;
 		this.SDT = sDT;
-		this.matKhau = matKhau;
 	}
 	
 	@Override

@@ -12,15 +12,33 @@ public class Lophoc {
 	private String ngayKetThuc;
 	private String maMH;
 	private String maGV;
+	private int soLuong;
+	private int hocphi;
 	
 	
+	public int getHocphi() {
+		return hocphi;
+	}
+
+	public void setHocphi(int hocphi) {
+		this.hocphi = hocphi;
+	}
+
+	public int getSoLuong() {
+		return soLuong;
+	}
+
+	public void setSoLuong(int soLuong) {
+		this.soLuong = soLuong;
+	}
+
 	public Lophoc() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public Lophoc(String maLH, String tenLH, int siSo, String thoigianHoc, String ngayBatDau, String ngayKetThuc,
-			String maMH, String maGV) {
+			String maMH, String maGV, int hocphi) {
 		super();
 		this.maLH = maLH;
 		this.tenLH = tenLH;
@@ -30,6 +48,7 @@ public class Lophoc {
 		this.ngayKetThuc = ngayKetThuc;
 		this.maMH = maMH;
 		this.maGV = maGV;
+		this.hocphi = hocphi;
 	}
 	
 	@Override

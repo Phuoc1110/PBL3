@@ -8,6 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import DAO.DangKiDAO;
 import DAO.GiaovienDAO;
 import DAO.LopHocDAO;
 import DAO.MonHocDAO;
@@ -139,7 +140,7 @@ public class TTLH extends JDialog {
 		lblSiSo.setBounds(182, 199, 77, 25);
 		contentPanel.add(lblSiSo);
 		
-		JLabel lblSoLuong = new JLabel("MaLH");
+		JLabel lblSoLuong = new JLabel(Integer.toString(DangKiDAO.getInstance().soHV(idLH)));
 		lblSoLuong.setBounds(182, 250, 77, 25);
 		contentPanel.add(lblSoLuong);
 		
@@ -187,6 +188,14 @@ public class TTLH extends JDialog {
 		JLabel lblSDT = new JLabel(Integer.toString(gv.getSDT()));
 		lblSDT.setBounds(558, 433, 77, 25);
 		contentPanel.add(lblSDT);
+		
+		JLabel lblNewLabel_4_1 = new JLabel("Học phí");
+		lblNewLabel_4_1.setBounds(420, 250, 77, 24);
+		contentPanel.add(lblNewLabel_4_1);
+		
+		JLabel lblHocPhi = new JLabel(Integer.toString(lh.getHocphi()));
+		lblHocPhi.setBounds(544, 250, 77, 25);
+		contentPanel.add(lblHocPhi);
 		
 		this.setVisible(true);
 	}

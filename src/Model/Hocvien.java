@@ -2,7 +2,7 @@ package Model;
 
 public class Hocvien {
 	
-	public Hocvien(String maHV, String name, String namSinh, boolean gioiTinh, String sdt, String tinhTrang, String matKhau) {
+	public Hocvien(String maHV, String name, String namSinh, boolean gioiTinh, String sdt, String tinhTrang) {
 		super();
 		this.maHV = maHV;
 		this.name = name;
@@ -10,7 +10,7 @@ public class Hocvien {
 		this.gioiTinh = gioiTinh;
 		this.sdt = sdt;
 		this.tinhTrang = tinhTrang;
-		this.matKhau = matKhau;
+	
 	}
 	
 	public Hocvien() {
@@ -22,15 +22,7 @@ public class Hocvien {
 	private boolean gioiTinh;
 	private String sdt;
 	private String tinhTrang;
-	private String matKhau;
-	
-	public String getMatKhau() {
-		return matKhau;
-	}
 
-	public void setMatKhau(String matKhau) {
-		this.matKhau = matKhau;
-	}
 
 	//Getter setter
 	public String getMaHV() {

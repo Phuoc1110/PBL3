@@ -20,8 +20,8 @@ public class DangKiDAO {
 			Connection cnn = JDBCUtil.getConnection();
 			
 			java.sql.Statement st = cnn.createStatement();
-			String sql = "INSERT INTO dangki (maHV, maLH)"
-					+ " values('" + t.getMaHV() + "', '" + t.getMaLH() + "')";
+			String sql = "INSERT INTO dangki (maHV, maLH, thanhtoan)"
+					+ " values('" + t.getMaHV() + "', '" + t.getMaLH() + "'," + false + ")";
 			ketqua = st.executeUpdate(sql);
 			JDBCUtil.closeConnection(cnn);
 			
@@ -122,6 +122,20 @@ public class DangKiDAO {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public int setDaThanhToan(String maLH, String maHV) {
+		int kq = 0;
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			java.sql.Statement st = cnn.createStatement();
+			String sql = "update dangki set thanhtoan = 1 where maLH = '" + maLH + "' and maHV = '" + maHV + "'";
+			kq = st.executeUpdate(sql);
+			System.out.println(sql);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return kq;
 	}
 
 

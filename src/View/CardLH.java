@@ -60,6 +60,7 @@ public class CardLH extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DangKiDAO.getInstance().delete(idhv, idlh);
+				ss();
 			}
 		});
 		btnNewButton.setBounds(99, 114, 73, 26);
@@ -70,5 +71,8 @@ public class CardLH extends JPanel {
 	public static void main(String[] arg) {
 		CardLH clh = new CardLH("100", "10001");
 		clh.setVisible(true);
+	}
+	void ss() {
+		this.setVisible(false);
 	}
 }

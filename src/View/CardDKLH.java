@@ -57,11 +57,15 @@ public class CardDKLH extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				DangKi dk = new DangKi(idhv, idlh, false);
 				DangKiDAO.getInstance().insert(dk);
+				ss();
 			}
 		});
 		btnNewButton.setBounds(99, 114, 73, 26);
 		add(btnNewButton);
 		
+	}
+	public void ss() {
+		this.setVisible(false);
 	}
 
 }

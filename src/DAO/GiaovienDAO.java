@@ -23,10 +23,10 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 			Connection cnn = JDBCUtil.getConnection();
 			
 			java.sql.Statement st = cnn.createStatement();
-			String sql = "INSERT INTO giaovien (maGV, name, namSinh, gioiTinh, chuyenMon, trinhDO, SDT)"
+			String sql = "INSERT INTO giaovien (maGV, name, namSinh, gioiTinh, chuyenMon, trinhDO, SDT, matKhau)"
 					+ " values('" + t.getMaGV() +"' ,'" + t.getName() +"' ,'" + t.getNamSinh() + "' ," + t.getGioiTinh() + ", '" +
-					 t.getChuyenMon() + "' ,'" + t.getTrinhDo() + "' ," + t.getSDT() + "', " + t.getMatKhau() +"')";
-			
+					 t.getChuyenMon() + "' ,'" + t.getTrinhDo() + "' ," + t.getSDT() + ")";
+			System.out.println(sql);
 			ketqua = st.executeUpdate(sql);
 			
 			
@@ -56,8 +56,8 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 					+ "gioiTinh = " + t.getGioiTinh() + " ,"
 					+ "chuyenMon = '" + t.getChuyenMon() + "' ,"
 					+ "trinhDo = '" + t.getTrinhDo() + "' ,"
-					+ "SDT = " + t.getSDT() + ","
-					+ "matKhau = '" + t.getMatKhau() + "' "
+					+ "SDT = " + t.getSDT()
+			
 					+ " where maGV = '" + t.getMaGV() + "'";
 			
 			ketqua = st.executeUpdate(sql);
@@ -110,9 +110,8 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 				 String chuyenMon = rs.getString("chuyenMon");
 				 String trinhDo = rs.getString("trinhDo");
 				 int SDT = rs.getInt("SDT");
-				 String matKhau = rs.getString("matKhau");
 				 
-				 Giaovien gv = new Giaovien(maGV, name, namSinh, gioiTinh, chuyenMon, trinhDo, SDT, matKhau);
+				 Giaovien gv = new Giaovien(maGV, name, namSinh, gioiTinh, chuyenMon, trinhDo, SDT);
 				 list.add(gv);
 			}
 			
@@ -138,14 +137,13 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 			while(rs.next()) {
 				 String maGV = rs.getString("maGV");
 				 String name = rs.getString("name");
-				 String nameSinh = rs.getString("namSinh");
+				 String namSinh = rs.getString("namSinh");
 				 Boolean gioiTinh = rs.getBoolean("gioiTinh");
 				 String chuyenMon = rs.getString("chuyenMon");
 				 String trinhDo = rs.getString("trinhDo");
 				 int SDT = rs.getInt("SDT");
-				 String matKhau = rs.getString("matKhau");
 				 
-				 gv = new Giaovien(maGV, nameSinh, name, gioiTinh, chuyenMon, trinhDo, SDT, matKhau);
+				 gv = new Giaovien(maGV, name, namSinh, gioiTinh, chuyenMon, trinhDo, SDT);
 			}
 			
 			JDBCUtil.closeConnection(cnn);
@@ -174,10 +172,52 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 				 String chuyenMon = rs.getString("chuyenMon");
 				 String trinhDo = rs.getString("trinhDo");
 				 int SDT = rs.getInt("SDT");
-				 String matKhau = rs.getString("matKhau");
 				 
-				 Giaovien gv = new Giaovien(maGV, name, namSinh, gioiTinh, chuyenMon, trinhDo, SDT, matKhau);
+				 Giaovien gv = new Giaovien(maGV, name, namSinh, gioiTinh, chuyenMon, trinhDo, SDT);
 				 list.add(gv);
+			}
+			
+			JDBCUtil.closeConnection(cnn);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+	public String getTenGV(String maGV) {
+		String tenGV = "";
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "SELECT name from giaovien where maGV = '" + maGV + "'";
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				 tenGV = rs.getString("name");
+			}
+			
+			JDBCUtil.closeConnection(cnn);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return tenGV;
+	}
+	public ArrayList<String> getMaGVTuTen(String tenGV) {
+		ArrayList<String> list = new ArrayList<String>();
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "SELECT maGV from giaovien where name = '" + tenGV + "'";
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				 String t = rs.getString("maGV");
+				 list.add(t);
 			}
 			
 			JDBCUtil.closeConnection(cnn);

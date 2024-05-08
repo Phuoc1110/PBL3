@@ -46,8 +46,7 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 		String chuyenMon = adminview.txtNhapChuyenMonGV.getText();
 		String trinhDo = adminview.txtNhapTrinhDoGV.getText();
 		int SDT = Integer.parseInt(adminview.txtNhapSDTGV.getText()) ;
-		String matKhau = adminview.txtMatKhauGV.getText();
-		Giaovien gv = new Giaovien(maGV, nameGV, namSinh, gioiTinh, chuyenMon, trinhDo, SDT, matKhau);
+		Giaovien gv = new Giaovien(maGV, nameGV, namSinh, gioiTinh, chuyenMon, trinhDo, SDT);
 		
 		return gv;
 	}
@@ -72,29 +71,42 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 				String gender ;
 				if(gv.getGioiTinh() == true) gender = "Nam";
 				else gender = "Nu";
-				String[] row = {gv.getMaGV(), gv.getName(), gv.getNamSinh(), gender, gv.getChuyenMon(), gv.getTrinhDo(), String.valueOf(gv.getSDT()), gv.getMatKhau()};
+				String[] row = {gv.getMaGV(), gv.getName(), gv.getNamSinh(), gender, gv.getChuyenMon(), gv.getTrinhDo(), String.valueOf(gv.getSDT())};
 				model.addRow(row);
 			}
 		}
 		
 		if(e.getSource() == adminview.btnThemGV) {
-			GiaovienDAO.getInstance().insert(getDataViewGV());
-			DefaultTableModel model = (DefaultTableModel) adminview.tableGV.getModel();
-			model.setRowCount(0);
-			adminview.btnHienThiGV.doClick();
-		}
-		if(e.getSource() == adminview.btnSuaGV) {
-			if(!checkExistGV(adminview.txtNhapMaGV.getText())) {
-				JOptionPane.showMessageDialog(null, adminview.txtNhapMaGV.getText()+ " khong ton tai");
-			}
-			else {
-				GiaovienDAO.getInstance().update(getDataViewGV());
+			int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn thêm giáo viên có mã là :" + adminview.txtNhapMaGV.getText() );
+			if(choice == JOptionPane.YES_OPTION) {
+				GiaovienDAO.getInstance().insert(getDataViewGV());
+				DefaultTableModel model = (DefaultTableModel) adminview.tableGV.getModel();
+				model.setRowCount(0);
 				adminview.btnHienThiGV.doClick();
 			}
+			
+		}
+		if(e.getSource() == adminview.btnSuaGV) {
+			int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn sửa giáo viên có mã là :" + adminview.txtNhapMaGV.getText());
+			if(choice == JOptionPane.YES_OPTION) {
+				if(!checkExistGV(adminview.txtNhapMaGV.getText())) {
+					JOptionPane.showMessageDialog(null, adminview.txtNhapMaGV.getText()+ " khong ton tai");
+				}
+				else {
+					GiaovienDAO.getInstance().update(getDataViewGV());
+					adminview.btnHienThiGV.doClick();
+				}
+			}
+			
+			
 		}
 		if(e.getSource() == adminview.btnXoaGV) {
-			GiaovienDAO.getInstance().delete(getDataViewGV());
-			adminview.btnHienThiGV.doClick();
+			int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn xóa giáo viên có mã là :" + adminview.txtNhapMaGV.getText());
+			if(choice == JOptionPane.YES_OPTION) {
+				GiaovienDAO.getInstance().delete(getDataViewGV());
+				adminview.btnHienThiGV.doClick();
+			}
+			
 		}
 		if(e.getSource() == adminview.btnTimKiemGV) {
 			ArrayList<Giaovien> list =  GiaovienDAO.getInstance().timKiemGV((String)adminview.txtNameGV.getText());
@@ -104,7 +116,7 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 				String gender ;
 				if(gv.getGioiTinh() == true) gender = "Nam";
 				else gender = "Nu";
-				String[] row = {gv.getMaGV(), gv.getName(), gv.getNamSinh(), gender, gv.getChuyenMon(), gv.getTrinhDo(), String.valueOf(gv.getSDT()), gv.getMatKhau()};
+				String[] row = {gv.getMaGV(), gv.getName(), gv.getNamSinh(), gender, gv.getChuyenMon(), gv.getTrinhDo(), String.valueOf(gv.getSDT())};
 				model.addRow(row);	
 		}
 		}
@@ -115,7 +127,6 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 			adminview.txtNhapTrinhDoGV.setText("");
 			adminview.txtNhapChuyenMonGV.setText("");
 			adminview.txtNhapSDTGV.setText("");
-			adminview.txtMatKhauGV.setText("");
 		}
 	}
 
@@ -146,7 +157,6 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 		adminview.txtNhapChuyenMonGV.setText((String) model.getValueAt(i, 4));
 		adminview.txtNhapTrinhDoGV.setText((String) model.getValueAt(i, 5));
 		adminview.txtNhapSDTGV.setText((String) model.getValueAt(i, 6));
-		adminview.txtMatKhauGV.setText((String) model.getValueAt(i, 7));
 		
 	}
 	

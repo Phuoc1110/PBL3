@@ -37,8 +37,7 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 			gt= false;
 		String sdt = adminview.txtNhapSDTHV.getText();
 		String tinhTrang = adminview.nhapTinhTrang.getSelectedItem().toString();
-		String matkhau = adminview.txtMatKhauHV.getText();
-		Hocvien hv = new Hocvien(maHV,name,namSinh,gt,sdt,tinhTrang, matkhau);
+		Hocvien hv = new Hocvien(maHV,name,namSinh,gt,sdt,tinhTrang);
 		return hv;
 	}
 	
@@ -65,7 +64,7 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 				String gender ;
 				if(hv.getGioiTinh() == true) gender = "Nam";
 				else gender = "Nu";
-				String[] row = {hv.getMaHV(), hv.getName(), hv.getNamSinh(), gender, hv.getSdt(), hv.getTinhTrang(), hv.getMatKhau()};
+				String[] row = {hv.getMaHV(), hv.getName(), hv.getNamSinh(), gender, hv.getSdt(), hv.getTinhTrang()};
 				model.addRow(row);
 			}
 		}
@@ -91,10 +90,10 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 				JOptionPane.showMessageDialog(adminview, "nhap maHV");
 			}
 			else {
-				HocvienDAO.getInstance().insert(getDataView());
-				DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
-				model.setRowCount(0);
-				adminview.btnHienThiHV.doClick();
+			HocvienDAO.getInstance().insert(getDataView());
+			DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
+			model.setRowCount(0);
+			adminview.btnHienThiHV.doClick();
 			}
 		}
 		else if (e.getSource() == adminview.btnResetHV) {
@@ -103,7 +102,7 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 			adminview.dateHV.setDate(null);
 			adminview.nhapTinhTrang.setSelectedItem("active");
 			adminview.txtNhapSDTHV.setText("");		
-			adminview.txtMatKhauHV.setText("");
+
 		}
 		//Sua HV
 		else if (e.getSource() == adminview.btnSuaHV) {
@@ -142,7 +141,6 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 			adminview.rdbtFemaleHV.setSelected(true);
 		adminview.txtNhapSDTHV.setText((String) model.getValueAt(i, 4));
 		adminview.nhapTinhTrang.setSelectedItem(model.getValueAt(i, 5));
-		adminview.txtMatKhauHV.setText((String)model.getValueAt(i, 6));
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
 
 import DAO.GiaovienDAO;
 import DAO.LopHocDAO;
-import Model.Giaovien;
+import DAO.MonHocDAO;
 import Model.Hocvien;
 import Model.Lophoc;
 import View.AdminView;
@@ -42,10 +43,10 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String ngayBatDau = dateFormat.format(adminview.dateNBD.getDate());
 		String ngayKetThuc = dateFormat.format(adminview.dateNKT.getDate());
-		String maMH = adminview.choiceNhapMaMH.getSelectedItem();
-		String maGV = adminview.choiceNhapMaGV.getSelectedItem();
-		
-		Lophoc lh = new Lophoc(maLH, tenLH, siSo, thoiGianHoc, ngayBatDau, ngayKetThuc, maMH, maGV);
+		String maMH = MonHocDAO.getInstance().getIdTuTenMH(adminview.cbbTenMH.getSelectedItem().toString());
+		String maGV = adminview.cbbMaGVLH.getSelectedItem().toString();
+		int hocphi = Integer.parseInt(adminview.txtHocPhi.getText()) ;
+		Lophoc lh = new Lophoc(maLH, tenLH, siSo, thoiGianHoc, ngayBatDau, ngayKetThuc, maMH, maGV, hocphi);
 		return lh;
 	}
 	
@@ -55,8 +56,10 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 			ArrayList<Lophoc> list = LopHocDAO.getInstance().selectAll();
 			DefaultTableModel model = (DefaultTableModel) adminview.tableLH.getModel();
 			model.setRowCount(0);
-			for(Lophoc lh : list) {		
-				String[] row = {lh.getMaLH(), lh.getTenLH(), String.valueOf(lh.getSiSo()), lh.getThoigianHoc(), lh.getNgayBatDau(), lh.getNgayKetThuc(), lh.getMaMH(), lh.getMaGV()};
+			for(Lophoc lh : list) {	
+				String tenMon = MonHocDAO.getInstance().getTenTuID(lh.getMaMH());
+				String tenGV = GiaovienDAO.getInstance().getTenGV(lh.getMaGV());
+				String[] row = {lh.getMaLH(), lh.getTenLH(), String.valueOf(lh.getSiSo()), lh.getThoigianHoc(), lh.getNgayBatDau(), lh.getNgayKetThuc(), tenMon, tenGV, String.valueOf(lh.getSoLuong()), String.valueOf(lh.getHocphi())};		
 				model.addRow(row);
 			}
 			
@@ -90,6 +93,15 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 			adminview.dateNBD.setDate(null);
 			adminview.dateNKT.setDate(null);
 		}
+		if(e.getSource() == adminview.cbbTenGV) {
+			String tenGV = adminview.cbbTenGV.getSelectedItem().toString();
+			DefaultComboBoxModel<String> modelcbb = (DefaultComboBoxModel<String>) adminview.cbbMaGVLH.getModel();
+			modelcbb.removeAllElements();
+			ArrayList<String> list = GiaovienDAO.getInstance().getMaGVTuTen(tenGV);
+			for(String ten : list) {
+				modelcbb.addElement(ten);
+			}
+		}
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -114,13 +126,15 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		adminview.cbbTenMH.setSelectedItem((String) model.getValueAt(i, 6));
+		DefaultComboBoxModel<String> modelcbb = (DefaultComboBoxModel<String>) adminview.cbbMaGVLH.getModel();
+		modelcbb.removeAllElements();
+		String maGV = (String) model.getValueAt(i, 7);
+		modelcbb.addElement(maGV);
 		
 		
-		
-		
-		
-		adminview.choiceNhapMaMH.select((String) model.getValueAt(i, 6));
-		adminview.choiceNhapMaGV.select((String) model.getValueAt(i, 7));
+		adminview.cbbTenGV.setSelectedItem((String) model.getValueAt(i, 7));
+		adminview.txtHocPhi.setText((String) model.getValueAt(i, 9));
 		
 		if (e.getClickCount() == 2 && !e.isConsumed()) {
 			e.consume();							//tra sau

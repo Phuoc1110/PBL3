@@ -10,6 +10,15 @@ public class DangKi {
 		this.maLH = maLH;
 		this.thanhtoan = thanhtoan;
 	}
+	
+	public boolean isThanhtoan() {
+		return thanhtoan;
+	}
+
+	public void setThanhtoan(boolean thanhtoan) {
+		this.thanhtoan = thanhtoan;
+	}
+
 	public String getMaHV() {
 		return maHV;
 	}
