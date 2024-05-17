@@ -30,95 +30,98 @@ public class BienLaiController implements ActionListener {
 	public BienLaiController(AdminView adminview) {
 		this.adminview = adminview;
 	}
-	public BienLai getDataBL() {
-		ArrayList<BienLai> list = BienLaiDAO.getInstance().selectAll();
-		ArrayList<Integer> listMaHD = new ArrayList<Integer>();
-		for(BienLai c : list) {
-			listMaHD.add(Integer.parseInt(c.getMaHD()));
-		}
-		Random random = new Random();
-		int min = 1000;
-		int max = 9999;
-		int ok = 0;
-		int rdnb = 0;
-		while(ok == 0) {
-			rdnb = random.nextInt(max - min + 1) + min;
-			for(int a : listMaHD) {
-				if(a == rdnb)
-					continue;
-			}
-			ok = 1;
-		}
-		String maBL = Integer.toString(rdnb);
-		String maHV = adminview.txtNhapMaHVBL.getText();
-		String maLH = (String) adminview.cbbNhapMaLHBL.getSelectedItem();
-		Date ngayIn = java.sql.Date.valueOf(LocalDate.now());
-		int hocphi = Integer.parseInt(adminview.txtHocPhiBL.getText());
-		String httt = (String) adminview.cbbNhapHTTT.getSelectedItem();
-		BienLai bl = new BienLai(maBL, maHV, maLH, hocphi, ngayIn, httt);
-		bl.toString();
-		System.out.println(bl.toString());
-		return bl;
-		
-	}
+//	public BienLai getDataBL() {
+//		ArrayList<BienLai> list = BienLaiDAO.getInstance().selectAll();
+//		ArrayList<Integer> listMaHD = new ArrayList<Integer>();
+//		for(BienLai c : list) {
+//			listMaHD.add(Integer.parseInt(c.getMaHD()));
+//		}
+//		Random random = new Random();
+//		int min = 1000;
+//		int max = 9999;
+//		int ok = 0;
+//		int rdnb = 0;
+//		while(ok == 0) {
+//			rdnb = random.nextInt(max - min + 1) + min;
+//			for(int a : listMaHD) {
+//				if(a == rdnb)
+//					continue;
+//			}
+//			ok = 1;
+//		}
+//		String maBL = Integer.toString(rdnb);
+//		String maHV = adminview.txtNhapMaHVBL.getText();
+//		String maLH = (String) adminview.cbbNhapMaLHBL.getSelectedItem();
+//		Date ngayIn = java.sql.Date.valueOf(LocalDate.now());
+//		int hocphi = Integer.parseInt(adminview.txtHocPhiBL.getText());
+//		String httt = (String) adminview.cbbNhapHTTT.getSelectedItem();
+//		BienLai bl = new BienLai(maBL, maHV, maLH, hocphi, ngayIn, httt);
+//		bl.toString();
+//		System.out.println(bl.toString());
+//		return bl;
+//		
+//	}
 	
 	
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == adminview.cbbNhapMaLHBL) {
-			
-			
-			String nhap	= (String) adminview.cbbNhapMaLHBL.getSelectedItem();
-
-			String query = "select hocphi from lophoc where maLH ='" + nhap + "'";
-			System.out.println(query);
-			try {
-				Connection con = JDBCUtil.getConnection();
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(query);
-				System.out.println(query);
-				while (rs.next()) {
-					adminview.txtHocPhiBL.setText(Integer.toString(rs.getInt("hocphi")));
-				}	
-			} catch (Exception e2) {
-				e2.getStackTrace();
-			}
-		}
-		if (e.getSource() == adminview.btnInBienLai) {
-			DangKiDAO.getInstance().setDaThanhToan((String) adminview.cbbNhapMaLHBL.getSelectedItem(), adminview.txtNhapMaHVBL.getText());
-			BienLaiDAO.getInstance().insert(getDataBL());
-			JOptionPane.showMessageDialog(adminview, "In thanh cong");
-		}
-		if (e.getSource() == adminview.txtNhapMaHVBL) {
-			adminview.cbbNhapMaLHBL.removeAllItems();
-			String query = "SELECT maLH FROM pbl3.dangki\r\n"
-					+ "WHERE thanhtoan = 0 && maHV = '" + adminview.txtNhapMaHVBL.getText() + "';";
-			try {
-				Connection con = JDBCUtil.getConnection();
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(query);
-				while (rs.next()) {
-					adminview.cbbNhapMaLHBL.addItem(rs.getString("maLH"));
-				}	
-			} catch (Exception e2) {
-				e2.getStackTrace();
-			}
-			
-		}
-if (e.getSource() == adminview.btnTimKiemBL) {
+//		if (e.getSource() == adminview.cbbNhapMaLHBL) {
+//			
+//			
+//			String nhap	= (String) adminview.cbbNhapMaLHBL.getSelectedItem();
+//
+//			String query = "select hocphi from lophoc where maLH ='" + nhap + "'";
+//			System.out.println(query);
+//			try {
+//				Connection con = JDBCUtil.getConnection();
+//				Statement stmt = con.createStatement();
+//				ResultSet rs = stmt.executeQuery(query);
+//				System.out.println(query);
+//				while (rs.next()) {
+//					adminview.txtHocPhiBL.setText(Integer.toString(rs.getInt("hocphi")));
+//				}	
+//			} catch (Exception e2) {
+//				e2.getStackTrace();
+//			}
+//		}
+//		if (e.getSource() == adminview.btnInBienLai) {
+//			DangKiDAO.getInstance().setDaThanhToan((String) adminview.cbbNhapMaLHBL.getSelectedItem(), adminview.txtNhapMaHVBL.getText());
+//			BienLaiDAO.getInstance().insert(getDataBL());
+//			JOptionPane.showMessageDialog(adminview, "In thanh cong");
+//		}
+//		if (e.getSource() == adminview.txtNhapMaHVBL) {
+//			adminview.cbbNhapMaLHBL.removeAllItems();
+//			String query = "SELECT maLH FROM pbl3.dangki\r\n"
+//					+ "WHERE thanhtoan = 0 && maHV = '" + adminview.txtNhapMaHVBL.getText() + "';";
+//			try {
+//				Connection con = JDBCUtil.getConnection();
+//				Statement stmt = con.createStatement();
+//				ResultSet rs = stmt.executeQuery(query);
+//				while (rs.next()) {
+//					adminview.cbbNhapMaLHBL.addItem(rs.getString("maLH"));
+//				}	
+//			} catch (Exception e2) {
+//				e2.getStackTrace();
+//			}
+//			
+//		}
+			if (e.getSource() == adminview.btnTimKiemBL) {
 			
 			Date date1 = new Date(adminview.dateLocNgayBD.getDate().getTime());
 			Date date2 = new Date(adminview.dateLocNgayKT.getDate().getTime());
 			
-			String str = adminview.txtTimKiemHVBL.getText();
-			String query = "";
-			if (!str.equals("")) {
-				query = "SELECT * FROM bienlai \r\n"
-						+ "WHERE (ngayIn BETWEEN '" + date1.toString() + "' AND '" + date2 + "') && maHV = '" + str + "';";
-			}
-			else {
-				query = "SELECT * FROM bienlai \r\n"
-						+ "WHERE (ngayIn BETWEEN '" + date1.toString() + "' AND '" + date2 + "');";
-			}
+//			String str = adminview.txtTimKiemHVBL.getText();
+			
+//			if (!str.equals("")) {
+//				query = "SELECT * FROM bienlai \r\n"
+//						+ "WHERE (ngayIn BETWEEN '" + date1.toString() + "' AND '" + date2 + "') && maHV = '" + str + "';";
+//			}
+//			else {
+//				query = "SELECT * FROM bienlai \r\n"
+//						+ "WHERE (ngayIn BETWEEN '" + date1.toString() + "' AND '" + date2 + "');";
+//			}
+			String query;
+			query = "SELECT * FROM bienlai \r\n"
+					+ "WHERE (ngayIn BETWEEN '" + date1.toString() + "' AND '" + date2 + "');";
 			System.out.println(query);
 			ArrayList<BienLai> list = new ArrayList<BienLai>();
 			try {
@@ -147,15 +150,16 @@ if (e.getSource() == adminview.btnTimKiemBL) {
 				}
 				
 				//Thong ke
-				if (!str.equals(""))
-					query = "SELECT COUNT(*) AS row_count\r\n"
-						+ "FROM (\r\n"
-						+ "    SELECT *\r\n"
-						+ "    FROM bienlai \r\n"
-						+ "    WHERE maHV = '" + str + "' AND ngayIn BETWEEN '" + date1.toString() + "' AND '" + date2.toString() + "'\r\n"
-						+ ") AS subquery;\r\n"
-						+ "";
-				else
+				
+//				if (!str.equals(""))
+//					query = "SELECT COUNT(*) AS row_count\r\n"
+//						+ "FROM (\r\n"
+//						+ "    SELECT *\r\n"
+//						+ "    FROM bienlai \r\n"
+//						+ "    WHERE maHV = '" + str + "' AND ngayIn BETWEEN '" + date1.toString() + "' AND '" + date2.toString() + "'\r\n"
+//						+ ") AS subquery;\r\n"
+//						+ "";
+//				else
 					query = "SELECT COUNT(*) AS row_count\r\n"
 							+ "FROM (\r\n"
 							+ "    SELECT *\r\n"
@@ -174,12 +178,12 @@ if (e.getSource() == adminview.btnTimKiemBL) {
 				} catch (SQLException e2) {
 					e2.printStackTrace();
 				}
-				if (!str.equals(""))
-					query = "SELECT SUM(hocphi) AS total_hocphi\r\n"
-						+ "FROM bienlai \r\n"
-						+ "WHERE maHV = '" + str + "' AND ngayIn BETWEEN '" + date1.toString() + "' AND '" + date2.toString() + "';\r\n"
-						+ "";
-				else
+//				if (!str.equals(""))
+//					query = "SELECT SUM(hocphi) AS total_hocphi\r\n"
+//						+ "FROM bienlai \r\n"
+//						+ "WHERE maHV = '" + str + "' AND ngayIn BETWEEN '" + date1.toString() + "' AND '" + date2.toString() + "';\r\n"
+//						+ "";
+//				else
 					query = "SELECT SUM(hocphi) AS total_hocphi\r\n"
 							+ "FROM bienlai \r\n"
 							+ "WHERE ngayIn BETWEEN '" + date1.toString() + "' AND '" + date2.toString() + "';\r\n"

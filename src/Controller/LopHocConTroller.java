@@ -11,11 +11,13 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-//import com.google.protobuf.TextFormat.ParseException;
+import com.google.protobuf.TextFormat.ParseException;
 
+import DAO.DangKiDAO;
 import DAO.GiaovienDAO;
 import DAO.LopHocDAO;
 import DAO.MonHocDAO;
+import Model.Giaovien;
 import Model.Hocvien;
 import Model.Lophoc;
 import View.AdminView;
@@ -137,17 +139,26 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 		adminview.txtHocPhi.setText((String) model.getValueAt(i, 9));
 		
 		if (e.getClickCount() == 2 && !e.isConsumed()) {
-			e.consume();							//tra sau
+			e.consume();							
 			TTHV tthv = new TTHV();
 			tthv.setVisible(true);
 			//Them tt vao dialog
 			ArrayList<Hocvien> list = LopHocDAO.getInstance().tTin(adminview.txtNhapMaLH.getText());
 			DefaultTableModel model2 = (DefaultTableModel) tthv.table.getModel();
+			
+			tthv.maLH = adminview.txtNhapMaLH.getText();//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			tthv.tenLH = adminview.txtNhapTenLH.getText();//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			tthv.hocPhi = Integer.parseInt(adminview.txtHocPhi.getText());//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			
+			System.out.println(tthv.maLH);
 			for(Hocvien hv : list) {	
 				String gender ;
 				if(hv.getGioiTinh() == true) gender = "Nam";
 				else gender = "Nu";
-				String[] row = {hv.getMaHV(), hv.getName(), hv.getNamSinh(), gender, hv.getSdt(), hv.getTinhTrang()};
+				
+				int tToan =  DangKiDAO.getInstance().getTToan(adminview.txtNhapMaLH.getText(), hv.getMaHV());
+				
+				String[] row = {hv.getMaHV(), hv.getName(), hv.getNamSinh(), gender, hv.getSdt(), hv.getTinhTrang(), Integer.toString(tToan)};
 				model2.addRow(row);
 			}	
 	}

@@ -23,7 +23,7 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 			Connection cnn = JDBCUtil.getConnection();
 			
 			java.sql.Statement st = cnn.createStatement();
-			String sql = "INSERT INTO giaovien (maGV, name, namSinh, gioiTinh, chuyenMon, trinhDO, SDT, matKhau)"
+			String sql = "INSERT INTO giaovien (maGV, name, namSinh, gioiTinh, chuyenMon, trinhDO, SDT)"
 					+ " values('" + t.getMaGV() +"' ,'" + t.getName() +"' ,'" + t.getNamSinh() + "' ," + t.getGioiTinh() + ", '" +
 					 t.getChuyenMon() + "' ,'" + t.getTrinhDo() + "' ," + t.getSDT() + ")";
 			System.out.println(sql);
@@ -203,6 +203,28 @@ public class GiaovienDAO implements DAOInterface<Giaovien>{
 			// TODO: handle exception
 		}
 		return tenGV;
+	}
+	
+	public int getSLGV() {
+		int SL = 0;
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "SELECT count(*) as SL from giaovien";
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				 SL = rs.getInt("SL");
+			}
+			
+			JDBCUtil.closeConnection(cnn);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return SL;
 	}
 	public ArrayList<String> getMaGVTuTen(String tenGV) {
 		ArrayList<String> list = new ArrayList<String>();

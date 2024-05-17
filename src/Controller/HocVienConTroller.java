@@ -11,10 +11,15 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
+import DAO.DangKiDAO;
+import DAO.GiaovienDAO;
 import DAO.HocvienDAO;
+import DAO.LopHocDAO;
+import DAO.MonHocDAO;
 import Model.Hocvien;
+import Model.Lophoc;
 import View.AdminView;
+import View.DSLHHV;
 
 
 public class HocVienConTroller implements ActionListener, MouseListener {
@@ -141,6 +146,22 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 			adminview.rdbtFemaleHV.setSelected(true);
 		adminview.txtNhapSDTHV.setText((String) model.getValueAt(i, 4));
 		adminview.nhapTinhTrang.setSelectedItem(model.getValueAt(i, 5));
+		if(e.getClickCount() == 2 && !e.isConsumed()) {
+			e.consume();
+			DSLHHV dslhhv = new DSLHHV();
+			dslhhv.setVisible(true);
+			ArrayList<Lophoc> list = new ArrayList<Lophoc>();
+			for(String s : DangKiDAO.getInstance().getAllLopTheoTungHV(adminview.txtNhapMaHV.getText())){
+				list.add(LopHocDAO.getInstance().selectById(s));
+			}
+			DefaultTableModel model2 = (DefaultTableModel) dslhhv.table.getModel();
+			for(Lophoc lh : list) {
+				String tenMon = MonHocDAO.getInstance().getTenTuID(lh.getMaMH());
+				String tenGV = GiaovienDAO.getInstance().getTenGV(lh.getMaGV());
+				String[] row = {lh.getMaLH(), lh.getTenLH(), String.valueOf(lh.getSiSo()), lh.getThoigianHoc(), lh.getNgayBatDau(), lh.getNgayKetThuc(), tenMon, tenGV, String.valueOf(lh.getSoLuong()), String.valueOf(lh.getHocphi())};		
+				model2.addRow(row);
+			}
+		}
 	}
 
 	@Override

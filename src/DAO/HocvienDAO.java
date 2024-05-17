@@ -128,6 +128,23 @@ public class HocvienDAO implements DAOInterface<Hocvien>{
 		}
 		return kq;
 	}
+	
+	public int getSLHocVien() {
+		int SL = 0;
+		try {
+			Connection con = JDBCUtil.getConnection();
+			Statement st = con.createStatement();
+			String sql = "SELECT count(*) as SL from hocvien as SL";
+			ResultSet rs = st.executeQuery(sql	);
+			while(rs.next()) {
+				SL = rs.getInt("SL");
+			}
+			JDBCUtil.closeConnection(con);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return SL;
+	}
 
 	@Override
 	public ArrayList<Hocvien> selectByCondition(String condition) {

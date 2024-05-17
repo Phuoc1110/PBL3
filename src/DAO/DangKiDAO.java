@@ -138,6 +138,23 @@ public class DangKiDAO {
 		return kq;
 	}
 
+	public int getTToan(String maLH, String maHV) {
+			try {
+				Connection cnn = JDBCUtil.getConnection();
+				java.sql.Statement st = cnn.createStatement();
+				String sql = "SELECT thanhtoan FROM pbl3.dangki\r\n"
+						+ "WHERE maHV = '" + maHV + "' AND maLH = '" + maLH + "'";
+				java.sql.ResultSet rs = st.executeQuery(sql);
+				while (rs.next()) {
+					return rs.getInt(1);
+				}
+				System.out.println(sql);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			return 0;
+		}
+
 
 	
 }

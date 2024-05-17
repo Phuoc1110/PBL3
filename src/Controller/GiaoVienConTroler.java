@@ -14,9 +14,15 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
+
 import DAO.GiaovienDAO;
+import DAO.LopHocDAO;
+import DAO.MonHocDAO;
 import Model.Giaovien;
+import Model.Lophoc;
 import View.AdminView;
+import View.DSLHGV;
 
 
 public class GiaoVienConTroler implements ActionListener, MouseListener{
@@ -97,8 +103,6 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 					adminview.btnHienThiGV.doClick();
 				}
 			}
-			
-			
 		}
 		if(e.getSource() == adminview.btnXoaGV) {
 			int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn xóa giáo viên có mã là :" + adminview.txtNhapMaGV.getText());
@@ -157,6 +161,20 @@ public class GiaoVienConTroler implements ActionListener, MouseListener{
 		adminview.txtNhapChuyenMonGV.setText((String) model.getValueAt(i, 4));
 		adminview.txtNhapTrinhDoGV.setText((String) model.getValueAt(i, 5));
 		adminview.txtNhapSDTGV.setText((String) model.getValueAt(i, 6));
+		
+		if(e.getClickCount() == 2 && !e.isConsumed()) {
+			e.consume();
+			DSLHGV dslh = new DSLHGV();
+			dslh.setVisible(true);
+			ArrayList<Lophoc> list = LopHocDAO.getInstance().selectByMaGV(adminview.txtNhapMaGV.getText());
+			DefaultTableModel model2 = (DefaultTableModel) dslh.table.getModel();
+			for(Lophoc lh : list) {
+				String tenMon = MonHocDAO.getInstance().getTenTuID(lh.getMaMH());
+				String tenGV = GiaovienDAO.getInstance().getTenGV(lh.getMaGV());
+				String[] row = {lh.getMaLH(), lh.getTenLH(), String.valueOf(lh.getSiSo()), lh.getThoigianHoc(), lh.getNgayBatDau(), lh.getNgayKetThuc(), tenMon, tenGV, String.valueOf(lh.getSoLuong()), String.valueOf(lh.getHocphi())};		
+				model2.addRow(row);
+			}
+		}
 		
 	}
 	

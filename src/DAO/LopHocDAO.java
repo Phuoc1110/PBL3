@@ -242,6 +242,93 @@ public class LopHocDAO implements DAOInterface<Lophoc>{
 		}
 		return kq;
 	}
+	
+	public int getSLLH() {
+		int SL = 0;
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "SELECT count(*) as SL from lophoc";
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				 SL = rs.getInt("SL");
+			}
+			JDBCUtil.closeConnection(cnn);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return SL;
+	}
+	
+	public ArrayList<Lophoc> selectByMaMH(String idMH) {
+		ArrayList<Lophoc> list = new ArrayList<Lophoc>();
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "SELECT * FROM lophoc where maMH = '" + idMH + "'";
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				 String maLH = rs.getString("maLH");
+				 String tenlop = rs.getString("tenLop");
+				 int siSo = rs.getInt("siSo");
+				 String thoiGianHoc = rs.getString("thoiGianHoc");
+				 String ngayBatDau = rs.getString("ngayBatDau");
+				 String ngayKetThuc = rs.getString("ngayKetThuc");
+				 String maMH = rs.getString("maMH");
+				 String maGV = rs.getString("maGV");
+				 int hocphi = rs.getInt("hocphi");
+				 Lophoc lh = new Lophoc(maLH, tenlop, siSo, thoiGianHoc, ngayBatDau, ngayKetThuc, maMH, maGV, hocphi);
+				 lh.setSoLuong(DangKiDAO.getInstance().soHV(maLH));
+				 list.add(lh);
+			}
+			JDBCUtil.closeConnection(cnn);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+	
+	public ArrayList<Lophoc> selectByMaGV(String idGV) {
+		ArrayList<Lophoc> list = new ArrayList<Lophoc>();
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "SELECT * FROM lophoc where maGV = '" + idGV + "'";
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				 String maLH = rs.getString("maLH");
+				 String tenlop = rs.getString("tenLop");
+				 int siSo = rs.getInt("siSo");
+				 String thoiGianHoc = rs.getString("thoiGianHoc");
+				 String ngayBatDau = rs.getString("ngayBatDau");
+				 String ngayKetThuc = rs.getString("ngayKetThuc");
+				 String maMH = rs.getString("maMH");
+				 String maGV = rs.getString("maGV");
+				 int hocphi = rs.getInt("hocphi");
+				 Lophoc lh = new Lophoc(maLH, tenlop, siSo, thoiGianHoc, ngayBatDau, ngayKetThuc, maMH, maGV, hocphi);
+				 lh.setSoLuong(DangKiDAO.getInstance().soHV(maLH));
+				 list.add(lh);
+			}
+			JDBCUtil.closeConnection(cnn);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
+	}
+	
+	
 
 
 	

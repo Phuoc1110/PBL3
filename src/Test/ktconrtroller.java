@@ -8,8 +8,7 @@ import Model.Lophoc;
 public class ktconrtroller {
 	public static void main(String[] args) {
 		
-		String s = LopHocDAO.getInstance().getNameLH("101");
-				
+		
 	
 	}
 

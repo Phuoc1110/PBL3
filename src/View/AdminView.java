@@ -23,11 +23,15 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import Controller.BienLaiController;
+import Controller.DangKiController;
 import Controller.GiaoVienConTroler;
 import Controller.HocVienConTroller;
 import Controller.HocVienConTroller;
 import Controller.LopHocConTroller;
+import Controller.NhanVienController;
 import DAO.GiaovienDAO;
+import DAO.HocvienDAO;
+import DAO.LopHocDAO;
 import DAO.MonHocDAO;
 import Model.Giaovien;
 import Model.MonHoc;
@@ -51,12 +55,13 @@ import javax.swing.SwingConstants;
 import javax.swing.DefaultComboBoxModel;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JScrollBar;
+import javax.swing.JPasswordField;
 
 public class AdminView extends JFrame {
 	
 	
 	public static final long serialVersionUID = 1L;
-	public JPanel contentPane, Menu ;
+	public JPanel contentPane, Menu, panel_1_1 ;
 	public JTabbedPane tabbedPane;
 	public JTable tableGV,tableHV;
 	public JLabel lblNewLabel,lblNewLabel_1;
@@ -80,26 +85,42 @@ public class AdminView extends JFrame {
 	public JTable tableLH;
 	
 	public JButton btnThemLH, btnSuaLH, btnXoaLH, btnHienThiLH, btnTimKiemLH;
-	public JComboBox nhapTinhTrang;
-	public JTextField txtHocPhiBL;
+	public JComboBox nhapTinhTrang, cbbMonDK;
 	
 	public JDateChooser dateGV, dateHV, dateNBD, dateNKT, dateLocNgayBD, dateLocNgayKT;
 	public JTable tableBL;
-	public JButton btnInBienLai, btnTimKiemBL, btnHienThiGV;
-	public JComboBox cbbNhapMaLHBL, cbbNhapHTTT;
-	public JTextField txtNhapMaHVBL;
-	public JTextField txtTimKiemHVBL;
+	public JButton btnTimKiemBL, btnHienThiGV;
 	public JTextField txtHocPhi;
 	public JLabel lblSOLUONGHD, lblTONGTIEN;
 	public JButton btnResetHV;
 	public JComboBox cbbTenMH, cbbTenGV;
 	public JComboBox cbbMaGVLH;
+	public JPanel TieuDeBL_1;
+	public JLabel lblNewLabel_4_2;
+	public JLabel lblNewLabel_7;
+	public JTextField txtMaHVDK;
+	public JTable tableDK;
+	public JButton btnHienThiDK;
+	public JLabel lblNewLabel_10;
+	public JLabel lblNewLabel_12;
+	public JLabel lblNewLabel_13;
+	public JLabel lblNewLabel_14;
+	public JLabel lblSLHocVien, lblSLGiaoVien, lblSLLopHoc, lblSLNhanVien;
+	public JTextField txtMaNV;
+	public JTextField txtTenNV;
+	public JTextField txtSDTNV;
+	public JLabel lblNewLabel_7_1_1_1_2;
+	public JTable tableNV;
+	public JRadioButton rdbtnMaleNV, rdbtnFemaleNV;
+	public JButton btnThemNV, btnSuaNV, btnXoaNV, btnNhanVien;
+	public JDateChooser dateNV;
+	public JTextField txtMKNV;
 
 public AdminView() {
 	
 	
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setBounds(100, 100, 1299, 777);
+	setBounds(100, 100, 1316, 763);
 	contentPane = new JPanel();
 	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 	setContentPane(contentPane);
@@ -133,7 +154,7 @@ public AdminView() {
 	JPanel panel_1 = new JPanel();
 	panel_1.setLayout(null);
 	panel_1.setBackground(new Color(51, 0, 102));
-	panel_1.setBounds(0, 173, 195, 56);
+	panel_1.setBounds(0, 222, 195, 56);
 	Menu.add(panel_1);
 	
 	btnGiaoVien = new JButton("Giáo viên");
@@ -149,10 +170,10 @@ public AdminView() {
 	btnGiaoVien.setBounds(0, 0, 194, 56);
 	panel_1.add(btnGiaoVien);
 	
-	JPanel panel_1_1 = new JPanel();
+	panel_1_1 = new JPanel();
 	panel_1_1.setLayout(null);
 	panel_1_1.setBackground(new Color(36, 0, 72));
-	panel_1_1.setBounds(0, 228, 195, 56);
+	panel_1_1.setBounds(0, 278, 195, 56);
 	Menu.add(panel_1_1);
 	
 	btnHocVien = new JButton("Học viên");
@@ -172,7 +193,7 @@ public AdminView() {
 	JPanel panel_1_2 = new JPanel();
 	panel_1_2.setLayout(null);
 	panel_1_2.setBackground(new Color(51, 0, 102));
-	panel_1_2.setBounds(0, 283, 195, 56);
+	panel_1_2.setBounds(0, 332, 195, 56);
 	Menu.add(panel_1_2);
 	
 	btnLopHoc = new JButton("Lớp học");
@@ -191,14 +212,17 @@ public AdminView() {
 	JPanel panel_1_1_1 = new JPanel();
 	panel_1_1_1.setLayout(null);
 	panel_1_1_1.setBackground(new Color(36, 0, 72));
-	panel_1_1_1.setBounds(0, 338, 195, 56);
+	panel_1_1_1.setBounds(0, 444, 195, 56);
 	Menu.add(panel_1_1_1);
 	
-	btnBienLai = new JButton("Biên lai");
+	btnBienLai = new JButton("Thống Kê");
 	btnBienLai.setIcon(new ImageIcon(AdminView.class.getResource("/icon/icons8-receipt-24.png")));
 	btnBienLai.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			tabbedPane.setSelectedIndex(3);
+			lblSLHocVien.setText(Integer.toString(HocvienDAO.getInstance().getSLHocVien()));
+			lblSLGiaoVien.setText(Integer.toString(GiaovienDAO.getInstance().getSLGV()));
+			lblSLLopHoc.setText(Integer.toString(LopHocDAO.getInstance().getSLLH()));
 		}
 	});
 	btnBienLai.setForeground(Color.WHITE);
@@ -224,6 +248,19 @@ public AdminView() {
 	btnDangXuat.setBounds(0, 620, 194, 56);
 	Menu.add(btnDangXuat);
 	
+	JPanel panel_1_1_1_1 = new JPanel();
+	panel_1_1_1_1.setLayout(null);
+	panel_1_1_1_1.setBackground(new Color(36, 0, 72));
+	panel_1_1_1_1.setBounds(0, 389, 195, 56);
+	Menu.add(panel_1_1_1_1);
+	
+	btnNhanVien = new JButton("Nhân Viên");
+	btnNhanVien.setForeground(Color.WHITE);
+	btnNhanVien.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	btnNhanVien.setBackground(new Color(36, 0, 72));
+	btnNhanVien.setBounds(0, 0, 196, 56);
+	panel_1_1_1_1.add(btnNhanVien);
+	
 	tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	tabbedPane.setBounds(192, 0, 1308, 730);
 	contentPane.add(tabbedPane);
@@ -235,7 +272,7 @@ public AdminView() {
 	PanelGiaoVien.setLayout(null);
 	
 	JPanel TieuDeGV = new JPanel();
-	TieuDeGV.setBounds(0, 0, 1090, 278);
+	TieuDeGV.setBounds(0, 0, 1090, 251);
 	TieuDeGV.setBackground(new Color(135, 123, 191));
 	PanelGiaoVien.add(TieuDeGV);
 	
@@ -358,7 +395,7 @@ public AdminView() {
 	
 	
 	btnResetGV = new JButton("Reset");
-	btnResetGV.setBounds(941, 122, 82, 40);
+	btnResetGV.setBounds(939, 113, 82, 40);
 	TieuDeGV.add(btnResetGV);
 	btnResetGV.setForeground(Color.WHITE);
 	btnResetGV.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -370,11 +407,17 @@ public AdminView() {
 	btnHienThiGV.setBackground(new Color(36, 0, 72));
 	btnHienThiGV.setBounds(25, 202, 71, 32);
 	TieuDeGV.add(btnHienThiGV);
+	
+	JSeparator separator_2 = new JSeparator();
+	separator_2.setForeground(Color.WHITE);
+	separator_2.setBackground(Color.WHITE);
+	separator_2.setBounds(10, 178, 1058, 32);
+	TieuDeGV.add(separator_2);
 
 	
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(120, 320, 834, 300);
+		scrollPane.setBounds(82, 261, 975, 398);
 		PanelGiaoVien.add(scrollPane);
 		
 		tableGV = new JTable();
@@ -385,7 +428,15 @@ public AdminView() {
 			new String[] {
 				"MaGV", "name", "namSinh", "gioiTinh", "chuyenMon", "trinhDo", "SDT"
 			}
-		));
+		)
+				{
+				public boolean isCellEditable(int row, int column) {
+		        return false; // Make all cells uneditable
+				}	
+				}
+				);
+		
+		
 	
 	ButtonGroup group1 = new ButtonGroup();
 	group1.add(rdbtFemaleHV);
@@ -408,7 +459,14 @@ public AdminView() {
 		new String[] {
 			"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang", "matKhau"
 		}
-	));
+	) {
+		public boolean isCellEditable(int row, int column) {
+	        return false; // Make all cells uneditable
+	    }	
+	}	
+			);
+	
+	
 	
 	JPanel TieuDeHV = new JPanel();
 	TieuDeHV.setBounds(0, 10, 1095, 286);
@@ -747,108 +805,42 @@ public AdminView() {
 		PanelBienLai.setLayout(null);
 		tabbedPane.addTab("New tab", null, PanelBienLai, null);
 		
-		JPanel TieuDeBL = new JPanel();
-		TieuDeBL.setLayout(null);
-		TieuDeBL.setBackground(new Color(135, 123, 191));
-		TieuDeBL.setBounds(0, 25, 1293, 177);
-		PanelBienLai.add(TieuDeBL);
-		
-		dateLocNgayBD = new JDateChooser();
-		dateLocNgayBD.setDateFormatString("yyyy-MM-dd");
-		dateLocNgayBD.setBounds(461, 134, 179, 33);
-		TieuDeBL.add(dateLocNgayBD);
-		
-		dateLocNgayKT = new JDateChooser();
-		dateLocNgayKT.setDateFormatString("yyyy-MM-dd");
-		dateLocNgayKT.setBounds(724, 134, 179, 33);
-		TieuDeBL.add(dateLocNgayKT);
-		
-		JLabel lblNewLabel_4_1 = new JLabel("Biên lai");
-		lblNewLabel_4_1.setBounds(490, 10, 150, 60);
-		TieuDeBL.add(lblNewLabel_4_1);
-		lblNewLabel_4_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 33));
-		
-		JLabel lblNewLabel_9 = new JLabel("TỪ");
-		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_9.setBounds(462, 100, 67, 24);
-		TieuDeBL.add(lblNewLabel_9);
-		
-		JLabel lblNewLabel_9_1 = new JLabel("ĐẾN");
-		lblNewLabel_9_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_9_1.setBounds(721, 100, 67, 24);
-		TieuDeBL.add(lblNewLabel_9_1);
-		
-		JLabel lblNewLabel_10 = new JLabel("MaHV");
-		lblNewLabel_10.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_10.setBounds(75, 98, 80, 28);
-		TieuDeBL.add(lblNewLabel_10);
-		
-		btnTimKiemBL = new JButton("Hiển Thị");
-		btnTimKiemBL.setForeground(Color.WHITE);
-		btnTimKiemBL.setFont(new Font("Segoe UI", Font.BOLD, 15));
-		btnTimKiemBL.setBackground(new Color(36, 0, 72));
-		btnTimKiemBL.setBounds(1002, 126, 196, 41);
-		TieuDeBL.add(btnTimKiemBL);
-		
-		txtTimKiemHVBL = new JTextField();
-		txtTimKiemHVBL.setColumns(10);
-		txtTimKiemHVBL.setBounds(70, 134, 179, 33);
-		TieuDeBL.add(txtTimKiemHVBL);
-		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(SystemColor.inactiveCaption);
-		panel_5.setBounds(10, 212, 415, 470);
+		panel_5.setBounds(10, 212, 415, 388);
 		PanelBienLai.add(panel_5);
 		panel_5.setLayout(null);
 		
-		JLabel lblNewLabel_8 = new JLabel("MaHV");
-		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_8.setBounds(21, 34, 99, 41);
-		panel_5.add(lblNewLabel_8);
+		dateLocNgayBD = new JDateChooser();
+		dateLocNgayBD.setBounds(70, 75, 179, 33);
+		panel_5.add(dateLocNgayBD);
+		dateLocNgayBD.setDateFormatString("yyyy-MM-dd");
 		
-		cbbNhapMaLHBL = new JComboBox();
-		cbbNhapMaLHBL.setBounds(130, 110, 136, 23);
-		panel_5.add(cbbNhapMaLHBL);
+		dateLocNgayKT = new JDateChooser();
+		dateLocNgayKT.setBounds(70, 169, 179, 33);
+		panel_5.add(dateLocNgayKT);
+		dateLocNgayKT.setDateFormatString("yyyy-MM-dd");
 		
-		txtHocPhiBL = new JTextField();
-		txtHocPhiBL.setBounds(130, 174, 135, 22);
-		panel_5.add(txtHocPhiBL);
-		txtHocPhiBL.setColumns(10);
+		JLabel lblNewLabel_9 = new JLabel("TỪ");
+		lblNewLabel_9.setBounds(10, 84, 67, 24);
+		panel_5.add(lblNewLabel_9);
+		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JLabel lblNewLabel_8_1 = new JLabel("MaLH");
-		lblNewLabel_8_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_8_1.setBounds(21, 99, 99, 41);
-		panel_5.add(lblNewLabel_8_1);
+		JLabel lblNewLabel_9_1 = new JLabel("ĐẾN");
+		lblNewLabel_9_1.setBounds(10, 178, 67, 24);
+		panel_5.add(lblNewLabel_9_1);
+		lblNewLabel_9_1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JLabel lblNewLabel_8_1_1 = new JLabel("Học phí");
-		lblNewLabel_8_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_8_1_1.setBounds(21, 166, 99, 41);
-		panel_5.add(lblNewLabel_8_1_1);
-		
-		btnInBienLai = new JButton("IN BIEN LAI");
-		btnInBienLai.setForeground(Color.WHITE);
-		btnInBienLai.setFont(new Font("Segoe UI", Font.BOLD, 15));
-		btnInBienLai.setBackground(new Color(36, 0, 72));
-		btnInBienLai.setBounds(100, 349, 196, 41);
-		panel_5.add(btnInBienLai);
-		
-		JLabel lblNewLabel_8_1_1_1 = new JLabel("Hình thức thanh toán");
-		lblNewLabel_8_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_8_1_1_1.setBounds(117, 206, 179, 66);
-		panel_5.add(lblNewLabel_8_1_1_1);
-		
-		cbbNhapHTTT = new JComboBox();
-		cbbNhapHTTT.setModel(new DefaultComboBoxModel(new String[] {"ck", "tm"}));
-		cbbNhapHTTT.setBounds(130, 282, 136, 23);
-		panel_5.add(cbbNhapHTTT);
-		
-		txtNhapMaHVBL = new JTextField();
-		txtNhapMaHVBL.setBounds(131, 47, 135, 23);
-		panel_5.add(txtNhapMaHVBL);
-		txtNhapMaHVBL.setColumns(10);
+		btnTimKiemBL = new JButton("Hiển Thị");
+		btnTimKiemBL.setBounds(70, 285, 196, 41);
+		panel_5.add(btnTimKiemBL);
+		btnTimKiemBL.setForeground(Color.WHITE);
+		btnTimKiemBL.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		btnTimKiemBL.setBackground(new Color(36, 0, 72));
+	
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(435, 212, 858, 388);
+		scrollPane_3.setBounds(435, 212, 657, 388);
 		PanelBienLai.add(scrollPane_3);
 		
 		tableBL = new JTable();
@@ -868,7 +860,7 @@ public AdminView() {
 		
 		JLabel lblNewLabel_11_1 = new JLabel("TỔNG SỐ TIỀN");
 		lblNewLabel_11_1.setFont(new Font("Tahoma", Font.BOLD, 17));
-		lblNewLabel_11_1.setBounds(965, 627, 172, 39);
+		lblNewLabel_11_1.setBounds(804, 627, 172, 39);
 		PanelBienLai.add(lblNewLabel_11_1);
 		
 		lblSOLUONGHD = new JLabel("0");
@@ -878,12 +870,262 @@ public AdminView() {
 		
 		lblTONGTIEN = new JLabel("0");
 		lblTONGTIEN.setFont(new Font("Tahoma", Font.ITALIC, 17));
-		lblTONGTIEN.setBounds(1117, 628, 91, 37);
+		lblTONGTIEN.setBounds(961, 628, 91, 37);
 		PanelBienLai.add(lblTONGTIEN);
 		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(new Color(154, 205, 50));
+		panel_2.setBounds(10, 20, 242, 170);
+		PanelBienLai.add(panel_2);
+		panel_2.setLayout(null);
 		
+		JLabel lblNewLabel_5 = new JLabel("");
+		lblNewLabel_5.setIcon(new ImageIcon(AdminView.class.getResource("/icon/graduated.png")));
+		lblNewLabel_5.setBounds(-11, 27, 124, 121);
+		panel_2.add(lblNewLabel_5);
 		
-    
+		lblNewLabel_10 = new JLabel("HỌC VIÊN");
+		lblNewLabel_10.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel_10.setBounds(116, 105, 145, 33);
+		panel_2.add(lblNewLabel_10);
+		
+		lblSLHocVien = new JLabel("New label");
+		lblSLHocVien.setForeground(Color.GREEN);
+		lblSLHocVien.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblSLHocVien.setBounds(116, 16, 120, 68);
+		panel_2.add(lblSLHocVien);
+		
+		JPanel panel_2_1 = new JPanel();
+		panel_2_1.setBackground(new Color(0, 206, 209));
+		panel_2_1.setBounds(262, 20, 258, 170);
+		PanelBienLai.add(panel_2_1);
+		panel_2_1.setLayout(null);
+		
+		lblNewLabel_12 = new JLabel("");
+		lblNewLabel_12.setIcon(new ImageIcon(AdminView.class.getResource("/icon/teacher.png")));
+		lblNewLabel_12.setBounds(0, 10, 134, 139);
+		panel_2_1.add(lblNewLabel_12);
+		
+		JLabel lblNewLabel_15 = new JLabel("New label");
+		lblNewLabel_15.setBounds(127, 101, -971, 35);
+		panel_2_1.add(lblNewLabel_15);
+		
+		JLabel lblNewLabel_10_1 = new JLabel("GIÁO VIÊN");
+		lblNewLabel_10_1.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel_10_1.setBounds(133, 102, 145, 33);
+		panel_2_1.add(lblNewLabel_10_1);
+		
+		lblSLGiaoVien = new JLabel("New label");
+		lblSLGiaoVien.setForeground(Color.GREEN);
+		lblSLGiaoVien.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblSLGiaoVien.setBounds(128, 16, 120, 68);
+		panel_2_1.add(lblSLGiaoVien);
+		
+		JPanel panel_2_2 = new JPanel();
+		panel_2_2.setBackground(new Color(123, 104, 238));
+		panel_2_2.setBounds(530, 20, 277, 170);
+		PanelBienLai.add(panel_2_2);
+		panel_2_2.setLayout(null);
+		
+		lblNewLabel_13 = new JLabel("");
+		lblNewLabel_13.setIcon(new ImageIcon(AdminView.class.getResource("/icon/blackboard.png")));
+		lblNewLabel_13.setBounds(10, 10, 135, 134);
+		panel_2_2.add(lblNewLabel_13);
+		
+		JLabel lblNewLabel_10_2 = new JLabel("LỚP HỌC");
+		lblNewLabel_10_2.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel_10_2.setBounds(147, 104, 145, 33);
+		panel_2_2.add(lblNewLabel_10_2);
+		
+		lblSLLopHoc = new JLabel("New label");
+		lblSLLopHoc.setForeground(Color.GREEN);
+		lblSLLopHoc.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblSLLopHoc.setBounds(147, 16, 120, 68);
+		panel_2_2.add(lblSLLopHoc);
+		
+		JPanel panel_2_3 = new JPanel();
+		panel_2_3.setBackground(new Color(218, 112, 214));
+		panel_2_3.setBounds(817, 20, 275, 170);
+		PanelBienLai.add(panel_2_3);
+		panel_2_3.setLayout(null);
+		
+		lblNewLabel_14 = new JLabel("");
+		lblNewLabel_14.setIcon(new ImageIcon(AdminView.class.getResource("/icon/workplace.png")));
+		lblNewLabel_14.setBounds(10, 15, 135, 150);
+		panel_2_3.add(lblNewLabel_14);
+		
+		JLabel lblNewLabel_10_3 = new JLabel("NHÂN VIÊN");
+		lblNewLabel_10_3.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewLabel_10_3.setBounds(145, 105, 145, 33);
+		panel_2_3.add(lblNewLabel_10_3);
+		
+		lblSLNhanVien = new JLabel("New label");
+		lblSLNhanVien.setForeground(Color.GREEN);
+		lblSLNhanVien.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblSLNhanVien.setBounds(145, 16, 120, 68);
+		panel_2_3.add(lblSLNhanVien);
+		
+		JPanel panel = new JPanel();
+		tabbedPane.addTab("New tab", null, panel, null);
+		panel.setLayout(null);
+		
+		TieuDeBL_1 = new JPanel();
+		TieuDeBL_1.setLayout(null);
+		TieuDeBL_1.setBackground(new Color(135, 123, 191));
+		TieuDeBL_1.setBounds(14, 10, 427, 508);
+		panel.add(TieuDeBL_1);
+		
+		lblNewLabel_7 = new JLabel("MaHV");
+		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblNewLabel_7.setBounds(22, 213, 80, 28);
+		TieuDeBL_1.add(lblNewLabel_7);
+		
+		txtMaHVDK = new JTextField();
+		txtMaHVDK.setColumns(10);
+		txtMaHVDK.setBounds(112, 213, 179, 33);
+		TieuDeBL_1.add(txtMaHVDK);
+		
+		cbbMonDK = new JComboBox();
+		cbbMonDK.setBounds(127, 312, 150, 33);
+		TieuDeBL_1.add(cbbMonDK);
+		
+		btnHienThiDK = new JButton("Hiển thị");
+		btnHienThiDK.setBounds(116, 415, 161, 34);
+		TieuDeBL_1.add(btnHienThiDK);
+		
+		lblNewLabel_4_2 = new JLabel("ĐĂNG KÍ");
+		lblNewLabel_4_2.setBounds(127, 61, 150, 60);
+		TieuDeBL_1.add(lblNewLabel_4_2);
+		lblNewLabel_4_2.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 33));
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setBounds(451, 10, 647, 607);
+		panel.add(scrollPane_4);
+		
+		tableDK = new JTable();
+		scrollPane_4.setViewportView(tableDK);
+		tableDK.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+					"maLH", "tenLop", "siSo", "thoiGianHoc", "ngayBatDau", "ngayKetThuc", "tenMH", "tenGV", "soLuong", "hocphi"
+			}
+		) {
+			public boolean isCellEditable(int row, int column) {
+	        return false; 
+	    }
+		});
+		
+		JPanel panel_3 = new JPanel();
+		tabbedPane.addTab("New tab", null, panel_3, null);
+		panel_3.setLayout(null);
+		
+		JPanel TieuDeBL_1_1 = new JPanel();
+		TieuDeBL_1_1.setLayout(null);
+		TieuDeBL_1_1.setBackground(new Color(135, 123, 191));
+		TieuDeBL_1_1.setBounds(10, 10, 449, 636);
+		panel_3.add(TieuDeBL_1_1);
+		
+		JLabel lblNewLabel_7_1 = new JLabel("MaNV");
+		lblNewLabel_7_1.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblNewLabel_7_1.setBounds(42, 160, 80, 28);
+		TieuDeBL_1_1.add(lblNewLabel_7_1);
+		
+		txtMaNV = new JTextField();
+		txtMaNV.setColumns(10);
+		txtMaNV.setBounds(152, 162, 179, 33);
+		TieuDeBL_1_1.add(txtMaNV);
+		
+		btnThemNV = new JButton("THÊM");
+		btnThemNV.setBounds(29, 553, 115, 34);
+		TieuDeBL_1_1.add(btnThemNV);
+		
+		JLabel lblNewLabel_4_2_1 = new JLabel("NHÂN VIÊN");
+		lblNewLabel_4_2_1.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 33));
+		lblNewLabel_4_2_1.setBounds(114, 59, 202, 60);
+		TieuDeBL_1_1.add(lblNewLabel_4_2_1);
+		
+		JLabel lblNewLabel_7_1_1 = new JLabel("TÊN");
+		lblNewLabel_7_1_1.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblNewLabel_7_1_1.setBounds(42, 216, 80, 28);
+		TieuDeBL_1_1.add(lblNewLabel_7_1_1);
+		
+		txtTenNV = new JTextField();
+		txtTenNV.setColumns(10);
+		txtTenNV.setBounds(152, 218, 179, 33);
+		TieuDeBL_1_1.add(txtTenNV);
+		
+		dateNV = new JDateChooser();
+		dateNV.setDateFormatString("dd/MM/yyyy");
+		dateNV.setBounds(152, 274, 179, 33);
+		TieuDeBL_1_1.add(dateNV);
+		
+		JLabel lblNewLabel_7_1_1_1 = new JLabel("NGÀY SINH");
+		lblNewLabel_7_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblNewLabel_7_1_1_1.setBounds(10, 274, 112, 28);
+		TieuDeBL_1_1.add(lblNewLabel_7_1_1_1);
+		
+		rdbtnMaleNV = new JRadioButton("MALE");
+		rdbtnMaleNV.setBounds(152, 334, 101, 34);
+		TieuDeBL_1_1.add(rdbtnMaleNV);
+		
+		rdbtnFemaleNV = new JRadioButton("FEMALE");
+		rdbtnFemaleNV.setBounds(288, 334, 95, 34);
+		TieuDeBL_1_1.add(rdbtnFemaleNV);
+		
+		ButtonGroup group5 = new ButtonGroup();
+		group5.add(rdbtnMaleNV);
+		group5.add(rdbtnFemaleNV);
+		
+		JLabel lblNewLabel_7_1_1_1_1 = new JLabel("GIỚI TÍNH");
+		lblNewLabel_7_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblNewLabel_7_1_1_1_1.setBounds(10, 335, 112, 28);
+		TieuDeBL_1_1.add(lblNewLabel_7_1_1_1_1);
+		
+		JLabel lblNewLabel_7_1_1_2 = new JLabel("SDT");
+		lblNewLabel_7_1_1_2.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblNewLabel_7_1_1_2.setBounds(42, 399, 80, 28);
+		TieuDeBL_1_1.add(lblNewLabel_7_1_1_2);
+		
+		txtSDTNV = new JTextField();
+		txtSDTNV.setColumns(10);
+		txtSDTNV.setBounds(152, 399, 179, 33);
+		TieuDeBL_1_1.add(txtSDTNV);
+		
+		lblNewLabel_7_1_1_1_2 = new JLabel("MẬT KHẨU");
+		lblNewLabel_7_1_1_1_2.setFont(new Font("Tahoma", Font.BOLD, 19));
+		lblNewLabel_7_1_1_1_2.setBounds(10, 467, 112, 28);
+		TieuDeBL_1_1.add(lblNewLabel_7_1_1_1_2);
+		
+		btnSuaNV = new JButton("SỬA");
+		btnSuaNV.setBounds(165, 553, 115, 34);
+		TieuDeBL_1_1.add(btnSuaNV);
+		
+		btnXoaNV = new JButton("XÓA");
+		btnXoaNV.setBounds(304, 553, 115, 34);
+		TieuDeBL_1_1.add(btnXoaNV);
+		
+		txtMKNV = new JTextField();
+		txtMKNV.setColumns(10);
+		txtMKNV.setBounds(152, 467, 179, 33);
+		TieuDeBL_1_1.add(txtMKNV);
+		
+		JScrollPane scrollPane_5 = new JScrollPane();
+		scrollPane_5.setBounds(492, 42, 584, 549);
+		panel_3.add(scrollPane_5);
+		
+		tableNV = new JTable();
+		tableNV.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"ID", "Ten", "NgaySinh", "GioiTinh", "SDT", "MatKhau"
+			}
+		));
+		scrollPane_5.setViewportView(tableNV);
+		setCBBDK();
+		
+	
 	
 	
 	//SU lI SU KIEN
@@ -937,11 +1179,25 @@ public AdminView() {
 	
 	//BIEN LAI
 	ActionListener bl = new BienLaiController(this);
-	txtNhapMaHVBL.addActionListener(bl);
 	btnTimKiemBL.addActionListener(bl);
-	cbbNhapMaLHBL.addActionListener(bl);
-	btnInBienLai.addActionListener(bl);
-		
+	
+	//DANG KI
+	ActionListener dk = new DangKiController(this);
+	btnHienThiDK.addActionListener(dk);
+	
+	MouseListener mldk = new DangKiController(this);
+	tableDK.addMouseListener(mldk);
+	
+	//NhanVien
+	ActionListener nv = new NhanVienController(this);
+	btnThemNV.addActionListener(nv);
+	btnSuaNV.addActionListener(nv);
+	btnXoaNV.addActionListener(nv);
+	btnNhanVien.addActionListener(nv);
+	
+	MouseListener mlnv = new NhanVienController(this);
+	tableNV.addMouseListener(mlnv);
+	
 }
 	public void setCBBTenGV() {
 		ArrayList<Giaovien> list = GiaovienDAO.getInstance().selectAll();
@@ -964,5 +1220,13 @@ public AdminView() {
 	}
 	public void out() {
 		this.dispose();
+	}
+	public void setCBBDK() {
+		ArrayList<MonHoc> list = MonHocDAO.getInstance().selectAll();
+		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cbbMonDK.getModel();
+		for(MonHoc mh : list) {
+			model.addElement(mh.getTenMon());
+		}
+		model.addElement("All");
 	}
 }
