@@ -36,12 +36,14 @@ import DAO.MonHocDAO;
 import DAO.NhanVienDAO;
 import Model.Giaovien;
 import Model.MonHoc;
+import Model.NhanVien;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -88,7 +90,7 @@ public class AdminView extends JFrame {
 	public JButton btnThemLH, btnSuaLH, btnXoaLH, btnHienThiLH, btnTimKiemLH;
 	public JComboBox nhapTinhTrang, cbbMonDK;
 	
-	public JDateChooser dateGV, dateHV, dateNBD, dateNKT, dateLocNgayBD, dateLocNgayKT;
+	public JDateChooser dateGV, dateHV, dateNBD, dateNKT, dateLocNgayBD, dateLocNgayKT, dateNVTTNV;
 	public JTable tableBL;
 	public JButton btnTimKiemBL, btnHienThiGV;
 	public JTextField txtHocPhi;
@@ -112,14 +114,24 @@ public class AdminView extends JFrame {
 	public JTextField txtSDTNV;
 	public JLabel lblNewLabel_7_1_1_1_2;
 	public JTable tableNV;
-	public JRadioButton rdbtnMaleNV, rdbtnFemaleNV;
+	public JRadioButton rdbtnMaleNV, rdbtnFemaleNV, rdbtFemaleNVTTNV, rdbtMaleNTTTNV;
 	public JButton btnThemNV, btnSuaNV, btnXoaNV, btnNhanVien;
 	public JDateChooser dateNV;
 	public JTextField txtMKNV;
 	public JComboBox<String> cbbTenMH_1;
 	public JTextField txtTKHV;
+	public JTextField txtMaNVTTNV;
+	public JTextField txtMKNVTTNV;
+	public JTextField txtSDTNVTTNV;
+	public JLabel lblSetNameNV;
+	public JButton btnLuuNV, btnSuattNV;
 
-public AdminView() {
+	public String idNV;
+	public JPanel panelTTNV;
+	public JButton btnTTNV;
+	
+public AdminView(String id) {
+	idNV = id;
 	
 	
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -212,11 +224,11 @@ public AdminView() {
 	btnLopHoc.setBounds(0, 0, 194, 56);
 	panel_1_2.add(btnLopHoc);
 	
-	JPanel panel_1_1_1 = new JPanel();
-	panel_1_1_1.setLayout(null);
-	panel_1_1_1.setBackground(new Color(36, 0, 72));
-	panel_1_1_1.setBounds(0, 500, 195, 56);
-	Menu.add(panel_1_1_1);
+	JPanel panelThongKe = new JPanel();
+	panelThongKe.setLayout(null);
+	panelThongKe.setBackground(new Color(36, 0, 72));
+	panelThongKe.setBounds(0, 500, 195, 56);
+	Menu.add(panelThongKe);
 	
 	btnBienLai = new JButton("Thống Kê");
 	btnBienLai.setIcon(new ImageIcon(AdminView.class.getResource("/icon/icons8-receipt-24.png")));
@@ -233,7 +245,7 @@ public AdminView() {
 	btnBienLai.setFont(new Font("Segoe UI", Font.BOLD, 15));
 	btnBienLai.setBackground(new Color(36, 0, 72));
 	btnBienLai.setBounds(0, 0, 196, 56);
-	panel_1_1_1.add(btnBienLai);
+	panelThongKe.add(btnBienLai);
 	
 	JPanel panel_6_1_1 = new JPanel();
 	panel_6_1_1.setBackground(new Color(147, 0, 73));
@@ -252,11 +264,11 @@ public AdminView() {
 	btnDangXuat.setBounds(0, 620, 194, 56);
 	Menu.add(btnDangXuat);
 	
-	JPanel panel_1_1_1_1 = new JPanel();
-	panel_1_1_1_1.setLayout(null);
-	panel_1_1_1_1.setBackground(new Color(36, 0, 72));
-	panel_1_1_1_1.setBounds(0, 445, 195, 56);
-	Menu.add(panel_1_1_1_1);
+	JPanel panelNhanVien = new JPanel();
+	panelNhanVien.setLayout(null);
+	panelNhanVien.setBackground(new Color(36, 0, 72));
+	panelNhanVien.setBounds(0, 445, 195, 56);
+	Menu.add(panelNhanVien);
 	
 	btnNhanVien = new JButton("Nhân Viên");
 	btnNhanVien.setIcon(new ImageIcon(AdminView.class.getResource("/icon/user (11).png")));
@@ -264,7 +276,7 @@ public AdminView() {
 	btnNhanVien.setFont(new Font("Segoe UI", Font.BOLD, 15));
 	btnNhanVien.setBackground(new Color(36, 0, 72));
 	btnNhanVien.setBounds(0, 0, 196, 58);
-	panel_1_1_1_1.add(btnNhanVien);
+	panelNhanVien.add(btnNhanVien);
 	
 	JButton btnDK = new JButton("Đăng Kí");
 	btnDK.setIcon(new ImageIcon(AdminView.class.getResource("/icon/knowledge.png")));
@@ -279,8 +291,27 @@ public AdminView() {
 	btnDK.setBounds(0, 387, 196, 58);
 	Menu.add(btnDK);
 	
+	panelTTNV = new JPanel();
+	panelTTNV.setLayout(null);
+	panelTTNV.setBackground(new Color(51, 0, 102));
+	panelTTNV.setBounds(0, 166, 195, 56);
+	Menu.add(panelTTNV);
+	
+	btnTTNV = new JButton("Thông Tin");
+	btnTTNV.setIcon(new ImageIcon(AdminView.class.getResource("/icon/user (11).png")));
+	btnTTNV.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			tabbedPane.setSelectedIndex(6);
+		}
+	});
+	btnTTNV.setForeground(Color.WHITE);
+	btnTTNV.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	btnTTNV.setBackground(new Color(51, 0, 102));
+	btnTTNV.setBounds(0, 0, 194, 56);
+	panelTTNV.add(btnTTNV);
+	
 	tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-	tabbedPane.setBounds(192, 0, 1308, 730);
+	tabbedPane.setBounds(192, -23, 1308, 753);
 	contentPane.add(tabbedPane);
 	
 	ButtonGroup group = new ButtonGroup();
@@ -1140,9 +1171,131 @@ public AdminView() {
 			}
 		));
 		scrollPane_5.setViewportView(tableNV);
+		
+		JPanel panel_3_1 = new JPanel();
+		panel_3_1.setLayout(null);
+		tabbedPane.addTab("New tab", null, panel_3_1, null);
+		
+		JPanel panel_4_1 = new JPanel();
+		panel_4_1.setLayout(null);
+		panel_4_1.setBackground(Color.WHITE);
+		panel_4_1.setBounds(0, 0, 950, 77);
+		panel_3_1.add(panel_4_1);
+		
+		JLabel lblNewLabel_2_2 = new JLabel("Thông tin cá nhân");
+		lblNewLabel_2_2.setFont(new Font("Segoe UI Symbol", Font.BOLD, 24));
+		lblNewLabel_2_2.setBounds(38, 21, 243, 50);
+		panel_4_1.add(lblNewLabel_2_2);
+		
+		btnSuattNV = new JButton("SỬA THÔNG TIN CÁ NHÂN");
+		btnSuattNV.setBounds(634, 21, 223, 36);
+		panel_4_1.add(btnSuattNV);
+		
+		JPanel panel_5_1 = new JPanel();
+		panel_5_1.setLayout(null);
+		panel_5_1.setBackground(new Color(135, 123, 191));
+		panel_5_1.setBounds(0, 78, 950, 155);
+		panel_3_1.add(panel_5_1);
+		
+		JLabel lblNewLabel_4_1 = new JLabel("");
+		lblNewLabel_4_1.setIcon(new ImageIcon(AdminView.class.getResource("/icon/workplace.png")));
+		lblNewLabel_4_1.setBounds(18, 10, 197, 138);
+		panel_5_1.add(lblNewLabel_4_1);
+		
+		lblSetNameNV = new JLabel((String) null);
+		lblSetNameNV.setForeground(Color.RED);
+		lblSetNameNV.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		lblSetNameNV.setEnabled(false);
+		lblSetNameNV.setBounds(225, 35, 423, 47);
+		panel_5_1.add(lblSetNameNV);
+		
+		JPanel panel_6_1 = new JPanel();
+		panel_6_1.setLayout(null);
+		panel_6_1.setBackground(Color.WHITE);
+		panel_6_1.setBounds(0, 233, 950, 419);
+		panel_3_1.add(panel_6_1);
+		
+		JLabel lblNewLabel_5_4 = new JLabel("MaNV");
+		lblNewLabel_5_4.setForeground(Color.GREEN);
+		lblNewLabel_5_4.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		lblNewLabel_5_4.setBounds(148, 39, 111, 32);
+		panel_6_1.add(lblNewLabel_5_4);
+		
+		txtMaNVTTNV = new JTextField();
+		txtMaNVTTNV.setText((String) null);
+		txtMaNVTTNV.setColumns(10);
+		txtMaNVTTNV.setBounds(346, 29, 185, 42);
+		panel_6_1.add(txtMaNVTTNV);
+		
+		txtMKNVTTNV = new JTextField();
+		txtMKNVTTNV.setText((String) null);
+		txtMKNVTTNV.setColumns(10);
+		txtMKNVTTNV.setBounds(346, 84, 185, 42);
+		panel_6_1.add(txtMKNVTTNV);
+		
+		txtSDTNVTTNV = new JTextField();
+		txtSDTNVTTNV.setText((String) null);
+		txtSDTNVTTNV.setColumns(10);
+		txtSDTNVTTNV.setBounds(346, 276, 185, 42);
+		panel_6_1.add(txtSDTNVTTNV);
+		
+		JLabel lblNewLabel_5_1_3 = new JLabel("Mật Khẩu");
+		lblNewLabel_5_1_3.setForeground(Color.GREEN);
+		lblNewLabel_5_1_3.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		lblNewLabel_5_1_3.setBounds(148, 94, 111, 32);
+		panel_6_1.add(lblNewLabel_5_1_3);
+		
+		JLabel lblNewLabel_5_4_1 = new JLabel("Ngày Sinh");
+		lblNewLabel_5_4_1.setForeground(Color.GREEN);
+		lblNewLabel_5_4_1.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		lblNewLabel_5_4_1.setBounds(148, 146, 111, 38);
+		panel_6_1.add(lblNewLabel_5_4_1);
+		
+		JLabel lblNewLabel_5_2_1 = new JLabel("Giới Tính");
+		lblNewLabel_5_2_1.setForeground(Color.GREEN);
+		lblNewLabel_5_2_1.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		lblNewLabel_5_2_1.setBounds(148, 208, 140, 32);
+		panel_6_1.add(lblNewLabel_5_2_1);
+		
+		JLabel lblNewLabel_5_3_1 = new JLabel("SDT");
+		lblNewLabel_5_3_1.setForeground(Color.GREEN);
+		lblNewLabel_5_3_1.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		lblNewLabel_5_3_1.setBounds(148, 276, 140, 32);
+		panel_6_1.add(lblNewLabel_5_3_1);
+		
+		rdbtMaleNTTTNV = new JRadioButton("Male");
+		rdbtMaleNTTTNV.setFont(new Font("Tahoma", Font.BOLD, 14));
+		rdbtMaleNTTTNV.setBounds(346, 211, 103, 31);
+		panel_6_1.add(rdbtMaleNTTTNV);
+		
+		rdbtFemaleNVTTNV = new JRadioButton("Female");
+		rdbtFemaleNVTTNV.setFont(new Font("Tahoma", Font.BOLD, 14));
+		rdbtFemaleNVTTNV.setBounds(468, 211, 103, 31);
+		panel_6_1.add(rdbtFemaleNVTTNV);
+		
+		ButtonGroup group21 = new ButtonGroup();
+		group21.add(rdbtFemaleNVTTNV);
+		group21.add(rdbtMaleNTTTNV);
+		
+		btnLuuNV = new JButton("LƯU");
+		btnLuuNV.setBounds(291, 346, 111, 42);
+		panel_6_1.add(btnLuuNV);
+		
+		dateNVTTNV = new JDateChooser();
+		dateNVTTNV.setDateFormatString("dd/MM/yyyy");
+		dateNVTTNV.setBounds(346, 147, 185, 37);
+		panel_6_1.add(dateNVTTNV);
 		setCBBDK();
 		
 	
+	if(idNV == "1") panelTTNV.setVisible(false);
+	
+	else {
+		setTTNV();
+		setNotEnable();
+		panelNhanVien.setVisible(false);
+		panelThongKe.setVisible(false);
+	}
 	
 	
 	//SU lI SU KIEN
@@ -1215,8 +1368,11 @@ public AdminView() {
 	
 	MouseListener mlnv = new NhanVienController(this);
 	tableNV.addMouseListener(mlnv);
+	btnSuattNV.addActionListener(nv);
+	btnLuuNV.addActionListener(nv);
 	
 }
+
 	public void setCBBTenGV() {
 		ArrayList<Giaovien> list = GiaovienDAO.getInstance().selectAll();
 		HashSet<String> uniqueItems = new HashSet<>();
@@ -1254,5 +1410,46 @@ public AdminView() {
 			model.addElement(mh.getTenMon());
 		}
 		
+	}
+	public void setTTNV() {
+		NhanVien nv = NhanVienDAO.getInstance().selectById(idNV);
+		lblSetNameNV.setText(nv.getTen());
+		txtMaNVTTNV.setText(idNV);
+		txtMKNVTTNV.setText(nv.getMatkhau());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		java.util.Date dateNVTT;
+			try {
+				dateNVTT = dateFormat.parse(nv.getNgaysinh());
+				dateNVTTNV.setDate(dateNVTT);
+			} catch (java.text.ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		if(nv.GetGioitinh() == true) {
+			rdbtMaleNTTTNV.setSelected(true);
+		}
+		else {
+			rdbtFemaleNVTTNV.setSelected(true);
+		}
+		txtSDTNVTTNV.setText(Integer.toString(nv.getSDT()));
+	}
+	public void setNotEnable() {
+		lblSetNameNV.setEnabled(false);
+		txtMaNVTTNV.setEnabled(false);
+		rdbtFemaleNVTTNV.setEnabled(false);
+		rdbtMaleNTTTNV.setEnabled(false);
+		txtMKNVTTNV.setEditable(false);
+		dateNVTTNV.setEnabled(false);
+		txtSDTNVTTNV.setEditable(false);
+	}
+	
+	public void setEnable() {
+		lblSetNameNV.setEnabled(true);
+		txtMaNVTTNV.setEnabled(true);
+		rdbtFemaleNVTTNV.setEnabled(true);
+		rdbtMaleNTTTNV.setEnabled(true);
+		txtMKNVTTNV.setEditable(true);
+		dateNVTTNV.setEnabled(true);
+		txtSDTNVTTNV.setEditable(true);
 	}
 }

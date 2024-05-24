@@ -94,6 +94,12 @@ public class NhanVienController implements ActionListener, MouseListener{
 			}
 			
 		}
+		if(e.getSource() == adminview.btnSuattNV) {
+			adminview.setEnable();
+		}
+		if(e.getSource() == adminview.btnLuuNV) {
+			
+		}
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {

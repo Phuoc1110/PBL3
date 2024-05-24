@@ -12,8 +12,10 @@ import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import DAO.GiaovienDAO;
 import DAO.HocvienDAO;
+import DAO.NhanVienDAO;
 import Model.Giaovien;
 import Model.Hocvien;
+import Model.NhanVien;
 
 import java.awt.Color;
 import javax.swing.JLabel;
@@ -115,7 +117,7 @@ public class Login extends JFrame {
 		btnDangNhapAdmin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(txtUser.getText().equals("admin") && txtPassword.getText().equals("1")) {
-					new AdminView();
+					new AdminView("1");
 					
 				}
 			}
@@ -124,6 +126,17 @@ public class Login extends JFrame {
 		panel_2.add(btnDangNhapAdmin);
 		
 		JButton btnNhnVin = new JButton("Nhân Viên");
+		btnNhnVin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for(NhanVien nv : NhanVienDAO.getInstance().selectAll()) {
+					if(txtUser.getText().equals(nv.getId())) {
+						if(txtPassword.getText().equals(nv.getMatkhau())) {
+							new AdminView(nv.getId());
+						}
+					}
+				}
+			}
+		});
 		btnNhnVin.setBounds(210, 328, 94, 32);
 		panel_2.add(btnNhnVin);
 		
