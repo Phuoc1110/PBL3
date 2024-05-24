@@ -96,10 +96,14 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 				JOptionPane.showMessageDialog(adminview, "nhap maHV");
 			}
 			else {
-			HocvienDAO.getInstance().insert(getDataView());
-			DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
-			model.setRowCount(0);
-			adminview.btnHienThiHV.doClick();
+				int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn thêm học viên có mã là :" + adminview.txtNhapMaHV.getText() );
+//				JOptionPane
+				if (choice == JOptionPane.YES_OPTION) {
+					HocvienDAO.getInstance().insert(getDataView());
+					DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
+					model.setRowCount(0);
+					adminview.btnHienThiHV.doClick();	
+				}
 			}
 		}
 		else if (e.getSource() == adminview.btnResetHV) {
