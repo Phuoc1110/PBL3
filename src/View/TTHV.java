@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -155,22 +156,25 @@ public class TTHV extends JDialog {
 					String fName = table.getModel().getValueAt(table.getSelectedRow(), 0).toString() + "_" + maLH;
 					String file = "D:\\pdf_files\\" + fName + ".pdf"; //Vi tri in file
 					String tenHV = table.getModel().getValueAt(table.getSelectedRow(), 1).toString();
+					String maHV = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
 					LocalDate currentDate = LocalDate.now();
 					
 					Document doc = new Document();
 					PdfWriter.getInstance(doc, new FileOutputStream(file));
+					
 					doc.open();
 					
-					Paragraph para = new Paragraph("Don vi:...................\r\n"
-							+ "	ngay " + currentDate + " cua TTHT)\r\n"
-							+ "\r\n"
-							+ "\r\n"
-							+ "BIEN LAI THU TIEN \r\n"
-							+ "                                                                                                                  \r\n\n"
-							+ "- Ho va ten nguoi nop:" + tenHV + "\r\n"
-							+ "- Lop dang ky: " + tenLH + " - " + maLH + "\r\n"
-							+ "- So tien thu:  " + hocPhi + "VND.\r\n"
-							+ "");
+					String s = "TRUNG TAM HOC THEM thong bao gui Hoa Don ban hang cho quy khach.\n\n"
+							+ "Kinh gui: Quy khach " + tenHV + ".\n"
+							+ "TRUNG TAM HOC THEM xin gui cho Quy khach Hoa đon ban hang voi cac thong tin nhu sau. \n\n"
+							+ "               + Ma Hoc Vien: " + maHV + ";\n"
+							+ "               + Date: " + currentDate + ";\n"
+							+ "               + Lop Hoc Them: " + tenLH + " - " + maLH + ";\n\n"
+							+ "De tra cuu them thong tin quy khach vui long lien lac qua SDT: 0335435578.\n"
+							+ "Hoac gui lien lac trung tam qua email: TTHT@gmail.com.\n\n"
+							+ "                                                        Tran Trong Quy Khach";
+					
+					Paragraph para = new Paragraph(s);
 					doc.add(para);
 					
 					doc.close();

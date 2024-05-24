@@ -68,8 +68,12 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 		}
 		
 		if (e.getSource() == adminview.btnThemLH) {
-			LopHocDAO.getInstance().insert(getDataViewLH());
-			adminview.btnHienThiLH.doClick();
+			int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn thêm lớp học có mã là :" + adminview.txtNhapMaLH.getText());
+			if(choice == JOptionPane.YES_OPTION) {
+				LopHocDAO.getInstance().insert(getDataViewLH());
+				adminview.btnHienThiLH.doClick();
+			}
+			
 		}
 		
 		if(e.getSource() == adminview.btnSuaLH) {
@@ -77,14 +81,20 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 				JOptionPane.showMessageDialog(null, adminview.txtNhapMaLH.getText()+ " khong ton tai");
 			}
 			else {
-				LopHocDAO.getInstance().update(getDataViewLH());
-				adminview.btnHienThiLH.doClick();
+				int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn sửa lớp học có mã là :" + adminview.txtNhapMaLH.getText());
+				if(choice == JOptionPane.YES_OPTION) {
+					LopHocDAO.getInstance().update(getDataViewLH());
+					adminview.btnHienThiLH.doClick();
+				}
 			}
 			
 		}
 		if(e.getSource() == adminview.btnXoaLH) {
-			LopHocDAO.getInstance().delete(getDataViewLH());
-			adminview.btnHienThiLH.doClick();
+			int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn xóa lớp học có mã là :" + adminview.txtNhapMaLH.getText());
+			if(choice == JOptionPane.YES_OPTION) {
+				LopHocDAO.getInstance().delete(getDataViewLH());
+				adminview.btnHienThiLH.doClick();
+			}
 		}
 		if(e.getSource() == adminview.btnResetLH) {
 			adminview.txtNhapMaLH.setText("");

@@ -78,9 +78,11 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 		else if (e.getSource() == adminview.btnXoaHV) {
 			DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
 			if (adminview.tableHV.getSelectedRowCount() == 1) {
-				HocvienDAO.getInstance().delete(getDataView());
-				model.removeRow(adminview.tableHV.getSelectedRow());
-				
+				int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn xóa học viên có mã là :" + adminview.txtNhapMaHV.getText() );
+				if (choice == JOptionPane.YES_OPTION) {
+					HocvienDAO.getInstance().delete(getDataView());
+					model.removeRow(adminview.tableHV.getSelectedRow());
+				}
 			}
 			else if (adminview.tableHV.getRowCount() == 0) {
 				JOptionPane.showMessageDialog(adminview, "Không có gì để xóa.");
@@ -97,7 +99,6 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 			}
 			else {
 				int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn thêm học viên có mã là :" + adminview.txtNhapMaHV.getText() );
-//				JOptionPane
 				if (choice == JOptionPane.YES_OPTION) {
 					HocvienDAO.getInstance().insert(getDataView());
 					DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
@@ -120,8 +121,11 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 				JOptionPane.showMessageDialog(null, adminview.txtNhapMaHV.getText()+ " khong ton tai");
 			}
 			else {
-				HocvienDAO.getInstance().update(getDataView());
-				adminview.btnHienThiHV.doClick();
+				int choice = JOptionPane.showConfirmDialog(adminview, "bạn muốn sửa học viên có mã là :" + adminview.txtNhapMaHV.getText() );
+				if (choice == JOptionPane.YES_OPTION) {
+					HocvienDAO.getInstance().update(getDataView());
+					adminview.btnHienThiHV.doClick();
+				}
 			}
 		}
 		else if(e.getSource() == adminview.btnTimKiemHV) {
