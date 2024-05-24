@@ -147,6 +147,27 @@ public class NhanVienDAO implements DAOInterface<NhanVien>{
 		}
 		return nv;
 	}
+	public int getSLNV() {
+		int SL = 0;
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "SELECT count(*) as SL from nhanvien";
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				 SL = rs.getInt("SL");
+			}
+			
+			JDBCUtil.closeConnection(cnn);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return SL;
+	}
 
 	@Override
 	public ArrayList<NhanVien> selectByCondition(String condition) {

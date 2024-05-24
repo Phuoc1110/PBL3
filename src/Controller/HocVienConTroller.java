@@ -16,6 +16,7 @@ import DAO.GiaovienDAO;
 import DAO.HocvienDAO;
 import DAO.LopHocDAO;
 import DAO.MonHocDAO;
+import Model.Giaovien;
 import Model.Hocvien;
 import Model.Lophoc;
 import View.AdminView;
@@ -117,6 +118,19 @@ public class HocVienConTroller implements ActionListener, MouseListener {
 			else {
 				HocvienDAO.getInstance().update(getDataView());
 				adminview.btnHienThiHV.doClick();
+			}
+		}
+		else if(e.getSource() == adminview.btnTimKiemHV) {
+			
+			ArrayList<Hocvien> list =  HocvienDAO.getInstance().timKiemHV(((String)adminview.txtTKHV.getText()));
+			DefaultTableModel model = (DefaultTableModel) adminview.tableHV.getModel();
+			model.setRowCount(0);
+			for(Hocvien hv : list) {	
+				String gender ;
+				if(hv.getGioiTinh() == true) gender = "Nam";
+				else gender = "Nu";
+				String[] row = {hv.getMaHV(), hv.getName(), hv.getNamSinh(), gender, hv.getSdt(), hv.getTinhTrang()};
+				model.addRow(row);
 			}
 		}
 	}

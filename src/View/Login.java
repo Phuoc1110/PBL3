@@ -120,8 +120,12 @@ public class Login extends JFrame {
 				}
 			}
 		});
-		btnDangNhapAdmin.setBounds(26, 330, 94, 32);
+		btnDangNhapAdmin.setBounds(47, 328, 94, 32);
 		panel_2.add(btnDangNhapAdmin);
+		
+		JButton btnNhnVin = new JButton("Nhân Viên");
+		btnNhnVin.setBounds(210, 328, 94, 32);
+		panel_2.add(btnNhnVin);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(224, 224, 224));

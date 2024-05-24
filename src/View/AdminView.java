@@ -33,6 +33,7 @@ import DAO.GiaovienDAO;
 import DAO.HocvienDAO;
 import DAO.LopHocDAO;
 import DAO.MonHocDAO;
+import DAO.NhanVienDAO;
 import Model.Giaovien;
 import Model.MonHoc;
 
@@ -115,6 +116,8 @@ public class AdminView extends JFrame {
 	public JButton btnThemNV, btnSuaNV, btnXoaNV, btnNhanVien;
 	public JDateChooser dateNV;
 	public JTextField txtMKNV;
+	public JComboBox<String> cbbTenMH_1;
+	public JTextField txtTKHV;
 
 public AdminView() {
 	
@@ -212,7 +215,7 @@ public AdminView() {
 	JPanel panel_1_1_1 = new JPanel();
 	panel_1_1_1.setLayout(null);
 	panel_1_1_1.setBackground(new Color(36, 0, 72));
-	panel_1_1_1.setBounds(0, 444, 195, 56);
+	panel_1_1_1.setBounds(0, 500, 195, 56);
 	Menu.add(panel_1_1_1);
 	
 	btnBienLai = new JButton("Thống Kê");
@@ -223,6 +226,7 @@ public AdminView() {
 			lblSLHocVien.setText(Integer.toString(HocvienDAO.getInstance().getSLHocVien()));
 			lblSLGiaoVien.setText(Integer.toString(GiaovienDAO.getInstance().getSLGV()));
 			lblSLLopHoc.setText(Integer.toString(LopHocDAO.getInstance().getSLLH()));
+			lblSLNhanVien.setText(Integer.toString(NhanVienDAO.getInstance().getSLNV()));
 		}
 	});
 	btnBienLai.setForeground(Color.WHITE);
@@ -251,15 +255,29 @@ public AdminView() {
 	JPanel panel_1_1_1_1 = new JPanel();
 	panel_1_1_1_1.setLayout(null);
 	panel_1_1_1_1.setBackground(new Color(36, 0, 72));
-	panel_1_1_1_1.setBounds(0, 389, 195, 56);
+	panel_1_1_1_1.setBounds(0, 445, 195, 56);
 	Menu.add(panel_1_1_1_1);
 	
 	btnNhanVien = new JButton("Nhân Viên");
+	btnNhanVien.setIcon(new ImageIcon(AdminView.class.getResource("/icon/user (11).png")));
 	btnNhanVien.setForeground(Color.WHITE);
 	btnNhanVien.setFont(new Font("Segoe UI", Font.BOLD, 15));
 	btnNhanVien.setBackground(new Color(36, 0, 72));
-	btnNhanVien.setBounds(0, 0, 196, 56);
+	btnNhanVien.setBounds(0, 0, 196, 58);
 	panel_1_1_1_1.add(btnNhanVien);
+	
+	JButton btnDK = new JButton("Đăng Kí");
+	btnDK.setIcon(new ImageIcon(AdminView.class.getResource("/icon/knowledge.png")));
+	btnDK.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			tabbedPane.setSelectedIndex(4);
+		}
+	});
+	btnDK.setForeground(Color.WHITE);
+	btnDK.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	btnDK.setBackground(new Color(36, 0, 72));
+	btnDK.setBounds(0, 387, 196, 58);
+	Menu.add(btnDK);
 	
 	tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	tabbedPane.setBounds(192, 0, 1308, 730);
@@ -276,20 +294,20 @@ public AdminView() {
 	TieuDeGV.setBackground(new Color(135, 123, 191));
 	PanelGiaoVien.add(TieuDeGV);
 	
-	btnThemGV = new JButton("Thêm mới");
-	btnThemGV.setBounds(144, 202, 117, 32);
+	btnThemGV = new JButton("Thêm");
+	btnThemGV.setBounds(35, 202, 79, 32);
 	btnThemGV.setForeground(Color.WHITE);
 	btnThemGV.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 	btnThemGV.setBackground(new Color(36, 0, 72));
 	
 	btnSuaGV = new JButton("Sửa");
-	btnSuaGV.setBounds(291, 202, 71, 32);
+	btnSuaGV.setBounds(124, 202, 71, 32);
 	btnSuaGV.setForeground(Color.WHITE);
 	btnSuaGV.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 	btnSuaGV.setBackground(new Color(36, 0, 72));
 	
 	btnXoaGV = new JButton("Xóa");
-	btnXoaGV.setBounds(429, 202, 71, 32);
+	btnXoaGV.setBounds(205, 202, 71, 32);
 	btnXoaGV.setForeground(Color.WHITE);
 	btnXoaGV.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 	btnXoaGV.setBackground(new Color(36, 0, 72));
@@ -405,7 +423,7 @@ public AdminView() {
 	btnHienThiGV.setForeground(Color.WHITE);
 	btnHienThiGV.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 	btnHienThiGV.setBackground(new Color(36, 0, 72));
-	btnHienThiGV.setBounds(25, 202, 71, 32);
+	btnHienThiGV.setBounds(383, 202, 112, 32);
 	TieuDeGV.add(btnHienThiGV);
 	
 	JSeparator separator_2 = new JSeparator();
@@ -457,7 +475,7 @@ public AdminView() {
 		new Object[][] {
 		},
 		new String[] {
-			"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang", "matKhau"
+			"maHV", "name", "namSinh", "gioiTinh", "SDT", "tinhTrang"
 		}
 	) {
 		public boolean isCellEditable(int row, int column) {
@@ -501,16 +519,6 @@ public AdminView() {
 	btnHienThiHV.setBackground(new Color(36, 0, 72));
 	btnHienThiHV.setBounds(426, 229, 92, 32);
 	TieuDeHV.add(btnHienThiHV);
-	
-	TextField textField = new TextField();
-	textField.setBounds(548, 229, 179, 32);
-	TieuDeHV.add(textField);
-	
-	JLabel lblNewLabel_5_2 = new JLabel("Họ tên:");
-	lblNewLabel_5_2.setForeground(new Color(36, 0, 72));
-	lblNewLabel_5_2.setFont(new Font("Segoe UI", Font.BOLD, 12));
-	lblNewLabel_5_2.setBounds(548, 203, 71, 20);
-	TieuDeHV.add(lblNewLabel_5_2);
 	
 	btnTimKiemHV = new JButton("Tìm kiếm");
 	btnTimKiemHV.setForeground(Color.WHITE);
@@ -568,6 +576,10 @@ public AdminView() {
 	rdbtFemaleHV.setBounds(502, 147, 72, 25);
 	TieuDeHV.add(rdbtFemaleHV);
 	
+	ButtonGroup group11 = new ButtonGroup();
+	group11.add(rdbtMaleHV);
+	group11.add(rdbtFemaleHV);
+	
 	JLabel lblNewLabel_6_1_3_2_1 = new JLabel("SDT");
 	lblNewLabel_6_1_3_2_1.setBounds(617, 95, 64, 22);
 	TieuDeHV.add(lblNewLabel_6_1_3_2_1);
@@ -595,6 +607,17 @@ public AdminView() {
 	btnResetHV.setBackground(new Color(36, 0, 72));
 	btnResetHV.setBounds(945, 229, 92, 32);
 	TieuDeHV.add(btnResetHV);
+	
+	JSeparator separator_3 = new JSeparator();
+	separator_3.setForeground(Color.WHITE);
+	separator_3.setBackground(Color.WHITE);
+	separator_3.setBounds(36, 190, 989, 29);
+	TieuDeHV.add(separator_3);
+	
+	txtTKHV = new JTextField();
+	txtTKHV.setColumns(10);
+	txtTKHV.setBounds(563, 231, 151, 30);
+	TieuDeHV.add(txtTKHV);
 	
 	
 	
@@ -636,16 +659,6 @@ public AdminView() {
 	btnHienThiLH.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 	btnHienThiLH.setBackground(new Color(36, 0, 72));
 	TieuDeLH.add(btnHienThiLH);
-	
-	TextField textField_2 = new TextField();
-	textField_2.setBounds(522, 229, 179, 21);
-	TieuDeLH.add(textField_2);
-	
-	JLabel lblNewLabel_5_2_2 = new JLabel("Tên môn học");
-	lblNewLabel_5_2_2.setBounds(522, 203, 98, 20);
-	lblNewLabel_5_2_2.setForeground(new Color(36, 0, 72));
-	lblNewLabel_5_2_2.setFont(new Font("Segoe UI", Font.BOLD, 12));
-	TieuDeLH.add(lblNewLabel_5_2_2);
 	
 	btnTimKiemLH = new JButton("Tìm kiếm");
 	btnTimKiemLH.setBounds(788, 218, 92, 32);
@@ -768,6 +781,10 @@ public AdminView() {
 	cbbMaGVLH = new JComboBox();
 	cbbMaGVLH.setBounds(967, 138, 117, 32);
 	TieuDeLH.add(cbbMaGVLH);
+	
+	cbbTenMH_1 = new JComboBox<String>();
+	cbbTenMH_1.setBounds(557, 218, 148, 32);
+	TieuDeLH.add(cbbTenMH_1);
 	
 	
 //	JScrollPane scrollPane_2 = new JScrollPane();
@@ -1008,7 +1025,7 @@ public AdminView() {
 			new Object[][] {
 			},
 			new String[] {
-					"maLH", "tenLop", "siSo", "thoiGianHoc", "ngayBatDau", "ngayKetThuc", "tenMH", "tenGV", "soLuong", "hocphi"
+					"maLH", "tenLop", "siSo", "tgHoc", "BatDau", "KetThuc", "tenMH", "tenGV", "soLuong", "hocphi"
 			}
 		) {
 			public boolean isCellEditable(int row, int column) {
@@ -1152,7 +1169,7 @@ public AdminView() {
 	btnTimKiemLH.addActionListener(aclh);
 	btnResetLH.addActionListener(aclh);
 	cbbTenGV.addActionListener(aclh);
-
+	
 	
 	
 	MouseListener mllh = new LopHocConTroller(this);
@@ -1166,6 +1183,7 @@ public AdminView() {
 	btnThemHV.addActionListener(hv);
 	btnSuaHV.addActionListener(hv);
 	btnResetHV.addActionListener(hv);
+	btnTimKiemHV.addActionListener(hv);
 
   
 	
@@ -1217,6 +1235,13 @@ public AdminView() {
 		for(MonHoc mh : list) {
 			model.addElement(mh.getTenMon());
 		}
+		ArrayList<MonHoc> list1 = MonHocDAO.getInstance().selectAll();
+		DefaultComboBoxModel<String> model1 = (DefaultComboBoxModel<String>) cbbTenMH_1.getModel();
+		model1.addElement("All");
+		for(MonHoc mh : list) {
+			model1.addElement(mh.getTenMon());
+		}
+		
 	}
 	public void out() {
 		this.dispose();
@@ -1224,9 +1249,10 @@ public AdminView() {
 	public void setCBBDK() {
 		ArrayList<MonHoc> list = MonHocDAO.getInstance().selectAll();
 		DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cbbMonDK.getModel();
+		model.addElement("All");
 		for(MonHoc mh : list) {
 			model.addElement(mh.getTenMon());
 		}
-		model.addElement("All");
+		
 	}
 }

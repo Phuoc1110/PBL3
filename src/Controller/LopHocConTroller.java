@@ -11,13 +11,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import com.google.protobuf.TextFormat.ParseException;
+//import com.google.protobuf.TextFormat.ParseException;
 
 import DAO.DangKiDAO;
 import DAO.GiaovienDAO;
 import DAO.LopHocDAO;
 import DAO.MonHocDAO;
-import Model.Giaovien;
 import Model.Hocvien;
 import Model.Lophoc;
 import View.AdminView;
@@ -102,6 +101,23 @@ public class LopHocConTroller implements ActionListener, MouseListener{
 			ArrayList<String> list = GiaovienDAO.getInstance().getMaGVTuTen(tenGV);
 			for(String ten : list) {
 				modelcbb.addElement(ten);
+			}
+		}
+		if(e.getSource() == adminview.btnTimKiemLH) {
+			String tenMH = adminview.cbbTenMH_1.getSelectedItem().toString();
+			if(tenMH.equals("All")) {
+				adminview.btnHienThiLH.doClick();
+			}
+			else {
+			ArrayList<Lophoc> list = LopHocDAO.getInstance().selectByMaMH(MonHocDAO.getInstance().getIdTuTenMH(tenMH));
+			DefaultTableModel model = (DefaultTableModel) adminview.tableLH.getModel();
+			model.setRowCount(0);
+			for(Lophoc lh : list) {	
+				String tenMon = MonHocDAO.getInstance().getTenTuID(lh.getMaMH());
+				String tenGV = GiaovienDAO.getInstance().getTenGV(lh.getMaGV());
+				String[] row = {lh.getMaLH(), lh.getTenLH(), String.valueOf(lh.getSiSo()), lh.getThoigianHoc(), lh.getNgayBatDau(), lh.getNgayKetThuc(), tenMon, tenGV, String.valueOf(lh.getSoLuong()), String.valueOf(lh.getHocphi())};		
+				model.addRow(row);
+			}
 			}
 		}
 	}

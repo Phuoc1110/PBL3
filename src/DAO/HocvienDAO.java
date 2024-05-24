@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Database.JDBCUtil;
+import Model.Giaovien;
 import Model.Hocvien;
 
 
@@ -172,6 +173,36 @@ public class HocvienDAO implements DAOInterface<Hocvien>{
 			e.getStackTrace();
 		}
 		return kq;
+	}
+	public ArrayList<Hocvien> timKiemHV(String dk){
+		ArrayList<Hocvien> list = new ArrayList<Hocvien>();
+		try {
+			Connection cnn = JDBCUtil.getConnection();
+			
+			java.sql.Statement st = cnn.createStatement();
+			
+			String sql = "SELECT * FROM hocvien where name like '%" + dk + "%'";
+			System.out.println(sql);
+			
+			java.sql.ResultSet rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				String maHV = rs.getString("maHV");
+				String name = rs.getString("name");
+				String namSinh = rs.getString("namSinh");
+				boolean gioiTinh = rs.getBoolean("gioiTinh");
+				String SDT = rs.getString("SDT");
+				String tinhTrang = rs.getString("tinhTrang");
+				
+				Hocvien hv = new Hocvien(maHV,name,namSinh,gioiTinh,SDT,tinhTrang);
+				list.add(hv);
+			}
+			
+			JDBCUtil.closeConnection(cnn);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return list;
 	}
 	
 }
